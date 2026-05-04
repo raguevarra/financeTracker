@@ -1,27 +1,21 @@
 # Stack Options
 
 <!--
-Simple paths:
-- SQLite + a small backend: easiest for local/self-hosted use.
-- PostgreSQL + a small backend: better for hosted multi-user use.
-- Full-stack framework: useful if you want frontend/backend/database conventions in one place.
+Chosen stack:
+- Next.js for frontend pages and backend API routes.
+- SQLite for the database.
+- Prisma for schema modeling, migrations, and database access.
 
-Frontend candidates:
-- React: common ecosystem, many chart/table libraries.
-- Vue: approachable and organized.
-- Svelte: lightweight and pleasant for small apps.
-- Plain HTML/CSS/JS: fine if the app stays very small.
+Local setup notes:
+- Install dependencies with npm install.
+- Copy .env.example to .env.
+- Run npm run prisma:generate.
+- Run npm run prisma:migrate -- --name init.
+- Run npm run dev.
 
-Backend candidates:
-- Node/Express or Fastify: straightforward API server.
-- Python/FastAPI: clean API structure and validation.
-- .NET: strong typed backend and durable hosting story.
-- Rails/Laravel/Django: batteries-included if you want auth/admin/database conventions.
-
-Database candidates:
-- SQLite: simple file-based database, great for a personal app.
-- PostgreSQL: stronger concurrency, hosting, backups, and future growth.
-
-Decision hint:
-- Start with the stack you are most likely to maintain six months from now.
+Future stack questions:
+- Authentication library: NextAuth/Auth.js, custom credentials, or another approach.
+- Deployment target: local network, VPS, Docker, or a managed platform.
+- Backup approach: scheduled SQLite file backup, encrypted archive, and restore test.
+- Testing approach: unit tests for finance calculations and integration tests for API routes.
 -->

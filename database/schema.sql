@@ -1,29 +1,8 @@
--- Database Skeleton
+-- SQL Notes
 --
--- Purpose:
--- - This file will eventually define the SQL schema for the finance tracker.
--- - Keep it comment-only until the backend/database stack is chosen.
+-- The active schema source is now prisma/schema.prisma.
+-- Prisma will generate SQLite migration SQL under prisma/migrations/ after you run:
+-- npm run prisma:migrate -- --name init
 --
--- Candidate tables:
--- - households: one family or finance group.
--- - users: login identities and profile details.
--- - household_members: user-to-household relationship, role, and permissions.
--- - accounts: checking, savings, credit card, cash, loan, investment, or manual accounts.
--- - categories: household-defined income and expense categories.
--- - transactions: dated money movements, merchant/payee, amount, category, account, and notes.
--- - transaction_splits: optional line items when one transaction belongs to multiple categories.
--- - recurring_items: bills, subscriptions, paychecks, transfers, and planned savings.
--- - budgets: monthly limits or targets by category and household.
--- - imports: uploaded CSV/bank files and their processing status.
--- - audit_log: optional record of sensitive changes.
---
--- Relationship notes:
--- - A household has many users through household_members.
--- - A household has many accounts, categories, transactions, budgets, and recurring_items.
--- - A transaction belongs to one account and may belong to one category.
--- - A transfer may need two linked transaction rows or a dedicated transfer relationship.
---
--- Data safety notes:
--- - Avoid storing bank credentials.
--- - Plan migrations before changing real data.
--- - Plan backup and restore before production use.
+-- Keep this file as a scratchpad for raw SQL ideas only.
+-- TODO: Add useful read/reporting queries here once the first migration exists.

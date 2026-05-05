@@ -1,5 +1,5 @@
 -- Query scratchpad.
--- TODO: Add reporting or debugging queries here as the schema settles.
+-- TODO: Add Postgres reporting or debugging queries here as the schema settles.
 
 -- Example:
--- SELECT * FROM transactions ORDER BY date DESC LIMIT 20;
+-- SELECT * FROM "Transaction" ORDER BY "occurredOn" DESC LIMIT 20;

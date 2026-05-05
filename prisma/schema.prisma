@@ -1,4 +1,4 @@
-// Prisma schema for the local SQLite finance tracker.
+// Prisma schema for the Postgres finance tracker.
 // After installing dependencies, run:
 // - npm run prisma:generate
 // - npm run prisma:migrate -- --name init
@@ -8,8 +8,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
 }
 
 model Household {
@@ -152,4 +151,3 @@ enum TransactionKind {
   EXPENSE
   TRANSFER
 }
-

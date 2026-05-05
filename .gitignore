@@ -15,7 +15,7 @@ build/
 .env.test.local
 .env.production.local
 
-# Prisma / SQLite local data
+# Prisma / Postgres local data
 prisma/*.db
 prisma/*.db-journal
 prisma/*.db-wal
@@ -28,6 +28,7 @@ yarn-error.log*
 pnpm-debug.log*
 .eslintcache
 .tsbuildinfo
+*.tsbuildinfo
 
 # OS / editor noise
 .DS_Store

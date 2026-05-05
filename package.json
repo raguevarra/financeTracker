@@ -16,7 +16,6 @@
     "@prisma/client": "latest",
     "next": "latest",
     "pg": "^8.20.0",
-    "prisma": "latest",
     "react": "latest",
     "react-dom": "latest"
   },
@@ -26,6 +25,7 @@
     "@types/react-dom": "latest",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "prisma": "latest",
     "typescript": "latest"
   }
 }

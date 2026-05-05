@@ -1,8 +1,0 @@
--- SQL Notes
---
--- The active schema source is now prisma/schema.prisma.
--- Prisma will generate Postgres migration SQL under prisma/migrations/ after you run:
--- npm run prisma:migrate -- --name init
---
--- Keep this file as a scratchpad for raw SQL ideas only.
--- TODO: Add useful read/reporting queries here once the first migration exists.

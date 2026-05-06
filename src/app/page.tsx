@@ -1,41 +1,31 @@
-const dashboardSections = [
-  {
-    title: "Accounts",
-    description: "TODO: Show checking, savings, credit cards, cash, debts, and balances.",
-  },
-  {
-    title: "Transactions",
-    description: "TODO: List recent spending, income, transfers, filters, and manual entry.",
-  },
-  {
-    title: "Budgets",
-    description: "TODO: Track monthly category limits and remaining household spend.",
-  },
-  {
-    title: "Reports",
-    description: "TODO: Summarize income, expenses, net worth, and category trends.",
-  },
-];
+import {
+  DashboardSummary,
+  type DashboardSummaryData,
+  TransactionList,
+  type Transaction,
+  TransactionForm,
+} from "@/components";
 
-export default function Home() {
+export default async function Home() {
+  // Fetch mock dashboard data
+  const resDashboard = await fetch("http://localhost:3000/api/dashboard", {
+    cache: "no-store",
+  });
+
+  const dashboard: DashboardSummaryData = await resDashboard.json();
+
+  // Fetch mock transactions data
+  const resTransactions = await fetch("http://localhost:3000/api/transactions", {
+    cache: "no-store",
+  });
+
+  const transactions: Transaction[] = await resTransactions.json();
+
   return (
-    <main className="app-shell">
-      <header className="app-header">
-        <div>
-          <h1>Finance Tracker</h1>
-          <p className="muted">Private family finance dashboard.</p>
-        </div>
-      </header>
-
-      <section className="app-grid" aria-label="Dashboard sections">
-        {dashboardSections.map((section) => (
-          <article className="panel" key={section.title}>
-            <h2>{section.title}</h2>
-            <p className="muted">{section.description}</p>
-          </article>
-        ))}
-      </section>
+    <main>
+      <DashboardSummary dashboard={dashboard} />
+      <TransactionList transactions={transactions} />
+      <TransactionForm />
     </main>
   );
 }
-

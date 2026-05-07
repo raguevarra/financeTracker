@@ -7,53 +7,57 @@ datasource db {
 }
 
 model Household {
-  id String @id @default(cuid())
-  name String
+  id        String   @id @default(cuid())
+  name      String
   createdAt DateTime @default(now())
 
-  members HouseholdMember[]
+  members  HouseholdMember[]
   accounts Account[]
 }
 
 model HouseholdMember {
-  id String @id @default(cuid())
-  userId String
+  id          String @id @default(cuid())
+  userId      String
   householdId String
-  role String // "OWNER", "ADULT", "CHILD", etc.
+  role        String // "OWNER", "ADULT", "CHILD", etc.
 
-  user User @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
   household Household @relation(fields: [householdId], references: [id])
 
   @@unique([userId, householdId])
 }
 
 model User {
-  id Int @id @default(cuid())
-  email String @unique
-  accounts Account[]
-  createdAt DateTime @default(now())
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  accounts  Account[]
+  createdAt DateTime  @default(now())
+
+  householdMemberships HouseholdMember[]
 }
 
 model Account {
-  id Int @id @default(cuid())
-  name String
-  type String
+  id      String  @id @default(cuid())
+  name    String
+  type    String
   balance Decimal
 
-  ownerId String? // optional: personal owner
+  ownerId     String? // optional: personal owner
   householdId String? // optional: shared household
 
-  owner User? @relation(fields: [ownerId], references: [id])
+  owner     User?      @relation(fields: [ownerId], references: [id])
   household Household? @relation(fields: [householdId], references: [id])
 
   transactions Transaction[]
 }
 
 model Transaction {
-  id Int @id @default(cuid())
-  name String
-  amount Float
-  date DateTime
-  accountId Int
-  account Account @relation(fields: [accountId], references: [id])
+  id        String   @id @default(cuid())
+  name      String
+  amount    Decimal
+  type      String
+  date      DateTime
+  accountId String
+  account   Account  @relation(fields: [accountId], references: [id])
 }

@@ -6,23 +6,51 @@ datasource db {
   provider = "postgresql"
 }
 
+model Household {
+  id String @id @default(cuid())
+  name String
+  createdAt DateTime @default(now())
+
+  members HouseholdMember[]
+  accounts Account[]
+}
+
+model HouseholdMember {
+  id String @id @default(cuid())
+  userId String
+  householdId String
+  role String // "OWNER", "ADULT", "CHILD", etc.
+
+  user User @relation(fields: [userId], references: [id])
+  household Household @relation(fields: [householdId], references: [id])
+
+  @@unique([userId, householdId])
+}
+
 model User {
-  id Int @id @default(autoincrement())
+  id Int @id @default(cuid())
   email String @unique
   accounts Account[]
   createdAt DateTime @default(now())
 }
 
 model Account {
-  id Int @id @default(autoincrement())
+  id Int @id @default(cuid())
   name String
-  userId Int
-  user User @relation(fields: [userId], references: [id])
+  type String
+  balance Decimal
+
+  ownerId String? // optional: personal owner
+  householdId String? // optional: shared household
+
+  owner User? @relation(fields: [ownerId], references: [id])
+  household Household? @relation(fields: [householdId], references: [id])
+
   transactions Transaction[]
 }
 
 model Transaction {
-  id Int @id @default(autoincrement())
+  id Int @id @default(cuid())
   name String
   amount Float
   date DateTime

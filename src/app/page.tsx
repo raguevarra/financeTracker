@@ -7,25 +7,27 @@ import {
 } from "@/components";
 
 export default async function Home() {
+  const householdId = "cmoux9agv0002miuwy6tsx1tq"
+
   // Fetch mock dashboard data
-  const resDashboard = await fetch("http://localhost:3000/api/dashboard", {
-    cache: "no-store",
-  });
+  const resDashboard = await fetch(
+    'http://localhost:3000/api/households/${householdId}/dashboard',
+    {
+      cache: "no-store",
+    }
+  );
 
-  const dashboard: DashboardSummaryData = await resDashboard.json();
+  const data = await resDashboard.json();
 
-  // Fetch mock transactions data
-  const resTransactions = await fetch("http://localhost:3000/api/transactions", {
-    cache: "no-store",
-  });
-
-  const transactions: Transaction[] = await resTransactions.json();
+  const dashboard = {
+    balance: data.totalBalance,
+    monthlySpending: 0,
+    upcomingBills: 0,
+  };
 
   return (
     <main>
       <DashboardSummary dashboard={dashboard} />
-      <TransactionList transactions={transactions} />
-      <TransactionForm />
     </main>
   );
 }

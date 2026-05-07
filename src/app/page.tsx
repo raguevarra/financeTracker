@@ -1,9 +1,8 @@
 import {
+  AccountList,
   DashboardSummary,
-  type DashboardSummaryData,
   TransactionList,
-  type Transaction,
-  TransactionForm,
+  type DashboardSummaryData,
 } from "@/components";
 
 export default async function Home() {
@@ -11,7 +10,7 @@ export default async function Home() {
 
   // Fetch mock dashboard data
   const resDashboard = await fetch(
-    'http://localhost:3000/api/households/${householdId}/dashboard',
+    `http://localhost:3000/api/households/${householdId}/dashboard`,
     {
       cache: "no-store",
     }
@@ -28,6 +27,8 @@ export default async function Home() {
   return (
     <main>
       <DashboardSummary dashboard={dashboard} />
+      <AccountList accounts={data.accounts} />
+      <TransactionList transactions={data.recentTransactions} />
     </main>
   );
 }

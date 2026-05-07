@@ -65,6 +65,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
         accounts: household.accounts.map((account) => ({
             id: account.id,
             name: account.name,
+            type: account.type,
             balance: account.balance,
             owner: account.owner,
         })),

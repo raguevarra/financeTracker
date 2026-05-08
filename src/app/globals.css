@@ -66,3 +66,14 @@ textarea {
   color: var(--muted);
 }
 
+/* chrome, safari, edge */
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* firefox */
+.no-spinner {
+  appearance: textfield;
+}

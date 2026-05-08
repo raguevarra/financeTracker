@@ -7,7 +7,7 @@ import {
 
 export default async function Home() {
   // Fetch dashboard data from API
-  const resDashboard = await fetch("http://localhost:3000/api/dashboard-broken", {
+  const resDashboard = await fetch("http://localhost:3000/api/dashboard", {
     cache: "no-store",
   });
 

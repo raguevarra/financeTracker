@@ -3,34 +3,33 @@ import {
   DashboardSummary,
   TransactionList,
   TransactionForm,
-  type DashboardSummaryData,
 } from "@/components";
 
 export default async function Home() {
-  const householdId = "cmoux9agv0002miuwy6tsx1tq"
+  // Fetch dashboard data from API
+  const resDashboard = await fetch("http://localhost:3000/api/dashboard-broken", {
+    cache: "no-store",
+  });
 
-  // Fetch mock dashboard data
-  const resDashboard = await fetch(
-    `http://localhost:3000/api/households/${householdId}/dashboard`,
-    {
-      cache: "no-store",
-    }
-  );
+  // Handle API errors
+  if (!resDashboard.ok) {
+    return <main>Failed to load dashboard.</main>
+  }
 
-  const data = await resDashboard.json();
+  const dashboardData = await resDashboard.json();
 
   const dashboard = {
-    balance: data.totalBalance,
-    monthlySpending: 0,
-    upcomingBills: 0,
+    balance: dashboardData.totalBalance,
+    monthlySpending: dashboardData.monthlySpending,
+    upcomingBills: dashboardData.upcomingBills,
   };
 
   return (
     <main>
       <DashboardSummary dashboard={dashboard} />
-      <AccountList accounts={data.accounts} />
-      <TransactionList transactions={data.recentTransactions} />
-      <TransactionForm accounts={data.accounts} />
+      <AccountList accounts={dashboardData.accounts} />
+      <TransactionList transactions={dashboardData.recentTransactions} />
+      <TransactionForm accounts={dashboardData.accounts} />
     </main>
   );
 }

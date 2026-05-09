@@ -37,8 +37,10 @@ export function AccountTransactionForm({ accountId }: AccountTransactionFormProp
             }),
         });
 
+        const data = await res.json();
+
         if (!res.ok) {
-            setError("Failed to create transaction.");
+            setError(data.error || "Failed to create the transaction.");
             setIsSubmitting(false);
             return;
         }

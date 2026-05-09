@@ -1,3 +1,5 @@
+import { formatCurrency } from "@/lib/formatters";
+
 export type DashboardSummaryData = {
   balance: number;
   monthlySpending: number;
@@ -13,8 +15,8 @@ export function DashboardSummary({ dashboard }: DashboardSummaryProps) {
     <section>
       <h1>Dashboard</h1>
 
-      <p>Balance: ${dashboard.balance}</p>
-      <p>Monthly Spending: ${dashboard.monthlySpending}</p>
+      <p>Balance: ${formatCurrency(dashboard.balance, { showSign: true })}</p>
+      <p>Monthly Spending: ${formatCurrency(dashboard.monthlySpending)}</p>
       <p>Upcoming Bills: {dashboard.upcomingBills}</p>
     </section>
   );

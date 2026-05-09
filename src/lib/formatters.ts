@@ -19,10 +19,7 @@ export function formatCurrency(
 ) {
     const amount = Number(value);
 
-    const formatted = new Intl.NumberFormat("en-CA", {
-        style: "currency",
-        currency: "CAD",
-    }).format(Math.abs(amount));
+    const formatted = cadFormatter.format(Math.abs(amount));
 
     if (!options.showSign) {
         return cadFormatter.format(amount);

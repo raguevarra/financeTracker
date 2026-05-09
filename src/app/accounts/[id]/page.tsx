@@ -2,7 +2,7 @@ import { getCurrentUserId } from "@/lib/currentUser";
 import { getAccountById } from "@/lib/accounts";
 import { TransactionCard } from "@/components/TransactionCard";
 import { AccountTransactionForm } from "@/components/AccountTransactionForm";
-import { Prisma } from "@prisma/client";
+import { formatCurrency } from "@/lib/formatters";
 import Link from "next/link";
 
 type AccountPageProps = {
@@ -10,15 +10,6 @@ type AccountPageProps = {
     id: string;
   };
 };
-
-function formatCurrency(value: Prisma.Decimal | number | string) {
-  const amount = Number(value);
-
-  return new Intl.NumberFormat("en-CA", {
-    style: "currency",
-    currency: "CAD",
-  }).format(amount);
-}
 
 export default async function AccountPage({ params }: AccountPageProps) {
   const userId = await getCurrentUserId();

@@ -1,4 +1,5 @@
 import { Prisma } from "@prisma/client";
+import { formatCurrency } from "@/lib/formatters";
 
 export type TransactionCardData = {
   id: string;
@@ -54,7 +55,7 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
           fontWeight: "bold",
         }}
       >
-        {isExpense ? "-" : "+"}${Math.abs(amount).toFixed(2)}
+        {formatCurrency(transaction.amount, { showSign: true })}
       </p>
     </div>
   );

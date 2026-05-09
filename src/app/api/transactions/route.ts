@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentUserId } from "@/lib/currentUser";
 import { getAccountById } from "@/lib/accounts";
-import { createTransaction } from "@/lib/transactions";
+import { createTransactionForAccount } from "@/lib/transactions";
 
 
 export async function POST(request: Request) {
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
         }
         
         // Create a new transaction in the database using Prisma
-        const transaction = await createTransaction({
+        const transaction = await createTransactionForAccount({
             name,
             amount,
             type,

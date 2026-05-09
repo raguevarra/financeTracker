@@ -9,7 +9,7 @@ type CreateTransactionInput = {
     accountId: string;
 }
 
-export async function createTransaction({
+export async function createTransactionForAccount({
     name,
     amount,
     type,

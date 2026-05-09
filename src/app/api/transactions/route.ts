@@ -1,7 +1,9 @@
 // Add new transaction using POST
 import { NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
+import { getCurrentUserId } from "@/lib/currentUser";
 import { prisma } from "@/lib/prisma";
+
 
 export async function POST(request: Request) {
     // Try-catch block to handle potential errors during transaction creation
@@ -19,11 +21,14 @@ export async function POST(request: Request) {
                 { status: 400 }
             );
         }
+
+        const userId = await getCurrentUserId();
         
         // Check if the specified account exists before creating the transaction
-        const account = await prisma.account.findUnique({
+        const account = await prisma.account.findFirst({
             where: {
                 id: accountId,
+                userId,
             },
         });
 
@@ -59,15 +64,3 @@ export async function POST(request: Request) {
         );
     }    
 }
-
-/*
-curl -X POST http://localhost:3000/api/transactions \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Test Coffee",
-    "amount": "-4.50",
-    "type": "DEBIT",
-    "date": "2026-05-07",
-    "accountId": "cmoux9ah80005miuwmanuyka9"
-  }'
-*/

@@ -6,15 +6,17 @@ import { formatCurrency } from "@/lib/formatters";
 import Link from "next/link";
 
 type AccountPageProps = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 export default async function AccountPage({ params }: AccountPageProps) {
+  const { id } = await params;
+
   const userId = await getCurrentUserId();
 
-  const account = await getAccountById(params.id, userId);
+  const account = await getAccountById(id, userId);
 
   if (!account) {
     return (

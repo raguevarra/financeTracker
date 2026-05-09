@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { getCurrentUserId } from "@/lib/currentUser";
+import { getAccountById } from "@/lib/accounts";
 import { prisma } from "@/lib/prisma";
 
 
@@ -24,18 +25,12 @@ export async function POST(request: Request) {
 
         const userId = await getCurrentUserId();
         
-        // Check if the specified account exists before creating the transaction
-        const account = await prisma.account.findFirst({
-            where: {
-                id: accountId,
-                userId,
-            },
-        });
+        const account = await getAccountById(accountId, userId);
 
         // If the account does not exist, return a 404 error response
         if (!account) {
             return NextResponse.json(
-                { error: "Account not found" },
+                { error: "Account not found or access denied." },
                 { status: 404 }
             );
         }

@@ -1,9 +1,8 @@
 // Add new transaction using POST
 import { NextResponse } from "next/server";
-import { Prisma } from "@prisma/client";
 import { getCurrentUserId } from "@/lib/currentUser";
 import { getAccountById } from "@/lib/accounts";
-import { prisma } from "@/lib/prisma";
+import { createTransaction } from "@/lib/transactions";
 
 
 export async function POST(request: Request) {
@@ -36,14 +35,12 @@ export async function POST(request: Request) {
         }
         
         // Create a new transaction in the database using Prisma
-        const transaction = await prisma.transaction.create({
-            data: {
-                name,
-                amount: new Prisma.Decimal(amount),
-                type,
-                date: new Date(date),
-                accountId,
-            },
+        const transaction = await createTransaction({
+            name,
+            amount,
+            type,
+            date,
+            accountId
         });
 
         // Return the created transaction as a JSON response with a 201 status code

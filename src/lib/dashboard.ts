@@ -25,6 +25,11 @@ export async function getDashboardData(userId: string) {
                     date: "desc",
                 },
             },
+            bills: {
+                orderBy: {
+                    dueDate: "asc",
+                },
+            },
         },
     });
 
@@ -57,10 +62,17 @@ export async function getDashboardData(userId: string) {
             return sum + Math.abs(Number(transaction.amount));
         }, 0);
 
+    const upcomingBills = accounts
+        .flatMap((account) => account.bills)
+        .filter((bill) => !bill.isPaid)
+        .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime())
+        .slice(0, 5);
+
     return {
         totalBalance,
         monthlySpending,
         recentTransactions,
         accounts,
+        upcomingBills,
     };
 }

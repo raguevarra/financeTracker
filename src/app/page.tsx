@@ -22,7 +22,7 @@ export default async function Home() {
   const dashboard = {
     balance: dashboardData.totalBalance,
     monthlySpending: dashboardData.monthlySpending,
-    upcomingBills: dashboardData.upcomingBills,
+    upcomingBills: dashboardData.upcomingBills?.length ?? 0,
   };
 
   return (

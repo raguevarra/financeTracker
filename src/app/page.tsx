@@ -3,6 +3,7 @@ import {
   DashboardSummary,
   TransactionList,
   TransactionForm,
+  BillList
 } from "@/components";
 
 export default async function Home() {
@@ -28,6 +29,7 @@ export default async function Home() {
     <main>
       <DashboardSummary dashboard={dashboard} />
       <AccountList accounts={dashboardData.accounts} />
+      <BillList bills={dashboardData.upcomingBills} />
       <TransactionList transactions={dashboardData.recentTransactions} />
       <TransactionForm accounts={dashboardData.accounts} />
     </main>

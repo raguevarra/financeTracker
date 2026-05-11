@@ -1,10 +1,11 @@
+import { Prisma } from "@prisma/client"
 import Link from "next/link";
 
 export type Account = {
     id: string;
     name: string;
     type: string;
-    balance: number | string;
+    balance: Prisma.Decimal | number | string;
 };
 
 type AccountListProps = {

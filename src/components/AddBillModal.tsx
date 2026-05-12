@@ -5,7 +5,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Modal } from "./Modal";
-import { POST } from "@/app/api/transactions/route";
 
 type AddBillModalProps = {
     accountId: string;
@@ -120,7 +119,7 @@ export function AddBillModal({ accountId }: AddBillModalProps) {
                             Cancel
                         </button>
 
-                        <button type="button" disabled={isSubmitting}>
+                        <button type="submit" disabled={isSubmitting}>
                             {isSubmitting ? "Adding..." : "Add Bill"}
                         </button>
                     </div>

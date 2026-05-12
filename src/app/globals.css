@@ -136,6 +136,64 @@ textarea {
     color: #92400e;
     white-space: nowrap;
 }
+
+.bill-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.bill-card-footer .bill-amount {
+    margin-top: 0 !important;
+}
+
+.bill-delete-button {
+    border: none;
+    border-radius: 999px;
+    padding: 0.45rem 0.8rem;
+    background: #fee2e2;
+    color: #991b1b;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.bill-delete-button:hover {
+    background: #fecaca;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+}
+
+.secondary-button,
+.danger-button {
+    border: none;
+    border-radius: 0.75rem;
+    padding: 0.65rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.secondary-button {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.danger-button {
+    background: #dc2626;
+    color: white;
+}
+
+.secondary-button:disabled,
+.danger-button:disabled,
+.bill-delete-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
 /* #endregion Bills*/
 
 /* #region Modal */
@@ -172,3 +230,5 @@ textarea {
   gap: 1rem;
 }
 /* #endregion Modal*/
+
+

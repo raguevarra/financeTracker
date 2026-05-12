@@ -23,3 +23,33 @@ export async function createBillForAccount({
         },
     });
 }
+
+export async function getBillByIdForUser(billId: string, userId: string) {
+    return prisma.bill.findFirst({
+        where: {
+            id: billId,
+            account: {
+                OR: [
+                    {ownerId: userId},
+                    {
+                        household: {
+                            members: {
+                                some: {
+                                    userId,
+                                },
+                            },
+                        },
+                    },
+                ],
+            },
+        },
+    });
+}
+
+export async function deleteBillById(billId: string) {
+    return prisma.bill.delete({
+        where: {
+            id: billId,
+        },
+    });
+}

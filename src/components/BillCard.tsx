@@ -4,6 +4,7 @@ Bill card component for reuse across 'BillList.tsx' and 'AccountBillList.tsx'
 
 import { Prisma } from "@prisma/client";
 import { formatCurrency, formatDate } from "@/lib/formatters";
+import { DeleteBillButton } from "./DeleteBillButton";
 
 export type BillCardData = {
     id: string;
@@ -31,9 +32,13 @@ export function BillCard({ bill }: BillCardProps) {
                 </span>
             </div>
 
-            <p className="bill-amount">
-                {formatCurrency(bill.amount)}
-            </p>
+            <div className="bill-card-footer">
+                <p className="bill-amount">
+                    {formatCurrency(bill.amount)}
+                </p>
+
+                <DeleteBillButton billId={bill.id} billName={bill.name} />
+            </div>
         </article>
     )
 }

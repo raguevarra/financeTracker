@@ -5,4 +5,5 @@ export { AccountList, type Account } from "./AccountList";
 export { TransactionCard, type TransactionCardData } from "./TransactionCard"
 export { AccountSelector } from "./AccountSelector"
 export { AccountDropdown } from "./AccountDropdown"
+export { BillCard, type BillCardData } from "./BillCard";
 export { default as BillList } from "./BillList"

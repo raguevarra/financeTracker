@@ -3,4 +3,5 @@ export { TransactionList, type Transaction } from "./TransactionList";
 export { TransactionForm } from "./TransactionForm";
 export { AccountList, type Account } from "./AccountList";
 export { TransactionCard, type TransactionCardData } from "./TransactionCard"
+export { AccountSelector } from "./AccountSelector"
 export { default as BillList } from "./BillList"

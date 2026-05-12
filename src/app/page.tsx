@@ -3,7 +3,8 @@ import {
   DashboardSummary,
   TransactionList,
   TransactionForm,
-  BillList
+  BillList,
+  AccountSelector,
 } from "@/components";
 
 export default async function Home() {

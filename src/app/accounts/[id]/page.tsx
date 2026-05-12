@@ -4,6 +4,7 @@ import { TransactionCard } from "@/components/TransactionCard";
 import { AccountTransactionForm } from "@/components/AccountTransactionForm";
 import { AccountDropdown } from "@/components/AccountDropdown";
 import { formatCurrency } from "@/lib/formatters";
+import { AccountBillList } from "@/components";
 import Link from "next/link";
 
 type AccountPageProps = {
@@ -52,6 +53,13 @@ export default async function AccountPage({ params }: AccountPageProps) {
         <p>
           Balance: <strong>{formatCurrency(account.balance)}</strong>
         </p>
+      </section>
+
+      <section>
+        <AccountBillList
+          bills={account.bills}
+          accountName={account.name}
+        />
       </section>
 
       <AccountTransactionForm accountId={account.id} />

@@ -1,5 +1,5 @@
 /*
-Helper functions for formatting currencies.
+Helper functions for formatting different values.
 Automatically adds +/- signs based on the amount and formats the currency in CAD.
 */
 import { Prisma } from "@prisma/client";
@@ -29,4 +29,14 @@ export function formatCurrency(
     if (amount < 0) return `-${formatted}`;
 
     return formatted;
+}
+
+export function formatDate(
+    date: Date | string
+) {
+    return new Date(date).toLocaleDateString("en-CA", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    });
 }

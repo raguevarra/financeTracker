@@ -1,3 +1,4 @@
+/* #region Default*/
 :root {
   color-scheme: light;
   --background: #f6f7f9;
@@ -66,18 +67,24 @@ textarea {
   color: var(--muted);
 }
 
-/* chrome, safari, edge */
+/* #endregion Default */
+
+/* #region Chrome, Safari, Edge */
 .no-spinner::-webkit-outer-spin-button,
 .no-spinner::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-/* firefox */
+/* #endregion Chrome, Safari, Edge */
+
+/* #region Firefox */
 .no-spinner {
   appearance: textfield;
 }
+/* #endregion Firefox */
 
+/* #region Bills */
 .bill-card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -129,3 +136,39 @@ textarea {
     color: #92400e;
     white-space: nowrap;
 }
+/* #endregion Bills*/
+
+/* #region Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-card {
+  background: white;
+  width: min(100%, 32rem);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+/* #endregion Modal*/

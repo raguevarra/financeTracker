@@ -62,11 +62,18 @@ export async function getDashboardData(userId: string) {
             return sum + Math.abs(Number(transaction.amount));
         }, 0);
 
+    // Get three days from now
+    const threeDaysFromNow = new Date(now);
+    threeDaysFromNow.setDate(now.getDate() + 3);
+    threeDaysFromNow.setHours(23, 59, 59, 999);
+
+    // Get bills that are due within the next 3 days
     const upcomingBills = accounts
         .flatMap((account) => account.bills)
-        .filter((bill) => !bill.isPaid)
-        .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime())
-        .slice(0, 5);
+        .filter((bill) =>{
+            return !bill.isPaid && bill.dueDate <= threeDaysFromNow;
+        })
+        .sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime());
 
     return {
         totalBalance,

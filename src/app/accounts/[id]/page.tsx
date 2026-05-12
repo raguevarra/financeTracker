@@ -1,7 +1,8 @@
 import { getCurrentUserId } from "@/lib/currentUser";
-import { getAccountById } from "@/lib/accounts";
+import { getAccountById, getAccountsForUser } from "@/lib/accounts";
 import { TransactionCard } from "@/components/TransactionCard";
 import { AccountTransactionForm } from "@/components/AccountTransactionForm";
+import { AccountDropdown } from "@/components/AccountDropdown";
 import { formatCurrency } from "@/lib/formatters";
 import Link from "next/link";
 
@@ -17,6 +18,7 @@ export default async function AccountPage({ params }: AccountPageProps) {
   const userId = await getCurrentUserId();
 
   const account = await getAccountById(id, userId);
+  const accounts = await getAccountsForUser(userId);
 
   if (!account) {
     return (
@@ -32,6 +34,15 @@ export default async function AccountPage({ params }: AccountPageProps) {
   return (
     <main>
       <Link href="/">← Back to dashboard</Link>
+
+      <section>
+        <h2>Switch account</h2>
+
+        <AccountDropdown
+          accounts={accounts}
+          selectedAccountId={account.id}
+        />
+      </section>
 
       <section>
         <h1>{account.name}</h1>

@@ -23,6 +23,11 @@ export async function getAccountById(accountId: string, userId: string) {
                     date: "desc",
                 },
             },
+            bills: {
+                orderBy: {
+                    dueDate: "asc",
+                },
+            },
         },
     });
 

@@ -9,3 +9,4 @@ export { BillCard, type BillCardData } from "./BillCard";
 export { AccountBillList } from "./AccountBillList";
 export { default as BillList } from "./BillList"
 export { Modal } from "./Modal"
+export { AddBillModal } from "./AddBillModal"

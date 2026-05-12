@@ -5,6 +5,7 @@ import { AccountTransactionForm } from "@/components/AccountTransactionForm";
 import { AccountDropdown } from "@/components/AccountDropdown";
 import { formatCurrency } from "@/lib/formatters";
 import { AccountBillList } from "@/components";
+import { AddBillModal } from "@/components/AddBillModal";
 import Link from "next/link";
 
 type AccountPageProps = {
@@ -56,6 +57,8 @@ export default async function AccountPage({ params }: AccountPageProps) {
       </section>
 
       <section>
+        <AddBillModal accountId={account.id} />
+        
         <AccountBillList
           bills={account.bills}
           accountName={account.name}

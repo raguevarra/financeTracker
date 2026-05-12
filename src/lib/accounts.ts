@@ -28,3 +28,31 @@ export async function getAccountById(accountId: string, userId: string) {
 
     return account;
 }
+
+export async function getAccountsForUser(userId: string) {
+    const accounts = await prisma.account.findMany({
+        where: {
+            OR: [
+                { ownerId: userId },
+                {
+                    household: {
+                        members: {
+                            some: {
+                                userId,
+                            },
+                        },
+                    },
+                },
+            ],
+        },
+        orderBy: {
+            name: "asc",
+        },
+        select: {
+            id: true,
+            name: true,
+        },
+    });
+
+    return accounts;
+}

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { getCurrentUserId } from "@/lib/currentUser"
 import { deleteBillById, getBillByIdForUser, updateBillById } from "@/lib/bills";
 
@@ -62,6 +63,8 @@ export async function PATCH(
         amount: body.amount,
         dueDate: body.dueDate,
     });
+
+    revalidatePath(`/accounts/${updatedBill.accountId}`);
 
     return NextResponse.json(updatedBill);
     

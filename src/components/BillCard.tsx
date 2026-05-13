@@ -6,6 +6,7 @@ import { Prisma } from "@prisma/client";
 import { formatCurrency, formatDate } from "@/lib/formatters";
 import { DeleteBillButton } from "./DeleteBillButton";
 import { EditBillButton } from "./EditBillButton";
+import { PayBillButton } from "./PayBillButton";
 
 export type BillCardData = {
     id: string;
@@ -50,6 +51,7 @@ export function BillCard({ bill }: BillCardProps) {
                         isPaid: bill.isPaid
                     }} />
                     <DeleteBillButton billId={bill.id} billName={bill.name} />
+                    <PayBillButton billId={bill.id} isPaid={bill.isPaid} />
                 </div>
             </div>
         </article>

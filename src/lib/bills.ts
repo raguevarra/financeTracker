@@ -103,6 +103,17 @@ export async function payBillById(billId: string) {
       },
     });
 
+    await tx.account.update({
+        where: {
+            id: bill.accountId,
+        },
+        data: {
+            balance: {
+                increment: bill.amount.mul(-1),
+            },
+        },
+    });
+
     const updatedBill = await tx.bill.update({
       where: {
         id: bill.id,

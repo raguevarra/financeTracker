@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { getBillByIdForUser, payBillById } from "@/lib/bills";
 import { getCurrentUserId } from "@/lib/currentUser";
-
-const userId = await getCurrentUserId();
+import { revalidatePath } from "next/cache";
 
 export async function POST(
-    request: Request,
+    _request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
     const { id } = await params;
+    const userId = await getCurrentUserId();
 
     const bill = await getBillByIdForUser(id, userId);
 
@@ -21,6 +21,8 @@ export async function POST(
 
     try {
         const result = await payBillById(id);
+
+        revalidatePath(`/accounts/${result.bill.accountId}`);
 
         return NextResponse.json(result);
     } catch (error) {

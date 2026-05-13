@@ -75,3 +75,46 @@ export async function updateBillById(
         },
     });
 }
+
+export async function payBillById(billId: string) {
+  return prisma.$transaction(async (tx) => {
+    const bill = await tx.bill.findUnique({
+      where: {
+        id: billId,
+      },
+    });
+
+    if (!bill) {
+      throw new Error("BILL_NOT_FOUND");
+    }
+
+    if (bill.isPaid) {
+      throw new Error("BILL_ALREADY_PAID");
+    }
+
+    const transaction = await tx.transaction.create({
+      data: {
+        name: `Paid: ${bill.name}`,
+        amount: bill.amount.mul(-1),
+        type: "DEBIT",
+        date: new Date(),
+        accountId: bill.accountId,
+        billId: bill.id,
+      },
+    });
+
+    const updatedBill = await tx.bill.update({
+      where: {
+        id: bill.id,
+      },
+      data: {
+        isPaid: true,
+      },
+    });
+
+    return {
+      bill: updatedBill,
+      transaction,
+    };
+  });
+}

@@ -10,8 +10,15 @@ type EditBillButtonProps = {
 };
 
 function toDateInputValue(date: Date | string) {
-  const parsedDate = new Date(date);
-  return parsedDate.toISOString().split("T")[0];
+    if (typeof date === "string" && date.includes("T")) {
+        return date.split("T")[0];
+    }
+
+    if (typeof date === "string") {
+        return date;
+    }
+
+    return date.toISOString().split("T")[0];
 }
 
 export function EditBillButton({ bill }: EditBillButtonProps) {
@@ -64,13 +71,14 @@ export function EditBillButton({ bill }: EditBillButtonProps) {
       return;
     }
 
+    setName(data.name);
+    setAmount(String(data.amount));
+    setDueDate(toDateInputValue(data.dueDate));
+
     setIsSaving(false);
     setIsModalOpen(false);
     router.refresh();
 
-    setName(data.name);
-    setAmount(String(data.amount));
-    setDueDate(toDateInputValue(data.dueDate));
   }
 
   return (

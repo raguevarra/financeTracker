@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUserId } from "@/lib/currentUser"
-import { deleteBillById, getBillByIdForUser } from "@/lib/bills";
+import { deleteBillById, getBillByIdForUser, updateBillById } from "@/lib/bills";
 
 type RouteParams = {
     params: Promise<{
@@ -37,4 +37,32 @@ export async function DELETE(_request: Request, { params }: RouteParams) {
             { status: 500 }
         );
     }
+}
+
+export async function PATCH(
+    request: Request,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    const { id } = await params;
+    const body = await request.json();
+
+    const userId = await getCurrentUserId();
+
+    const bill = await getBillByIdForUser(id, userId);
+
+    if (!bill) {
+        return NextResponse.json(
+            { error: "Bill not found." },
+            { status: 404 }
+        );
+    }
+
+    const updatedBill = await updateBillById(id, {
+        name: body.name,
+        amount: body.amount,
+        dueDate: body.dueDate,
+    });
+
+    return NextResponse.json(updatedBill);
+    
 }

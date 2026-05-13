@@ -8,6 +8,12 @@ type CreateBillInput = {
     accountId: string;
 }
 
+type UpdateBillInput = {
+    name: string;
+    amount: string;
+    dueDate: string;
+}
+
 export async function createBillForAccount({
     name,
     amount,
@@ -50,6 +56,22 @@ export async function deleteBillById(billId: string) {
     return prisma.bill.delete({
         where: {
             id: billId,
+        },
+    });
+}
+
+export async function updateBillById(
+    billId: string,
+    { name, amount, dueDate }: UpdateBillInput
+) {
+    return prisma.bill.update({
+        where: {
+            id: billId,
+        },
+        data: {
+            name,
+            amount: new Prisma.Decimal(amount),
+            dueDate: new Date(dueDate),
         },
     });
 }

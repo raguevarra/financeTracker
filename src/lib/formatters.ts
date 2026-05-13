@@ -35,6 +35,7 @@ export function formatDate(
     date: Date | string
 ) {
     return new Date(date).toLocaleDateString("en-CA", {
+        timeZone: "UTC",
         month: "short",
         day: "numeric",
         year: "numeric",

@@ -28,15 +28,15 @@ model HouseholdMember {
 }
 
 model Bill {
-  id String @id @default(cuid())
-  name String
-  amount Decimal
-  dueDate DateTime
-  isPaid Boolean @default(false)
+  id        String   @id @default(cuid())
+  name      String
+  amount    Decimal
+  dueDate   DateTime
+  isPaid    Boolean  @default(false)
   createdAt DateTime @default(now())
 
-  accountId String
-  account Account @relation(fields: [accountId], references: [id])
+  accountId    String
+  account      Account       @relation(fields: [accountId], references: [id])
   transactions Transaction[]
 }
 
@@ -63,19 +63,19 @@ model Account {
   household Household? @relation(fields: [householdId], references: [id])
 
   transactions Transaction[]
-  bills Bill[]
+  bills        Bill[]
 }
 
 model Transaction {
-  id        String   @id @default(cuid())
-  name      String
-  amount    Decimal
-  type      String
-  date      DateTime
-  
-  accountId String
-  account   Account  @relation(fields: [accountId], references: [id])
+  id     String   @id @default(cuid())
+  name   String
+  amount Decimal
+  type   String
+  date   DateTime
 
-  billId Int?
-  bill Bill? @relation(fields: [billId], references: [id])
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id])
+
+  billId String?
+  bill   Bill?   @relation(fields: [billId], references: [id])
 }

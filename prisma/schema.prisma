@@ -37,6 +37,7 @@ model Bill {
 
   accountId String
   account Account @relation(fields: [accountId], references: [id])
+  transactions Transaction[]
 }
 
 model User {
@@ -71,6 +72,10 @@ model Transaction {
   amount    Decimal
   type      String
   date      DateTime
+  
   accountId String
   account   Account  @relation(fields: [accountId], references: [id])
+
+  billId Int?
+  bill Bill? @relation(fields: [billId], references: [id])
 }

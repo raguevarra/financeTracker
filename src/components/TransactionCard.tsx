@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { formatCurrency } from "@/lib/formatters";
+import { formatCurrency, formatDate } from "@/lib/formatters";
 
 export type TransactionCardData = {
   id: string;
@@ -45,7 +45,7 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
             color: "#666",
           }}
         >
-          {new Date(transaction.date).toLocaleDateString()}
+          {formatDate(transaction.date)}
         </p>
       </div>
 

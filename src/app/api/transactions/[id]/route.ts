@@ -5,6 +5,7 @@ import { getAccountById } from "@/lib/accounts";
 import {
   getTransactionByIdForUser,
   updateTransactionById,
+  deleteTransactionById
 } from "@/lib/transactions";
 
 export async function PATCH(
@@ -65,6 +66,39 @@ export async function PATCH(
     return NextResponse.json(
       { error: "Failed to update transaction." },
       { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string}> }
+) {
+  try {
+    const { id } = await params;
+
+    const userId = await getCurrentUserId();
+
+    const transaction = await getTransactionByIdForUser(id, userId);
+
+    if (!transaction) {
+      return NextResponse.json(
+        { error: "Transaction not found or access denied." },
+        { status: 404 }
+      );
+    }
+
+    const deletedTransaction = await deleteTransactionById(id);
+
+    revalidatePath(`/accounts/${deletedTransaction.accountId}`);
+
+    return NextResponse.json(deletedTransaction);
+  } catch (error) {
+    console.error("Error deleting transaction:", error);
+
+    return NextResponse.json(
+      { error: "Failed to delete transaction." },
+      { status: 500}
     );
   }
 }

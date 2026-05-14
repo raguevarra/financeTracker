@@ -1,4 +1,12 @@
 import { prisma } from "./prisma";
+import { Prisma } from "@prisma/client";
+
+type CreateAccountInput = {
+    name: string;
+    type: string;
+    balance: string;
+    ownerId: string;
+};
 
 export async function getAccountById(accountId: string, userId: string) {
     const account = await prisma.account.findFirst({
@@ -60,4 +68,20 @@ export async function getAccountsForUser(userId: string) {
     });
 
     return accounts;
+}
+
+export async function createAccountForUser({
+    name,
+    type,
+    balance,
+    ownerId,
+}: CreateAccountInput) {
+    return prisma.account.create({
+        data: {
+            name,
+            type,
+            balance: new Prisma.Decimal(balance),
+            ownerId,
+        },
+    });
 }

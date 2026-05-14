@@ -9,6 +9,14 @@ type CreateTransactionInput = {
     accountId: string;
 }
 
+type UpdateTransactionInput = {
+    name: string;
+    amount: string;
+    type: string;
+    date: string;
+    accountId: string;
+}
+
 export async function createTransactionForAccount({
     name,
     amount,
@@ -39,5 +47,102 @@ export async function createTransactionForAccount({
         });
 
         return transaction;
+    });
+}
+
+export async function getTransactionByIdForUser(
+    transactionId: string,
+    userId: string
+) {
+    return prisma.transaction.findFirst({
+        where: {
+            id: transactionId,
+            account: {
+                OR: [
+                    { ownerId: userId },
+                    { 
+                        household: {
+                            members: {
+                                some: {
+                                    userId
+                                },
+                            },
+                        },
+                    },
+                ],
+            },
+        },
+    });
+}
+
+export async function updateTransactionById(
+    transactionId: string,
+    { name, amount, type, date, accountId }: UpdateTransactionInput
+) {
+    const newAmount = new Prisma.Decimal(amount);
+
+    return prisma.$transaction(async (tx) => {
+        const existingTransaction = await tx.transaction.findUnique({
+            where: {
+                id: transactionId,
+            },
+        });
+
+        if (!existingTransaction) {
+            throw new Error("TRANSACTION_NOT_FOUND");
+        }
+
+        const oldAmount = existingTransaction.amount;
+        const oldAccountId = existingTransaction.accountId;
+
+        const updatedTransaction = await tx.transaction.update({
+            where: {
+                id: transactionId,
+            },
+            data : {
+                name,
+                amount: newAmount,
+                type,
+                date: new Date(date),
+                accountId,
+            },
+        });
+
+        if (oldAccountId === accountId) {
+            await tx.account.update({
+                where: {
+                    id: accountId,
+                },
+                data: {
+                    balance: {
+                        increment: newAmount.minus(oldAmount),
+                    },
+                },
+            });
+        } else {
+            await tx.account.update({
+                where: {
+                    id: oldAccountId,
+                },
+                data: {
+                    balance: {
+                        decrement: oldAmount,
+                    },
+                },
+            });
+
+            await tx.account.update({
+                where: {
+                    id: accountId,
+                },
+                data: {
+                    balance: {
+                        increment: newAmount
+                    },
+                },
+            });
+        }
+
+        return updatedTransaction;
     });
 }

@@ -146,3 +146,36 @@ export async function updateTransactionById(
         return updatedTransaction;
     });
 }
+
+export async function deleteTransactionById(transactionId: string) {
+    return prisma.$transaction(async (tx) => {
+        const existingTransaction = await tx.transaction.findUnique({
+            where: {
+                id: transactionId,
+            },
+        });
+
+        if (!existingTransaction) {
+            throw new Error("TRANSACTION_NOT_FOUND");
+        }
+
+        await tx.transaction.delete({
+            where: {
+                id:transactionId,
+            },
+        });
+
+        await tx.account.update({
+            where: {
+                id: existingTransaction.accountId,
+            },
+            data: {
+                balance: {
+                    decrement: existingTransaction.amount,
+                },
+            },
+        });
+
+        return existingTransaction;
+    });
+}

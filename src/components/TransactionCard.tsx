@@ -1,11 +1,14 @@
 import { Prisma } from "@prisma/client";
 import { formatCurrency, formatDate } from "@/lib/formatters";
+import { EditTransactionButton } from "./EditTransactionButton";
 
 export type TransactionCardData = {
   id: string;
   name: string;
   amount: Prisma.Decimal | number | string;
+  type: string;
   date: Date | string;
+  accountId: string;
 };
 
 type TransactionCardProps = {
@@ -17,46 +20,19 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
   const isExpense = amount < 0;
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "12px 16px",
-        border: "1px solid #ddd",
-        borderRadius: "8px",
-        marginBottom: "8px",
-      }}
-    >
-      <div>
-        <p
-          style={{
-            margin: 0,
-            fontWeight: "bold",
-          }}
-        >
-          {transaction.name}
-        </p>
-
-        <p
-          style={{
-            margin: 0,
-            fontSize: "0.9rem",
-            color: "#666",
-          }}
-        >
-          {formatDate(transaction.date)}
-        </p>
+    <div className="transaction-card">
+      <div className="transaction-card-info">
+        <p className="transaction-card-name">{transaction.name}</p>
+        <p className="transaction-card-date">{formatDate(transaction.date)}</p>
       </div>
 
-      <p
-        style={{
-          margin: 0,
-          fontWeight: "bold",
-        }}
-      >
-        {formatCurrency(transaction.amount, { showSign: true })}
-      </p>
+      <div className="transaction-card-actions">
+        <p className="transaction-card-amount">
+          {formatCurrency(transaction.amount, { showSign: true })}
+        </p>
+
+        <EditTransactionButton transaction={transaction} />
+      </div>
     </div>
   );
 }

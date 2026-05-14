@@ -1,0 +1,180 @@
+// src/components/EditTransactionButton.tsx
+
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Modal } from "./Modal";
+import type { TransactionCardData } from "./TransactionCard";
+
+type EditTransactionButtonProps = {
+  transaction: TransactionCardData;
+};
+
+function toDateInputValue(date: Date | string) {
+  if (typeof date === "string" && date.includes("T")) {
+    return date.split("T")[0];
+  }
+
+  if (typeof date === "string") {
+    return date;
+  }
+
+  return date.toISOString().split("T")[0];
+}
+
+export function EditTransactionButton({
+  transaction,
+}: EditTransactionButtonProps) {
+  const router = useRouter();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [name, setName] = useState(transaction.name);
+  const [amount, setAmount] = useState(String(transaction.amount));
+  const [type, setType] = useState(transaction.type);
+  const [date, setDate] = useState(toDateInputValue(transaction.date));
+
+  const [error, setError] = useState("");
+  const [isSaving, setIsSaving] = useState(false);
+
+  function resetForm() {
+    setName(transaction.name);
+    setAmount(String(transaction.amount));
+    setType(transaction.type);
+    setDate(toDateInputValue(transaction.date));
+    setError("");
+  }
+
+  function closeModal() {
+    resetForm();
+    setIsModalOpen(false);
+  }
+
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    setError("");
+    setIsSaving(true);
+
+    const response = await fetch(`/api/transactions/${transaction.id}`, {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        amount,
+        type,
+        date,
+        accountId: transaction.accountId,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setError(data.error || "Failed to update transaction.");
+      setIsSaving(false);
+      return;
+    }
+
+    setName(data.name);
+    setAmount(String(data.amount));
+    setType(data.type);
+    setDate(toDateInputValue(data.date));
+
+    setIsSaving(false);
+    setIsModalOpen(false);
+    router.refresh();
+  }
+
+  return (
+    <>
+      <button type="button" onClick={() => setIsModalOpen(true)}>
+        Edit
+      </button>
+
+      <Modal
+        isOpen={isModalOpen}
+        title="Edit Transaction"
+        onClose={closeModal}
+      >
+        <form onSubmit={handleSubmit}>
+          {error && <p>{error}</p>}
+
+          <div>
+            <label htmlFor={`edit-transaction-name-${transaction.id}`}>
+              Name
+            </label>
+            <input
+              id={`edit-transaction-name-${transaction.id}`}
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor={`edit-transaction-amount-${transaction.id}`}>
+              Amount
+            </label>
+            <input
+              id={`edit-transaction-amount-${transaction.id}`}
+              type="number"
+              step="0.01"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor={`edit-transaction-type-${transaction.id}`}>
+              Type
+            </label>
+            <select
+              id={`edit-transaction-type-${transaction.id}`}
+              value={type}
+              onChange={(e) => setType(e.target.value)}
+              required
+            >
+              <option value="DEBIT">Debit</option>
+              <option value="CREDIT">Credit</option>
+              <option value="TRANSFER">Transfer</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor={`edit-transaction-date-${transaction.id}`}>
+              Date
+            </label>
+            <input
+              id={`edit-transaction-date-${transaction.id}`}
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="modal-actions">
+            <button
+              type="button"
+              onClick={closeModal}
+              disabled={isSaving}
+              className="secondary-button"
+            >
+              Cancel
+            </button>
+
+            <button type="submit" disabled={isSaving}>
+              {isSaving ? "Saving..." : "Save changes"}
+            </button>
+          </div>
+        </form>
+      </Modal>
+    </>
+  );
+}

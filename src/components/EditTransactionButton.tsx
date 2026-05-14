@@ -31,7 +31,11 @@ export function EditTransactionButton({
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [name, setName] = useState(transaction.name);
-  const [amount, setAmount] = useState(String(transaction.amount));
+  const [amount, setAmount] = useState(
+    transaction.type === "TRANSFER"
+    ? String(transaction.amount)
+    : String(Math.abs(Number(transaction.amount)))
+  );
   const [type, setType] = useState(transaction.type);
   const [date, setDate] = useState(toDateInputValue(transaction.date));
 
@@ -40,7 +44,11 @@ export function EditTransactionButton({
 
   function resetForm() {
     setName(transaction.name);
-    setAmount(String(transaction.amount));
+    setAmount(
+      transaction.type === "TRANSFER"
+      ? String(transaction.amount)
+      : String(Math.abs(Number(transaction.amount)))
+    );
     setType(transaction.type);
     setDate(toDateInputValue(transaction.date));
     setError("");

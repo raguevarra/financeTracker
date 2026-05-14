@@ -17,6 +17,20 @@ type UpdateTransactionInput = {
     accountId: string;
 }
 
+function normalizeTransactionAmount(amount: string, type: string) {
+    const decimalAmount = new Prisma.Decimal(amount);
+
+    if (type === "DEBIT") {
+        return decimalAmount.abs().negated();
+    }
+
+    if (type === "CREDIT") {
+        return decimalAmount.abs();
+    }
+
+    return decimalAmount;
+}
+
 export async function createTransactionForAccount({
     name,
     amount,
@@ -24,7 +38,7 @@ export async function createTransactionForAccount({
     date,
     accountId,
 }: CreateTransactionInput) {
-    const decimalAmount = new Prisma.Decimal(amount);
+    const decimalAmount = normalizeTransactionAmount(amount, type);
 
     return prisma.$transaction(async (tx) => {
         const transaction = await tx.transaction.create({
@@ -79,7 +93,7 @@ export async function updateTransactionById(
     transactionId: string,
     { name, amount, type, date, accountId }: UpdateTransactionInput
 ) {
-    const newAmount = new Prisma.Decimal(amount);
+    const newAmount = normalizeTransactionAmount(amount, type);
 
     return prisma.$transaction(async (tx) => {
         const existingTransaction = await tx.transaction.findUnique({

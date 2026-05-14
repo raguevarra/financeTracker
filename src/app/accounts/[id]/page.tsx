@@ -33,6 +33,12 @@ export default async function AccountPage({ params }: AccountPageProps) {
     );
   }
 
+  const transactions = account?.transactions.map((transaction) => ({
+    ...transaction,
+    amount: transaction.amount.toString(),
+  }));
+
+
   return (
     <main>
       <Link href="/">← Back to dashboard</Link>
@@ -70,11 +76,11 @@ export default async function AccountPage({ params }: AccountPageProps) {
       <section>
         <h2>Transactions</h2>
 
-        {account.transactions.length === 0 ? (
+        {transactions?.length === 0 ? (
           <p>No transactions found for this account.</p>
         ) : (
           <div>
-            {account.transactions.map((transaction) => (
+            {transactions?.map((transaction) => (
               <TransactionCard
                 key={transaction.id}
                 transaction={transaction}

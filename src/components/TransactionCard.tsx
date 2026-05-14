@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { formatCurrency, formatDate } from "@/lib/formatters";
 import { EditTransactionButton } from "./EditTransactionButton";
+import { DeleteTransactionButton } from "./DeleteTransactionButton";
 
 export type TransactionCardData = {
   id: string;
@@ -32,6 +33,10 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
         </p>
 
         <EditTransactionButton transaction={transaction} />
+        <DeleteTransactionButton
+          transactionId={transaction.id}
+          transactionName={transaction.name}
+        />
       </div>
     </div>
   );

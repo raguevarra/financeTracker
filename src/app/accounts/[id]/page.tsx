@@ -20,7 +20,7 @@ export default async function AccountPage({ params }: AccountPageProps) {
   const userId = await getCurrentUserId();
 
   const account = await getAccountById(id, userId);
-  const accounts = await getAccountsForUser(userId);
+  const accounts = await getAccountsForUser(userId, { archived: false });
 
   if (!account) {
     return (
@@ -38,6 +38,11 @@ export default async function AccountPage({ params }: AccountPageProps) {
     amount: transaction.amount.toString(),
   }));
 
+  const accountOptions = accounts.map((account) => ({
+    id: account.id,
+    name: account.name,
+  }));
+
 
   return (
     <main>
@@ -47,7 +52,7 @@ export default async function AccountPage({ params }: AccountPageProps) {
         <h2>Switch account</h2>
 
         <AccountDropdown
-          accounts={accounts}
+          accounts={accountOptions}
           selectedAccountId={account.id}
         />
       </section>

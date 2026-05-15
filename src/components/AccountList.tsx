@@ -12,16 +12,17 @@ export type Account = {
 
 type AccountListProps = {
     accounts: Account[];
+    title?: string;
 };
 
-export function AccountList({ accounts }: AccountListProps) {
+export function AccountList({ accounts, title = "Accounts" }: AccountListProps) {
     if (accounts.length === 0) {
         return <p>No accounts found.</p>;
     }
 
     return (
         <section>
-            <h2>Accounts</h2>
+            <h2>{title}</h2>
 
             <div>
                 {accounts.map((account) => (

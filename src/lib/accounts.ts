@@ -46,32 +46,35 @@ export async function getAccountsForUser(
     userId: string,
     options?: { archived?: boolean }
     ) {
-    const accounts = await prisma.account.findMany({
-        where: {
-            OR: [
-                { ownerId: userId },
-                {
-                    household: {
-                        members: {
-                            some: {
-                                userId,
+        const archived = options?.archived ?? false;
+        
+        const accounts = await prisma.account.findMany({
+            where: {
+                isArchived: archived,
+                OR: [
+                    { ownerId: userId },
+                    {
+                        household: {
+                            members: {
+                                some: {
+                                    userId,
+                                },
                             },
                         },
                     },
-                },
-            ],
-        },
-        orderBy: {
-            name: "asc",
-        },
-        select: {
-            id: true,
-            name: true,
-            type: true,
-            balance: true,
-            isArchived: true,
-        },
-    });
+                ],
+            },
+            orderBy: {
+                name: "asc",
+            },
+            select: {
+                id: true,
+                name: true,
+                type: true,
+                balance: true,
+                isArchived: true,
+            },
+        });
 
     return accounts;
 }

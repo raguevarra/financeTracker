@@ -7,6 +7,8 @@ import {
   AccountForm
 } from "@/components";
 
+import Link from "next/link";
+
 export default async function Home() {
   // Fetch dashboard data from API
   const resDashboard = await fetch("http://localhost:3000/api/dashboard", {
@@ -30,6 +32,11 @@ export default async function Home() {
     <main>
       <DashboardSummary dashboard={dashboard} />
       <AccountList accounts={dashboardData.accounts} />
+      <p>
+        <Link href="/accounts/archived">
+          View archived accounts
+        </Link>
+      </p>
       <AccountForm />
       <BillList bills={dashboardData.upcomingBills} />
       <TransactionList transactions={dashboardData.recentTransactions} />

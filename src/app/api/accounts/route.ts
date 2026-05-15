@@ -2,14 +2,17 @@ import { NextResponse } from "next/server";
 import { getCurrentUserId } from "@/lib/currentUser";
 import { createAccountForUser, getAccountsForUser } from "@/lib/accounts";
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
+        const { searchParams } = new URL(request.url);
+        const archived = searchParams.get("archived") === "true";
+
         const userId = await getCurrentUserId();
-        const accounts = await getAccountsForUser(userId);
+        const accounts = await getAccountsForUser(userId, { archived });
 
         return NextResponse.json(accounts);
     } catch (error) {
-        console.error("Error fetching accounts:", error)
+        console.error("Error fetching accounts:", error);
 
         return NextResponse.json(
             { error: "Failed to fetch accounts." },
@@ -17,7 +20,6 @@ export async function GET() {
         );
     }
 }
-
 export async function POST(request: Request) {
     try {
         const body = await request.json();

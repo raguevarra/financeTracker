@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 export async function getDashboardData(userId: string) {
     const accounts = await prisma.account.findMany({
         where: {
+            isArchived: false,
             OR: [
                 { ownerId: userId },
                 {

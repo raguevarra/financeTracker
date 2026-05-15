@@ -42,7 +42,10 @@ export async function getAccountById(accountId: string, userId: string) {
     return account;
 }
 
-export async function getAccountsForUser(userId: string) {
+export async function getAccountsForUser(
+    userId: string,
+    options?: { archived?: boolean }
+    ) {
     const accounts = await prisma.account.findMany({
         where: {
             OR: [
@@ -66,6 +69,7 @@ export async function getAccountsForUser(userId: string) {
             name: true,
             type: true,
             balance: true,
+            isArchived: true,
         },
     });
 
@@ -84,6 +88,47 @@ export async function createAccountForUser({
             type,
             balance: new Prisma.Decimal(balance),
             ownerId,
+        },
+    });
+}
+
+export async function archiveAccountForUser({
+    accountId,
+    userId,
+    isArchived,
+} : {
+    accountId: string;
+    userId: string;
+    isArchived: boolean;
+}) {
+    const account = await prisma.account.findFirst({
+        where: {
+            id: accountId,
+            OR: [
+                { ownerId: userId},
+                {
+                    household: {
+                        members: {
+                            some: {
+                                userId,
+                            },
+                        },
+                    },
+                },
+            ],
+        },
+    });
+
+    if (!account) {
+        return null;
+    }
+
+    return prisma.account.update({
+        where: {
+            id: accountId,
+        },
+        data: {
+            isArchived,
         },
     });
 }

@@ -1,11 +1,13 @@
-import { Prisma } from "@prisma/client"
+import { Prisma } from "@prisma/client";
 import Link from "next/link";
+import { AccountArchiveButton } from "./AccountArchiveButton";
 
 export type Account = {
     id: string;
     name: string;
     type: string;
     balance: Prisma.Decimal | number | string;
+    isArchived: boolean;
 };
 
 type AccountListProps = {
@@ -13,7 +15,6 @@ type AccountListProps = {
 };
 
 export function AccountList({ accounts }: AccountListProps) {
-    // If no accounts have been added
     if (accounts.length === 0) {
         return <p>No accounts found.</p>;
     }
@@ -24,17 +25,14 @@ export function AccountList({ accounts }: AccountListProps) {
 
             <div>
                 {accounts.map((account) => (
-                    <Link
+                    <div
                         key={account.id}
-                        href={`/accounts/${account.id}`}
                         style={{
                             display: "block",
                             padding: "12px 16px",
                             border: "1px solid #ddd",
                             borderRadius: "8px",
                             marginBottom: "8px",
-                            textDecoration: "none",
-                            color: "inherit",
                         }}
                     >
                         <div
@@ -42,24 +40,39 @@ export function AccountList({ accounts }: AccountListProps) {
                                 display: "flex",
                                 justifyContent: "space-between",
                                 alignItems: "center",
+                                gap: "12px",
                             }}
                         >
-                            <div>
-                                <p style={{ margin: 0, fontWeight: "bold" }}>
-                                    {account.name}
-                                </p>
-                                <p style={{ margin: 0, fontSize: "0.9rem", color: "#666" }}>
-                                    {account.type}
-                                </p>
-                            </div>
+                            <Link
+                                href={`/accounts/${account.id}`}
+                                style={{
+                                    textDecoration: "none",
+                                    color: "inherit",
+                                    flex: 1,
+                                }}
+                            >
+                                <div>
+                                    <p style={{ margin: 0, fontWeight: "bold" }}>
+                                        {account.name}
+                                    </p>
+                                    <p style={{ margin: 0, fontSize: "0.9rem", color: "#666" }}>
+                                        {account.type}
+                                    </p>
+                                </div>
+                            </Link>
 
                             <p style={{ margin: 0, fontWeight: "bold" }}>
                                 ${Number(account.balance).toFixed(2)}
                             </p>
+
+                            <AccountArchiveButton
+                                accountId={account.id}
+                                isArchived={account.isArchived}
+                            />
                         </div>
-                    </Link>
+                    </div>
                 ))}
             </div>
         </section>
-    )
+    );
 }

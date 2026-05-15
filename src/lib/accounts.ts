@@ -64,6 +64,8 @@ export async function getAccountsForUser(userId: string) {
         select: {
             id: true,
             name: true,
+            type: true,
+            balance: true,
         },
     });
 

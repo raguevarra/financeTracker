@@ -56,7 +56,8 @@ export async function getDashboardData(userId: string) {
         .filter((transaction) => {
             return (
                 transaction.date >= startOfMonth &&
-                Number(transaction.amount) < 0
+                Number(transaction.amount) < 0 &&
+                transaction.type != "TRANSFER"
             );
         })
         .reduce((sum, transaction) => {

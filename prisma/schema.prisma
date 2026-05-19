@@ -80,4 +80,6 @@ model Transaction {
 
   billId String?
   bill   Bill?   @relation(fields: [billId], references: [id])
+
+  transferGroupId String?
 }

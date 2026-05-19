@@ -17,6 +17,14 @@ type UpdateTransactionInput = {
     accountId: string;
 }
 
+type CreateTransferInput = {
+    fromAccountId: string;
+    toAccountId: string;
+    amount: string;
+    date: string;
+    name?: string;
+};
+
 function normalizeTransactionAmount(amount: string, type: string) {
     const decimalAmount = new Prisma.Decimal(amount);
 
@@ -191,5 +199,80 @@ export async function deleteTransactionById(transactionId: string) {
         });
 
         return existingTransaction;
+    });
+}
+
+export async function createTransferBetweenAccounts({
+    fromAccountId,
+    toAccountId,
+    amount,
+    date,
+    name,
+}: CreateTransferInput) {
+    const decimalAmount = new Prisma.Decimal(amount).abs();
+    const transferGroupId = crypto.randomUUID();
+
+    if (fromAccountId === toAccountId) {
+        throw new Error("SAME_ACCOUNT_TRANSFER");
+    }
+
+    return prisma.$transaction(async (tx) => {
+        const fromAccount = await tx.account.findUnique({
+            where: { id: fromAccountId },
+        });
+
+        const toAccount = await tx.account.findUnique({
+            where: { id: toAccountId },
+        });
+
+        if (!fromAccount || !toAccount ) {
+            throw new Error("ACCOUNT_NOT_FOUND");
+        }
+
+        const outgoingTransaction = await tx.transaction.create({
+            data: {
+                name: name || `Transfer to ${toAccount.name}`,
+                amount: decimalAmount.negated(),
+                type: "TRANSFER",
+                date: new Date(date),
+                accountId: fromAccountId,
+                transferGroupId,
+            },
+        });
+
+        const incomingTransaction = await tx.transaction.create({
+            data: {
+                name: name || `Transfer from ${fromAccount.name}`,
+                amount: decimalAmount,
+                type: "TRANSFER",
+                date: new Date(date),
+                accountId: toAccountId,
+                transferGroupId,
+            },
+        });
+
+        await tx.account.update({
+            where: { id: fromAccountId},
+            data: {
+                balance: {
+                    decrement: decimalAmount,
+                },
+            },
+        });
+
+        await tx.account.update({
+            where: { id: toAccountId },
+            data: {
+                balance: {
+                    increment: decimalAmount,
+                },
+            },
+        });
+
+        return {
+            transferGroupId,
+            outgoingTransaction,
+            incomingTransaction,
+        }
     });
 }

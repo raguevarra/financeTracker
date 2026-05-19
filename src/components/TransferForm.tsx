@@ -10,14 +10,16 @@ type AccountOption = {
 
 type TransferFormProps = {
     accounts: AccountOption[];
+    currentAccountId: string;
 };
 
-export function TransferForm({ accounts }: TransferFormProps) {
+export function TransferForm({ accounts, currentAccountId }: TransferFormProps) {
     const router = useRouter();
 
     const [form, setForm] = useState({
-        fromAccountId: accounts[0]?.id ?? "",
-        toAccountId: accounts[1]?.id ?? accounts[0]?.id ?? "",
+        fromAccountId: currentAccountId,
+        toAccountId: 
+            accounts.find((account) => account.id !== currentAccountId)?.id ?? "",
         amount: "",
         date: "",
         name: "",

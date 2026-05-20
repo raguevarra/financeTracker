@@ -41,3 +41,15 @@ export function formatDate(
         year: "numeric",
     });
 }
+
+export function toDateInputValue( date: Date | string ) {
+    if (typeof date === "string" && date.includes("T")) {
+        return date.split("T")[0];
+    }
+
+    if (typeof date === "string") {
+        return date;
+    }
+
+    return date.toISOString().split("T")[0];
+}

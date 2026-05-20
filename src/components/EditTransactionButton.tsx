@@ -8,6 +8,7 @@ import { Modal } from "./Modal";
 import type { TransactionCardData } from "./TransactionCard";
 import { toDateInputValue } from "@/lib/formatters";
 import { FormError } from "./FormError";
+import { ModalActions } from "./ModalActions";
 
 type EditTransactionButtonProps = {
   transaction: TransactionCardData;
@@ -157,20 +158,10 @@ export function EditTransactionButton({
             />
           </div>
 
-          <div className="modal-actions">
-            <button
-              type="button"
-              onClick={closeModal}
-              disabled={isSaving}
-              className="secondary-button"
-            >
-              Cancel
-            </button>
-
-            <button type="submit" disabled={isSaving}>
-              {isSaving ? "Saving..." : "Save changes"}
-            </button>
-          </div>
+          <ModalActions
+            onCancel={closeModal}
+            isSaving={isSaving}
+          />
         </form>
       </Modal>
     </>

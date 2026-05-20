@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Modal } from "./Modal";
 import type { BillCardData } from "./BillCard";
 import { FormError } from "./FormError";
+import { ModalActions } from "./ModalActions";
 
 type EditBillButtonProps = {
   bill: BillCardData;
@@ -133,20 +134,11 @@ export function EditBillButton({ bill }: EditBillButtonProps) {
             />
           </div>
 
-          <div className="modal-actions">
-            <button
-              type="button"
-              onClick={closeModal}
-              disabled={isSaving}
-              className="secondary-button"
-            >
-              Cancel
-            </button>
-
-            <button type="submit" disabled={isSaving}>
-              {isSaving ? "Saving..." : "Save changes"}
-            </button>
-          </div>
+          <ModalActions
+            onCancel={closeModal}
+            isSaving={isSaving}
+          />
+          
         </form>
       </Modal>
     </>

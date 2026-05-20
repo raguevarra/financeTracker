@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Modal } from "./Modal";
 import { FormError } from "./FormError";
+import { ModalActions } from "./ModalActions";
 
 type AddBillModalProps = {
     accountId: string;
@@ -116,13 +117,12 @@ export function AddBillModal({ accountId }: AddBillModalProps) {
                     </div>
 
                     <div>
-                        <button type="button" onClick={closeModal}>
-                            Cancel
-                        </button>
-
-                        <button type="submit" disabled={isSubmitting}>
-                            {isSubmitting ? "Adding..." : "Add Bill"}
-                        </button>
+                        <ModalActions
+                            onCancel={closeModal}
+                            isSaving={isSubmitting}
+                            submitLabel="Add Bill"
+                            savingLabel="Submitting..."
+                        />
                     </div>
                 </form>
             </Modal>

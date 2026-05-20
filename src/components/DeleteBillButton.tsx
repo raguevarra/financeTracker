@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Modal } from "./Modal";
+import { ConfirmActionModal } from "./ConfirmActionModal";
 
 type DeleteBillButtonProps = {
     billId: string;
@@ -14,6 +15,7 @@ export function DeleteBillButton({ billId, billName }: DeleteBillButtonProps) {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
+    const [error, setError] = useState("");
 
     async function handleDelete() {
         setIsDeleting(true);
@@ -35,7 +37,9 @@ export function DeleteBillButton({ billId, billName }: DeleteBillButtonProps) {
 
     return (
         <>
-            <button
+           {error && <p className="form-error">{error}</p>}
+
+           <button
                 type="button"
                 onClick={() => setIsModalOpen(true)}
                 className="bill-delete-button"
@@ -43,36 +47,21 @@ export function DeleteBillButton({ billId, billName }: DeleteBillButtonProps) {
                 Delete
             </button>
 
-            <Modal
+            <ConfirmActionModal
                 isOpen={isModalOpen}
                 title="Delete bill?"
-                onClose={() => setIsModalOpen(false)}
-            >
-                <p className="muted">
-                    Are you sure you want to delete{" "}
-                    <strong>{billName ?? "this bill"}</strong>? This can’t be undone.
-                </p>
-
-                <div className="modal-actions">
-                    <button
-                        type="button"
-                        onClick={() => setIsModalOpen(false)}
-                        disabled={isDeleting}
-                        className="secondary-button"
-                    >
-                        Cancel
-                    </button>
-
-                    <button
-                        type="button"
-                        onClick={handleDelete}
-                        disabled={isDeleting}
-                        className="danger-button"
-                    >
-                        {isDeleting ? "Deleting..." : "Delete bill"}
-                    </button>
-                </div>
-            </Modal>
+                message={
+                    <>
+                        Are you sure you want to delete?{" "}
+                        <strong>{billName ?? "this bill"}</strong>? This can't be undone.
+                    </>
+                }
+                confirmLabel="Delete bill"
+                pendingLabel="Deleting..."
+                isPending={isDeleting}
+                onConfirm={handleDelete}
+                onCancel={() => setIsModalOpen(false)}
+            />
         </>
     );
 }

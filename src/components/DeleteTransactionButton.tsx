@@ -2,54 +2,71 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ConfirmActionModal } from "./ConfirmActionModal";
+import { FormError } from "./FormError";
 
 type DeleteTransactionButtonProps = {
-    transactionId: string;
-    transactionName: string;
+  transactionId: string;
+  transactionName: string;
 };
 
 export function DeleteTransactionButton({
-    transactionId,
-    transactionName,
+  transactionId,
+  transactionName,
 }: DeleteTransactionButtonProps) {
-    const router = useRouter();
+  const router = useRouter();
 
-    const [error, setError] = useState("");
-    const [isDeleting, setIsDeleting] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [error, setError] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
 
-    async function handleDelete() {
-        const confirmed = window.confirm(
-            `Delete "${transactionName}"? This cannot be undone.`
-        );
+  async function handleDelete() {
+    setError("");
+    setIsDeleting(true);
 
-        if (!confirmed) return;
+    const response = await fetch(`/api/transactions/${transactionId}`, {
+      method: "DELETE",
+    });
 
-        setError("");
-        setIsDeleting(true);
+    const data = await response.json();
 
-        const response = await fetch(`/api/transactions/${transactionId}`, {
-            method: "DELETE",
-        });
+    setIsDeleting(false);
 
-        const data = await response.json();
-
-        if (!response.ok) {
-            setError(data.error || "Failed to delete transaction.");
-            setIsDeleting(false);
-            return;
-        }
-
-        setIsDeleting(false);
-        router.refresh();
+    if (!response.ok) {
+      setError(data.error || "Failed to delete transaction.");
+      return;
     }
 
-    return(
-        <div>
-            {error && <p>{error}</p>}
+    setIsModalOpen(false);
+    router.refresh();
+  }
 
-            <button type="button" onClick={handleDelete} disabled={isDeleting}>
-                {isDeleting ? "Deleting..." : "Delete"}
-            </button>
-        </div>
-    );
+  return (
+    <>
+      <FormError message={error} />
+
+      <button
+        type="button"
+        onClick={() => setIsModalOpen(true)}
+        disabled={isDeleting}
+      >
+        Delete
+      </button>
+
+      <ConfirmActionModal
+        isOpen={isModalOpen}
+        title="Delete transaction?"
+        message={
+          <>
+            Delete <strong>{transactionName}</strong>? This can’t be undone.
+          </>
+        }
+        confirmLabel="Delete transaction"
+        pendingLabel="Deleting..."
+        isPending={isDeleting}
+        onConfirm={handleDelete}
+        onCancel={() => setIsModalOpen(false)}
+      />
+    </>
+  );
 }

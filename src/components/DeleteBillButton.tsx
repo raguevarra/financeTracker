@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Modal } from "./Modal";
 import { ConfirmActionModal } from "./ConfirmActionModal";
 import { FormError } from "./FormError";
 
@@ -28,7 +27,7 @@ export function DeleteBillButton({ billId, billName }: DeleteBillButtonProps) {
         setIsDeleting(false);
 
         if (!response.ok) {
-            alert("Failed to delete bill.");
+            setError("Failed to delete bill.");
             return;
         }
 

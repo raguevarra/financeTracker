@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { getCurrentUserId } from "@/lib/currentUser";
 import { getAccountById } from "@/lib/accounts";
-import { createTransferBetweenAccounts } from "@/lib/transactions";
-import { create } from "node:domain";
+import { createTransferBetweenAccounts } from "@/lib/transfers";
+import { badRequest, notFound, serverError } from "@/lib/responses";
 
 export async function POST(request: Request) {
     try {
@@ -52,9 +52,16 @@ export async function POST(request: Request) {
     } catch (error) {
         console.error("Error creating transfer:", error);
 
-        return NextResponse.json(
-            { error: "Failed to create transfer." },
-            { status: 500 }
-        );
+        if (error instanceof Error) {
+            if (error.message === "SAME_ACCOUNT_TRANSFER") {
+                return badRequest("Cannot transfer to the same account.");
+            }
+
+            if (error.message === "ACCOUNT_NOT_FOUND") {
+                return notFound("Account not found or access denied.");
+            }
+        }
+
+        return serverError("Failed to create transfer.");
     }
 }

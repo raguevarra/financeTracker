@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { FormError } from "./FormError";
 
 type AccountTransactionFormProps = {
     accountId: string;
@@ -58,7 +59,7 @@ export function AccountTransactionForm({ accountId }: AccountTransactionFormProp
         <form onSubmit={handleSubmit}>
             <h2>Add Transaction</h2>
 
-            {error && <p>{error}</p>}
+            <FormError message={error}/>
 
             <div>
                 <label htmlFor="transaction-name">Name</label>

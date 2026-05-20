@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { FormError } from "./FormError";
 
 type PayBillButtonProps = {
     billId: string;
@@ -41,7 +42,7 @@ export function PayBillButton({ billId, isPaid }: PayBillButtonProps) {
                 {isPaying ? "Paying..." : "Mark As Paid"}
             </button>
 
-            {error && <p>{error}</p>}
+            <FormError message={error}/>
         </div>
     );
 }

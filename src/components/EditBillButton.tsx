@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Modal } from "./Modal";
 import type { BillCardData } from "./BillCard";
+import { FormError } from "./FormError";
 
 type EditBillButtonProps = {
   bill: BillCardData;
@@ -96,7 +97,7 @@ export function EditBillButton({ bill }: EditBillButtonProps) {
         onClose={closeModal}
       >
         <form onSubmit={handleSubmit}>
-          {error && <p>{error}</p>}
+          <FormError message={error}/>
 
           <div>
             <label htmlFor={`edit-bill-name-${bill.id}`}>Name</label>

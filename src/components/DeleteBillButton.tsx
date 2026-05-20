@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Modal } from "./Modal";
 import { ConfirmActionModal } from "./ConfirmActionModal";
+import { FormError } from "./FormError";
 
 type DeleteBillButtonProps = {
     billId: string;
@@ -37,7 +38,7 @@ export function DeleteBillButton({ billId, billName }: DeleteBillButtonProps) {
 
     return (
         <>
-           {error && <p className="form-error">{error}</p>}
+           <FormError message={error}/>
 
            <button
                 type="button"

@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { FormError } from "./FormError";
 
 type AccountOption = {
     id: string;
@@ -148,7 +149,7 @@ export function TransferForm({ accounts, currentAccountId }: TransferFormProps) 
                 onChange={handleChange}
             />
 
-            {error && <p>{error}</p>}
+            <FormError message={error}/>
 
             <button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Transferring..." : "Transfer"}

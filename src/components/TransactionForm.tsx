@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { FormError } from "./FormError";
 
 type AccountOption = {
     id: string;
@@ -117,7 +118,7 @@ export function TransactionForm({ accounts }: TransactionFormProps) {
                 ))}
             </select>
 
-            {error && <p>{error}</p>}
+            <FormError message={error}/>
 
             <button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Adding..." : "Add Transaction"}

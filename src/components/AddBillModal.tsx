@@ -5,6 +5,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Modal } from "./Modal";
+import { FormError } from "./FormError";
 
 type AddBillModalProps = {
     accountId: string;
@@ -78,7 +79,7 @@ export function AddBillModal({ accountId }: AddBillModalProps) {
                 onClose={closeModal}
             >
                 <form onSubmit={handleSubmit}>
-                    {error && <p>{error}</p>}
+                    <FormError message={error}/>
 
                     <div>
                         <label htmlFor="bill-name">Name</label>

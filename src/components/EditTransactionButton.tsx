@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { Modal } from "./Modal";
 import type { TransactionCardData } from "./TransactionCard";
 import { toDateInputValue } from "@/lib/formatters";
+import { FormError } from "./FormError";
 
 type EditTransactionButtonProps = {
   transaction: TransactionCardData;
@@ -98,7 +99,7 @@ export function EditTransactionButton({
         onClose={closeModal}
       >
         <form onSubmit={handleSubmit}>
-          {error && <p>{error}</p>}
+          <FormError message={error}/>
 
           <div>
             <label htmlFor={`edit-transaction-name-${transaction.id}`}>

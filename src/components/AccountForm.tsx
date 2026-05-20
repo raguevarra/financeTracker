@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { FormError } from "./FormError";
 
 export function AccountForm() {
     const router = useRouter();
@@ -86,7 +87,7 @@ export function AccountForm() {
                 onChange={handleChange}
             />
 
-            {error && <p>{error}</p>}
+            <FormError message={error}/>
 
             <button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Adding..." : "Add Account"}

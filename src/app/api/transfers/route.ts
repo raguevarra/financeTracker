@@ -11,17 +11,11 @@ export async function POST(request: Request) {
         const { fromAccountId, toAccountId, amount, date, name } = body;
 
         if (!fromAccountId || !toAccountId || amount === undefined || !date) {
-            return NextResponse.json(
-                { error: "Missing required fields." },
-                { status: 400 }
-            );
+            return badRequest("Missing required fields.");
         }
 
         if (fromAccountId === toAccountId) {
-            return NextResponse.json(
-                { error: "Cannot transfer to the same account." },
-                { status: 400 }
-            );
+            return badRequest("Cannot transfer to same account.");
         }
 
         const userId = await getCurrentUserId();
@@ -30,10 +24,7 @@ export async function POST(request: Request) {
         const toAccount = await getAccountById(toAccountId, userId);
 
         if (!fromAccount || !toAccount) {
-            return NextResponse.json(
-                { error: "Account not found or access denied." },
-                { status: 404}
-            );
+            return notFound("Account not found or access denied.");
         }
 
         const transfer = await createTransferBetweenAccounts({

@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { nestedAccountAccessWhere } from "./access";
+import { adjustAccountBalance } from "./accountBalances";
 
 type CreateTransactionInput = {
     name: string;
@@ -60,14 +61,7 @@ export async function createTransactionForAccount({
             },
         });
 
-        await tx.account.update({
-            where: { id: accountId },
-            data: {
-                balance: {
-                    increment: decimalAmount,
-                },
-            },
-        });
+        await adjustAccountBalance(tx, accountId, decimalAmount);
 
         return transaction;
     });
@@ -119,38 +113,23 @@ export async function updateTransactionById(
         });
 
         if (oldAccountId === accountId) {
-            await tx.account.update({
-                where: {
-                    id: accountId,
-                },
-                data: {
-                    balance: {
-                        increment: newAmount.minus(oldAmount),
-                    },
-                },
-            });
+            await adjustAccountBalance(
+                tx,
+                accountId,
+                newAmount.minus(oldAmount)
+            );
         } else {
-            await tx.account.update({
-                where: {
-                    id: oldAccountId,
-                },
-                data: {
-                    balance: {
-                        decrement: oldAmount,
-                    },
-                },
-            });
+            await adjustAccountBalance(
+                tx,
+                oldAccountId,
+                oldAmount.negated()
+            );
 
-            await tx.account.update({
-                where: {
-                    id: accountId,
-                },
-                data: {
-                    balance: {
-                        increment: newAmount
-                    },
-                },
-            });
+            await adjustAccountBalance(
+                tx,
+                accountId,
+                newAmount
+            );
         }
 
         return updatedTransaction;
@@ -175,16 +154,11 @@ export async function deleteTransactionById(transactionId: string) {
             },
         });
 
-        await tx.account.update({
-            where: {
-                id: existingTransaction.accountId,
-            },
-            data: {
-                balance: {
-                    decrement: existingTransaction.amount,
-                },
-            },
-        });
+        await adjustAccountBalance(
+            tx,
+            existingTransaction.accountId,
+            existingTransaction.amount.negated()
+        );
 
         return existingTransaction;
     });

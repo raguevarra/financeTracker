@@ -2,6 +2,7 @@
 
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { adjustAccountBalance } from "./accountBalances";
 
 type CreateTransferInput = {
   fromAccountId: string;
@@ -60,23 +61,17 @@ export async function createTransferBetweenAccounts({
       },
     });
 
-    await tx.account.update({
-      where: { id: fromAccountId },
-      data: {
-        balance: {
-          decrement: decimalAmount,
-        },
-      },
-    });
+    await adjustAccountBalance(
+      tx,
+      fromAccountId,
+      decimalAmount.negated()
+    );
 
-    await tx.account.update({
-      where: { id: toAccountId },
-      data: {
-        balance: {
-          increment: decimalAmount,
-        },
-      },
-    });
+    await adjustAccountBalance(
+      tx,
+      toAccountId,
+      decimalAmount
+    );
 
     return {
       transferGroupId,

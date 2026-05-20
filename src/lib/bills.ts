@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { nestedAccountAccessWhere } from "./access";
+import { adjustAccountBalance } from "./accountBalances";
 
 type CreateBillInput = {
     name: string;
@@ -91,16 +92,11 @@ export async function payBillById(billId: string) {
       },
     });
 
-    await tx.account.update({
-        where: {
-            id: bill.accountId,
-        },
-        data: {
-            balance: {
-                increment: bill.amount.mul(-1),
-            },
-        },
-    });
+    await adjustAccountBalance(
+        tx,
+        bill.accountId,
+        bill.amount.negated()
+    );
 
     const updatedBill = await tx.bill.update({
       where: {

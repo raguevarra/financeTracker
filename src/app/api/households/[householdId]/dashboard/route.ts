@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { notFound } from "@/lib/responses";
 
 type RouteParams = {
     params: Promise<{
@@ -33,10 +34,7 @@ export async function GET(_request: NextRequest, { params }: RouteParams) {
     });
 
     if (!household) {
-        return NextResponse.json(
-            { error: "Household not found" },
-            { status: 404 }
-        );
+        return notFound("Household not found.");
     }
 
     const totalBalance = household.accounts.reduce((total, account) => {

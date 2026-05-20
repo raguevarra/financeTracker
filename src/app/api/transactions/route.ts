@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUserId } from "@/lib/currentUser";
 import { getAccountById } from "@/lib/accounts";
 import { createTransactionForAccount } from "@/lib/transactions";
+import { badRequest, notFound, serverError } from "@/lib/responses";
 
 
 export async function POST(request: Request) {
@@ -16,10 +17,7 @@ export async function POST(request: Request) {
 
         // Validate that all required fields are present
         if (!name || amount === undefined || !type || !date || !accountId) {
-            return NextResponse.json(
-                { error: "Missing required fields" },
-                { status: 400 }
-            );
+            return badRequest("Missing required fields.");
         }
 
         const userId = await getCurrentUserId();
@@ -28,10 +26,7 @@ export async function POST(request: Request) {
 
         // If the account does not exist, return a 404 error response
         if (!account) {
-            return NextResponse.json(
-                { error: "Account not found or access denied." },
-                { status: 404 }
-            );
+            return notFound("Account not found or access denied.");
         }
         
         // Create a new transaction in the database using Prisma
@@ -50,9 +45,6 @@ export async function POST(request: Request) {
         console.error("Error creating transaction:", error);
 
         // Return a generic error response with a 500 status code if something goes wrong
-        return NextResponse.json(
-            { error: "Failed to create the transaction." },
-            { status: 500 }
-        );
+        return serverError("Failed to create transaction.");
     }    
 }

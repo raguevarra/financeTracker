@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUserId } from "@/lib/currentUser";
 import { getAccountById } from "@/lib/accounts";
 import { createBillForAccount } from "@/lib/bills";
+import { badRequest, notFound, serverError } from "@/lib/responses";
 
 export async function POST(request: Request) {
     // Try-catch for errors
@@ -11,10 +12,7 @@ export async function POST(request: Request) {
         const { name, amount, dueDate, accountId } = body;
 
         if (!name || amount === undefined || !dueDate || !accountId) {
-            return NextResponse.json(
-                { error: "Missing required fields"},
-                { status: 400 }
-            );
+            return badRequest("Missing required fields.");
         }
 
         const userId = await getCurrentUserId();
@@ -22,10 +20,7 @@ export async function POST(request: Request) {
         const account = await getAccountById(accountId, userId);
 
         if (!account) {
-            return NextResponse.json(
-                { error: "Account not found or access denied" },
-                { status: 400}
-            );
+            return notFound("Account not found or access denied.");
         }
 
         const bill = await createBillForAccount({
@@ -39,9 +34,6 @@ export async function POST(request: Request) {
     } catch (error) {
         console.error("Error creating bill:", error);
 
-        return NextResponse.json(
-            { error: "Failed to create bill."},
-            { status: 500 }
-        );
+        return serverError("Failed to create bill.");
     }
 }

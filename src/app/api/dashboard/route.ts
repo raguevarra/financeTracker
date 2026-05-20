@@ -2,6 +2,9 @@
 import { NextResponse } from "next/server";
 import { getDashboardData } from "@/lib/dashboard";
 
+// Error import
+import { serverError } from "@/lib/responses";
+
 // User ID Function
 import { getCurrentUserId } from "@/lib/currentUser";
 
@@ -13,9 +16,6 @@ export async function GET() {
     } catch (error) {
         console.error("Failed to fetch dashboard data:", error);
 
-        return NextResponse.json(
-            {error: "Failed to fetch dashboard data"},
-            {status: 500}
-        );
+        return serverError("Failed to fetch dashboard data.");
     }
 }

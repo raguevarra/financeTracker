@@ -7,6 +7,7 @@ import {
   updateTransactionById,
   deleteTransactionById
 } from "@/lib/transactions";
+import { badRequest, notFound, serverError } from "@/lib/responses";
 
 export async function PATCH(
   request: Request,
@@ -19,10 +20,7 @@ export async function PATCH(
     const { name, amount, type, date, accountId } = body;
 
     if (!name || amount === undefined || !type || !date || !accountId) {
-      return NextResponse.json(
-        { error: "Missing required fields." },
-        { status: 400 }
-      );
+      return badRequest("Missing required fields.");
     }
 
     const userId = await getCurrentUserId();
@@ -30,19 +28,13 @@ export async function PATCH(
     const transaction = await getTransactionByIdForUser(id, userId);
 
     if (!transaction) {
-      return NextResponse.json(
-        { error: "Transaction not found or access denied." },
-        { status: 404 }
-      );
+      return notFound("Transaction not found or access denied.");
     }
 
     const account = await getAccountById(accountId, userId);
 
     if (!account) {
-      return NextResponse.json(
-        { error: "Account not found or access denied." },
-        { status: 404 }
-      );
+      return notFound("Account not found or access denied.");
     }
 
     const updatedTransaction = await updateTransactionById(id, {
@@ -63,10 +55,7 @@ export async function PATCH(
   } catch (error) {
     console.error("Error updating transaction:", error);
 
-    return NextResponse.json(
-      { error: "Failed to update transaction." },
-      { status: 500 }
-    );
+    return serverError("Failed to update transaction.");
   }
 }
 
@@ -82,10 +71,7 @@ export async function DELETE(
     const transaction = await getTransactionByIdForUser(id, userId);
 
     if (!transaction) {
-      return NextResponse.json(
-        { error: "Transaction not found or access denied." },
-        { status: 404 }
-      );
+      return notFound("Transaction not found or access denied.");
     }
 
     const deletedTransaction = await deleteTransactionById(id);
@@ -96,9 +82,6 @@ export async function DELETE(
   } catch (error) {
     console.error("Error deleting transaction:", error);
 
-    return NextResponse.json(
-      { error: "Failed to delete transaction." },
-      { status: 500}
-    );
+    return serverError("Failed to delete transaction.");
   }
 }

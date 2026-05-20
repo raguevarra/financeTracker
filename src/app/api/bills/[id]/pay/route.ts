@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getBillByIdForUser, payBillById } from "@/lib/bills";
 import { getCurrentUserId } from "@/lib/currentUser";
 import { revalidatePath } from "next/cache";
+import { notFound, serverError, badRequest } from "@/lib/responses";
 
 export async function POST(
     _request: Request,
@@ -13,10 +14,7 @@ export async function POST(
     const bill = await getBillByIdForUser(id, userId);
 
     if (!bill) {
-        return NextResponse.json(
-            { error: "Bill not found." },
-            { status: 404}
-        );
+        return notFound("Bill not found or access denied.");
     }
 
     try {
@@ -27,22 +25,13 @@ export async function POST(
         return NextResponse.json(result);
     } catch (error) {
         if (error instanceof Error && error.message === "BILL_ALREADY_PAID") {
-            return NextResponse.json(
-                { error: "Bill already paid." },
-                { status: 400 }
-            );
+            return badRequest("Bill is already paid.");
         }
 
         if (error instanceof Error && error.message === "BILL_NOT_FOUND") {
-            return NextResponse.json(
-                { error: "Bill not found." },
-                { status: 404}
-            );
+            return serverError("Bill not found.");
         }
 
-        return NextResponse.json(
-            { error: "Failed to pay bill." },
-            { status: 500 }
-        );
+        return serverError("Failed to pay bill.");
     }
 }

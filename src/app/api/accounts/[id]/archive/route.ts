@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentUserId } from "@/lib/currentUser";
 import { archiveAccountForUser } from "@/lib/accounts"
+import { badRequest, notFound, serverError } from "@/lib/responses";
 
 type Params = {
     params: Promise<{ id: string}>;
@@ -13,10 +14,7 @@ export async function PATCH(request: Request, { params }: Params) {
         const { isArchived } = body;
 
         if (typeof isArchived !== "boolean") {
-            return NextResponse.json(
-                { error: "isArchived must be a boolean." },
-                { status: 400 }
-            );
+            return badRequest("isArchived must be a boolean.");
         }
 
         const userId = await getCurrentUserId();
@@ -28,19 +26,13 @@ export async function PATCH(request: Request, { params }: Params) {
         });
 
         if (!account) {
-            return NextResponse.json(
-                { error: "Account not found." },
-                { status: 404 }
-            );
+            return notFound("Account not found.");
         }
 
         return NextResponse.json(account);
     } catch (error) {
         console.error("Error updating account archive status.", error);
 
-        return NextResponse.json(
-            { error: "Failed to update account archive status." },
-            { status: 500 }
-        );
+        return serverError("Failed to update account archive status.");
     }
 }

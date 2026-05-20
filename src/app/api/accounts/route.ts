@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentUserId } from "@/lib/currentUser";
 import { createAccountForUser, getAccountsForUser } from "@/lib/accounts";
+import { badRequest, serverError } from "@/lib/responses";
 
 export async function GET(request: Request) {
     try {
@@ -14,10 +15,7 @@ export async function GET(request: Request) {
     } catch (error) {
         console.error("Error fetching accounts:", error);
 
-        return NextResponse.json(
-            { error: "Failed to fetch accounts." },
-            { status: 500 }
-        );
+        return serverError("Failed to fetch accounts.");
     }
 }
 export async function POST(request: Request) {
@@ -26,10 +24,7 @@ export async function POST(request: Request) {
         const { name, type, balance } = body;
 
         if (!name || !type || balance === undefined) {
-            return NextResponse.json(
-                { error: "Missing required fields." },
-                { status: 400 }
-            );
+            return badRequest("Missing required fields.");
         }
 
         const userId = await getCurrentUserId();
@@ -45,9 +40,6 @@ export async function POST(request: Request) {
     } catch (error) {
         console.error("Error creating account:", error);
 
-        return NextResponse.json(
-            { error: "Failed to create account." },
-            { status: 500 }
-        );
+        return serverError("Failed to create account.");
     }
 }

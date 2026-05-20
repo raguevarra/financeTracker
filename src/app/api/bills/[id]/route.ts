@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { getCurrentUserId } from "@/lib/currentUser"
 import { deleteBillById, getBillByIdForUser, updateBillById } from "@/lib/bills";
+import { notFound, serverError } from "@/lib/responses";
 
 type RouteParams = {
     params: Promise<{
@@ -18,10 +19,7 @@ export async function DELETE(_request: Request, { params }: RouteParams) {
         const bill = await getBillByIdForUser(id, userId);
 
         if (!bill) {
-            return NextResponse.json(
-                { error: "Bill not found or access denied." },
-                { status: 404 }
-            );
+            notFound("Bill not found or access denied.");
         }
 
         await deleteBillById(id);
@@ -33,10 +31,7 @@ export async function DELETE(_request: Request, { params }: RouteParams) {
     } catch (error) {
         console.error("Error deleting bill:", error);
 
-        return NextResponse.json(
-            { error: "Failed to delete bill."},
-            { status: 500 }
-        );
+        return serverError("Failed to delete bill.");
     }
 }
 
@@ -52,10 +47,7 @@ export async function PATCH(
     const bill = await getBillByIdForUser(id, userId);
 
     if (!bill) {
-        return NextResponse.json(
-            { error: "Bill not found." },
-            { status: 404 }
-        );
+        return notFound("Bill not found or access denied.");
     }
 
     const updatedBill = await updateBillById(id, {

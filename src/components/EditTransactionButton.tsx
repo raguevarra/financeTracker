@@ -6,22 +6,11 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Modal } from "./Modal";
 import type { TransactionCardData } from "./TransactionCard";
+import { toDateInputValue } from "@/lib/formatters";
 
 type EditTransactionButtonProps = {
   transaction: TransactionCardData;
 };
-
-function toDateInputValue(date: Date | string) {
-  if (typeof date === "string" && date.includes("T")) {
-    return date.split("T")[0];
-  }
-
-  if (typeof date === "string") {
-    return date;
-  }
-
-  return date.toISOString().split("T")[0];
-}
 
 export function EditTransactionButton({
   transaction,

@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { nestedAccountAccessWhere } from "./access";
 
 type CreateBillInput = {
     name: string;
@@ -34,20 +35,7 @@ export async function getBillByIdForUser(billId: string, userId: string) {
     return prisma.bill.findFirst({
         where: {
             id: billId,
-            account: {
-                OR: [
-                    {ownerId: userId},
-                    {
-                        household: {
-                            members: {
-                                some: {
-                                    userId,
-                                },
-                            },
-                        },
-                    },
-                ],
-            },
+            ...nestedAccountAccessWhere(userId),
         },
     });
 }

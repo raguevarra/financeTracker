@@ -1,5 +1,6 @@
 import { prisma } from "./prisma";
 import { Prisma } from "@prisma/client";
+import { accountAccessWhere } from "./access";
 
 type CreateAccountInput = {
     name: string;
@@ -12,18 +13,7 @@ export async function getAccountById(accountId: string, userId: string) {
     const account = await prisma.account.findFirst({
         where: {
             id: accountId,
-            OR: [
-                { ownerId: userId },
-                {
-                    household: {
-                        members: {
-                            some: {
-                                userId,
-                            },
-                        },
-                    },
-                },
-            ],
+            ...accountAccessWhere(userId),
         },
         include: {
             transactions: {
@@ -51,18 +41,7 @@ export async function getAccountsForUser(
         const accounts = await prisma.account.findMany({
             where: {
                 isArchived: archived,
-                OR: [
-                    { ownerId: userId },
-                    {
-                        household: {
-                            members: {
-                                some: {
-                                    userId,
-                                },
-                            },
-                        },
-                    },
-                ],
+                ...accountAccessWhere(userId),
             },
             orderBy: {
                 name: "asc",

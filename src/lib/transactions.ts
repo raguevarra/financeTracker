@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { nestedAccountAccessWhere } from "./access";
 
 type CreateTransactionInput = {
     name: string;
@@ -79,20 +80,7 @@ export async function getTransactionByIdForUser(
     return prisma.transaction.findFirst({
         where: {
             id: transactionId,
-            account: {
-                OR: [
-                    { ownerId: userId },
-                    { 
-                        household: {
-                            members: {
-                                some: {
-                                    userId
-                                },
-                            },
-                        },
-                    },
-                ],
-            },
+            ...nestedAccountAccessWhere(userId),
         },
     });
 }

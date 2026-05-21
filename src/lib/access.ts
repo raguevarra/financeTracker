@@ -1,3 +1,7 @@
+/*
+Abstraction for account accesses. Reduces size of nesting in numerous areas.
+*/
+
 export function accountAccessWhere(userId: string) {
     return {
         OR: [

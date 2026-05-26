@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUserId } from "@/lib/currentUser";
 import { createAccountForUser, getAccountsForUser } from "@/lib/accounts";
 import { badRequest, serverError } from "@/lib/responses";
+import { validateCreateAccountInput } from "@/lib/validation/accounts";
 
 export async function GET(request: Request) {
     try {
@@ -21,11 +22,14 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { name, type, balance } = body;
+        
+        const validation = validateCreateAccountInput(body);
 
-        if (!name || !type || balance === undefined) {
-            return badRequest("Missing required fields.");
+        if (!validation.ok) {
+            return badRequest(validation.error);
         }
+
+        const { name, type, balance } = validation.data
 
         const userId = await getCurrentUserId();
 

@@ -4,19 +4,19 @@ import { getCurrentUserId } from "@/lib/currentUser";
 import { getAccountById } from "@/lib/accounts";
 import { createTransferBetweenAccounts } from "@/lib/transfers";
 import { badRequest, notFound, serverError } from "@/lib/responses";
+import { validateCreateTransferInput } from "@/lib/validation/transfers";
 
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { fromAccountId, toAccountId, amount, date, name } = body;
 
-        if (!fromAccountId || !toAccountId || amount === undefined || !date) {
-            return badRequest("Missing required fields.");
+        const validation = validateCreateTransferInput(body);
+
+        if (!validation.ok) {
+            return badRequest(validation.error);
         }
 
-        if (fromAccountId === toAccountId) {
-            return badRequest("Cannot transfer to same account.");
-        }
+        const { fromAccountId, toAccountId, amount, date, name } = validation.data;
 
         const userId = await getCurrentUserId();
 

@@ -1,15 +1,6 @@
 # financeTracker
 
 Finance tracker side project for hosting personal and family finances.
-
-To run, use the following commands as ordered:
-
-npm install
-Copy-Item .env.example .env
-npm run prisma:generate
-npm run prisma:migrate -- --name init
-npm run dev
-
 <!--
 PROJECT SKELETON
 

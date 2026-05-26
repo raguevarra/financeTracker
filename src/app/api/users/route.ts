@@ -1,8 +1,11 @@
+/*
+GET route to fetch users with household memberships and accounts
+*/
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-// Get users including their household memberships and accounts
 export async function GET() {
+    // Fetch users including their household memberships and accounts
     const users = await prisma.user.findMany({
         include: {
             householdMemberships: {
@@ -14,6 +17,7 @@ export async function GET() {
         },
     });
 
+    // Return the users as a JSON response
     return NextResponse.json(users);
     
 }

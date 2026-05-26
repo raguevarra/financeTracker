@@ -3,17 +3,20 @@ import { getCurrentUserId } from "@/lib/currentUser";
 import { getAccountById } from "@/lib/accounts";
 import { createBillForAccount } from "@/lib/bills";
 import { badRequest, notFound, serverError } from "@/lib/responses";
+import { validateCreateBillInput } from "@/lib/validation/bills";
 
 export async function POST(request: Request) {
     // Try-catch for errors
     try {
         const body = await request.json();
 
-        const { name, amount, dueDate, accountId } = body;
+        const validation = validateCreateBillInput(body);
 
-        if (!name || amount === undefined || !dueDate || !accountId) {
-            return badRequest("Missing required fields.");
+        if (!validation.ok) {
+            return badRequest(validation.error);
         }
+
+        const { name, amount, dueDate, accountId } = validation.data;
 
         const userId = await getCurrentUserId();
 

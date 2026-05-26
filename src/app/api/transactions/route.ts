@@ -1,9 +1,12 @@
-// Add new transaction using POST
+/*
+POST route to add a new transaction
+*/
 import { NextResponse } from "next/server";
 import { getCurrentUserId } from "@/lib/currentUser";
 import { getAccountById } from "@/lib/accounts";
 import { createTransactionForAccount } from "@/lib/transactions";
 import { badRequest, notFound, serverError } from "@/lib/responses";
+import { validateCreateTransactionInput } from "@/lib/validation/transactions";
 
 
 export async function POST(request: Request) {
@@ -11,14 +14,16 @@ export async function POST(request: Request) {
     try {
         // Parse the incoming request body as JSON
         const body = await request.json();
+
+        // JSON request validation
+        const validation = validateCreateTransactionInput(body);
+
+        if (!validation.ok) {
+            return badRequest(validation.error);
+        }
         
         // Destructure required fields from the request body
-        const { name, amount, type, date, accountId } = body;
-
-        // Validate that all required fields are present
-        if (!name || amount === undefined || !type || !date || !accountId) {
-            return badRequest("Missing required fields.");
-        }
+        const { name, amount, type, date, accountId } = validation.data;
 
         const userId = await getCurrentUserId();
         

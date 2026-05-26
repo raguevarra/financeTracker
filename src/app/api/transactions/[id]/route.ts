@@ -8,6 +8,7 @@ import {
   deleteTransactionById
 } from "@/lib/transactions";
 import { badRequest, notFound, serverError } from "@/lib/responses";
+import { validateUpdateTransactionInput } from "@/lib/validation/transactions";
 
 export async function PATCH(
   request: Request,
@@ -17,11 +18,13 @@ export async function PATCH(
     const { id } = await params;
     const body = await request.json();
 
-    const { name, amount, type, date, accountId } = body;
+    const validation = validateUpdateTransactionInput(body);
 
-    if (!name || amount === undefined || !type || !date || !accountId) {
-      return badRequest("Missing required fields.");
+    if (!validation.ok) {
+      return badRequest(validation.error);
     }
+
+    const { name, amount, type, date, accountId } = validation.data;
 
     const userId = await getCurrentUserId();
 

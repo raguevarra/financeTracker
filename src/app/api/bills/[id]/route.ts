@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { getCurrentUserId } from "@/lib/currentUser"
 import { deleteBillById, getBillByIdForUser, updateBillById } from "@/lib/bills";
-import { notFound, serverError } from "@/lib/responses";
+import { notFound, serverError, badRequest } from "@/lib/responses";
+import { validateUpdateBillInput } from "@/lib/validation/bills";
 
 type RouteParams = {
     params: Promise<{
@@ -19,7 +20,7 @@ export async function DELETE(_request: Request, { params }: RouteParams) {
         const bill = await getBillByIdForUser(id, userId);
 
         if (!bill) {
-            notFound("Bill not found or access denied.");
+            return notFound("Bill not found or access denied.");
         }
 
         await deleteBillById(id);
@@ -42,6 +43,14 @@ export async function PATCH(
     const { id } = await params;
     const body = await request.json();
 
+    const validation = validateUpdateBillInput(body);
+
+    if (!validation.ok) {
+        return badRequest(validation.error);
+    }
+
+    const { name, amount, dueDate } = validation.data
+
     const userId = await getCurrentUserId();
 
     const bill = await getBillByIdForUser(id, userId);
@@ -51,9 +60,9 @@ export async function PATCH(
     }
 
     const updatedBill = await updateBillById(id, {
-        name: body.name,
-        amount: body.amount,
-        dueDate: body.dueDate,
+        name,
+        amount,
+        dueDate,
     });
 
     revalidatePath(`/accounts/${updatedBill.accountId}`);

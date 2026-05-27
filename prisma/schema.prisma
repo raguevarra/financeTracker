@@ -7,8 +7,8 @@ datasource db {
 }
 
 model Household {
-  id        String   @id @default(cuid())
-  name      String
+  id   String @id @default(cuid())
+  name String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -24,7 +24,7 @@ enum HouseholdRole {
 }
 
 model HouseholdMember {
-  id          String @id @default(cuid())
+  id          String        @id @default(cuid())
   userId      String
   householdId String
   role        HouseholdRole @default(ADULT)
@@ -41,11 +41,11 @@ model HouseholdMember {
 }
 
 model Bill {
-  id        String   @id @default(cuid())
-  name      String
-  amount    Decimal
-  dueDate   DateTime
-  isPaid    Boolean  @default(false)
+  id      String   @id @default(cuid())
+  name    String
+  amount  Decimal
+  dueDate DateTime
+  isPaid  Boolean  @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -60,13 +60,13 @@ model Bill {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  clerkId   String   @unique
-  name      String
-  email     String?    @unique
-  accounts  Account[]
+  id       String    @id @default(cuid())
+  clerkId  String    @unique
+  name     String
+  email    String?   @unique
+  accounts Account[]
 
-  createdAt DateTime  @default(now())
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   householdMemberships HouseholdMember[]
@@ -88,21 +88,21 @@ enum AccountVisibility {
 }
 
 model Account {
-  id      String  @id @default(cuid())
+  id      String      @id @default(cuid())
   name    String
   type    AccountType
-  balance Decimal @default(0)
+  balance Decimal     @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   visibility AccountVisibility @default(HOUSEHOLD)
-  isArchived Boolean @default(false)
+  isArchived Boolean           @default(false)
 
   ownerId     String? // optional: personal owner
   householdId String // account belongs to this household
 
-  owner     User?      @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+  owner     User?     @relation(fields: [ownerId], references: [id], onDelete: SetNull)
   household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
 
   transactions Transaction[]
@@ -120,7 +120,7 @@ enum TransactionType {
 }
 
 model Transaction {
-  id     String   @id @default(cuid())
+  id     String          @id @default(cuid())
   name   String
   amount Decimal
   type   TransactionType

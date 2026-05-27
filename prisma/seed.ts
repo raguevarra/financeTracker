@@ -22,6 +22,7 @@ async function main() {
   // users
   const parent = await prisma.user.create({
     data: {
+      clerkId: "user_seed_parent",
       name: "Roman",
       email: "roman@example.com",
     },
@@ -29,6 +30,7 @@ async function main() {
 
   const child = await prisma.user.create({
     data: {
+      clerkId: "user_seed_child",
       name: "Child",
       email: "child@example.com",
     },
@@ -47,7 +49,7 @@ async function main() {
       {
         userId: parent.id,
         householdId: household.id,
-        role: "PARENT",
+        role: "OWNER",
       },
       {
         userId: child.id,
@@ -63,6 +65,7 @@ async function main() {
       name: "Child's Account",
       type: "CHEQUING",
       balance: new Prisma.Decimal("1250.75"),
+      visibility: "PERSONAL",
       ownerId: child.id,
       householdId: household.id,
     },
@@ -70,9 +73,41 @@ async function main() {
 
   const parentAccount = await prisma.account.create({
     data: {
-      name: "Roman's Account",
+      name: "Roman's Personal Chequing",
       type: "CHEQUING",
       balance: new Prisma.Decimal("2500.00"),
+      visibility: "PERSONAL",
+      ownerId: parent.id,
+      householdId: household.id,
+    },
+  });
+
+  const jointAccount = await prisma.account.create({
+    data: {
+      name: "Family Joint Chequing",
+      type: "CHEQUING",
+      balance: new Prisma.Decimal("4200.00"),
+      visibility: "HOUSEHOLD",
+      householdId: household.id,
+    },
+  });
+
+  const sharedSavings = await prisma.account.create({
+    data: {
+      name: "Family Savings",
+      type: "SAVINGS",
+      balance: new Prisma.Decimal("10000.00"),
+      visibility: "HOUSEHOLD",
+      householdId: household.id,
+    },
+  });
+
+  const parentVisibleAccount = await prisma.account.create({
+    data: {
+      name: "Roman's Visible Savings",
+      type: "SAVINGS",
+      balance: new Prisma.Decimal("3000.00"),
+      visibility: "BOTH",
       ownerId: parent.id,
       householdId: household.id,
     },
@@ -123,6 +158,51 @@ async function main() {
         date: new Date("2026-05-04"),
         accountId: parentAccount.id,
       },
+      {
+        name: "Family Grocery Run",
+        amount: new Prisma.Decimal("-145.30"),
+        type: "DEBIT",
+        date: new Date("2026-05-06"),
+        accountId: jointAccount.id,
+      },
+      {
+        name: "Savings Contribution",
+        amount: new Prisma.Decimal("300.00"),
+        type: "CREDIT",
+        date: new Date("2026-05-07"),
+        accountId: sharedSavings.id,
+      },
+      {
+        name: "Gift Fund Deposit",
+        amount: new Prisma.Decimal("100.00"),
+        type: "CREDIT",
+        date: new Date("2026-05-08"),
+        accountId: parentVisibleAccount.id,
+      },
+    ],
+  });
+
+  // sample transfer: two rows, same transferGroupId
+  const transferGroupId = "seed_transfer_001";
+
+  await prisma.transaction.createMany({
+    data: [
+      {
+        name: "Transfer to Family Savings",
+        amount: new Prisma.Decimal("-250.00"),
+        type: "TRANSFER",
+        date: new Date("2026-05-09"),
+        accountId: jointAccount.id,
+        transferGroupId,
+      },
+      {
+        name: "Transfer from Joint Chequing",
+        amount: new Prisma.Decimal("250.00"),
+        type: "TRANSFER",
+        date: new Date("2026-05-09"),
+        accountId: sharedSavings.id,
+        transferGroupId,
+      },
     ],
   });
 
@@ -157,14 +237,14 @@ async function main() {
     },
   });
 
-  // parent bills
+  // household bills
   const mortgageBill = await prisma.bill.create({
     data: {
       name: "Mortgage",
       amount: new Prisma.Decimal("1200.00"),
       dueDate: new Date("2026-05-28"),
       isPaid: false,
-      accountId: parentAccount.id,
+      accountId: jointAccount.id,
     },
   });
 
@@ -174,7 +254,7 @@ async function main() {
       amount: new Prisma.Decimal("95.75"),
       dueDate: new Date("2026-05-18"),
       isPaid: false,
-      accountId: parentAccount.id,
+      accountId: jointAccount.id,
     },
   });
 
@@ -184,7 +264,7 @@ async function main() {
       amount: new Prisma.Decimal("80.00"),
       dueDate: new Date("2026-05-05"),
       isPaid: true,
-      accountId: parentAccount.id,
+      accountId: jointAccount.id,
     },
   });
 
@@ -204,16 +284,27 @@ async function main() {
         amount: new Prisma.Decimal("-80.00"),
         type: "DEBIT",
         date: new Date("2026-05-05"),
-        accountId: parentAccount.id,
+        accountId: jointAccount.id,
         billId: paidHydroBill.id,
       },
     ],
   });
 
   console.log("database seeded");
+
   console.log({
-    parentAccount: parentAccount.id,
-    childAccount: childAccount.id,
+    users: {
+      parent: parent.id,
+      child: child.id,
+    },
+    household: household.id,
+    accounts: {
+      childAccount: childAccount.id,
+      parentAccount: parentAccount.id,
+      jointAccount: jointAccount.id,
+      sharedSavings: sharedSavings.id,
+      parentVisibleAccount: parentVisibleAccount.id,
+    },
     unpaidBills: [phoneBill.id, spotifyBill.id, mortgageBill.id, hydroBill.id],
     paidBills: [paidChildBill.id, paidHydroBill.id],
   });

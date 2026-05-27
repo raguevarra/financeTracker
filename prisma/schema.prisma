@@ -9,20 +9,28 @@ datasource db {
 model Household {
   id        String   @id @default(cuid())
   name      String
+
   createdAt DateTime @default(now())
+  updatedAt Datetime @updatedAt
 
   members  HouseholdMember[]
   accounts Account[]
+}
+
+enum HouseholdRole {
+  OWNER
+  ADULT
+  CHILD
 }
 
 model HouseholdMember {
   id          String @id @default(cuid())
   userId      String
   householdId String
-  role        String // "OWNER", "ADULT", "CHILD", etc.
+  role        HouseholdRole @default(ADULT)
 
-  user      User      @relation(fields: [userId], references: [id])
-  household Household @relation(fields: [householdId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
 
   @@unique([userId, householdId])
 }
@@ -33,54 +41,97 @@ model Bill {
   amount    Decimal
   dueDate   DateTime
   isPaid    Boolean  @default(false)
+
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   accountId    String
-  account      Account       @relation(fields: [accountId], references: [id])
+  account      Account       @relation(fields: [accountId], references: [id], onDelete: Cascade)
   transactions Transaction[]
+
+  @@index([accountId])
+  @@index([dueDate])
+  @@index([isPaid])
 }
 
 model User {
   id        String    @id @default(cuid())
-  clerkId   String?   @unique
+  clerkId   String   @unique
   name      String
-  email     String    @unique
+  email     String?    @unique
   accounts  Account[]
+
   createdAt DateTime  @default(now())
+  updatedAt Datetime @updatedAt
 
   householdMemberships HouseholdMember[]
+}
+
+enum AccountType {
+  CHEQUING
+  SAVINGS
+  CREDIT_CARD
+  CASH
+  INVESTMENT
+  OTHER
+}
+
+enum AccountVisibility {
+  PERSONAL
+  HOUSEHOLD
+  BOTH
 }
 
 model Account {
   id      String  @id @default(cuid())
   name    String
-  type    String
+  type    AccountType
   balance Decimal
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  visibility AccountVisibility @default(HOUSEHOLD)
   isArchived Boolean @default(false)
 
   ownerId     String? // optional: personal owner
-  householdId String? // optional: shared household
+  householdId String // optional: shared household
 
   owner     User?      @relation(fields: [ownerId], references: [id])
-  household Household? @relation(fields: [householdId], references: [id])
+  household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
 
   transactions Transaction[]
   bills        Bill[]
+
+  @@index([householdId])
+}
+
+enum TransactionType {
+  DEBIT
+  CREDIT
+  TRANSFER
 }
 
 model Transaction {
   id     String   @id @default(cuid())
   name   String
   amount Decimal
-  type   String
+  type   TransactionType
   date   DateTime
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   accountId String
-  account   Account @relation(fields: [accountId], references: [id])
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
 
   billId String?
   bill   Bill?   @relation(fields: [billId], references: [id])
 
   transferGroupId String?
+
+  @@index([accountId])
+  @@index([date])
+  @@index([type])
+  @@index([accountId, date])
 }

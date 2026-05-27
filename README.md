@@ -1,6 +1,20 @@
 # financeTracker
 
 Finance tracker side project for hosting personal and family finances.
+
+## Auth setup
+
+This project is wired for Clerk authentication.
+
+1. Copy `.env.example` to `.env`.
+2. Add your Clerk keys:
+   - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`
+   - `CLERK_SECRET_KEY`
+3. Run `npm run prisma:migrate` to add the local `User.clerkId` mapping column.
+4. Start the app with `npm run dev`.
+
+The app protects all pages and API routes except `/sign-in`, `/sign-up`, and `/api/health`. On first login, the Clerk user is linked to an existing local user by email or created automatically.
+
 <!--
 PROJECT SKELETON
 

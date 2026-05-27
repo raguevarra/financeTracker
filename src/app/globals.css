@@ -50,6 +50,37 @@ textarea {
   margin-bottom: 24px;
 }
 
+.app-header h1 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.auth-page {
+  display: grid;
+  min-height: 70vh;
+  place-items: center;
+}
+
+.auth-controls {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.auth-controls button {
+  background: var(--foreground);
+  border: 1px solid var(--foreground);
+  border-radius: 8px;
+  color: var(--surface);
+  cursor: pointer;
+  padding: 8px 12px;
+}
+
+.auth-controls button:first-child {
+  background: var(--surface);
+  color: var(--foreground);
+}
+
 .app-grid {
   display: grid;
   gap: 16px;

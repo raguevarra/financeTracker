@@ -8,25 +8,23 @@ import {
 } from "@/components";
 
 import Link from "next/link";
+import { getCurrentUserId } from "@/lib/currentUser";
+import { getDashboardData } from "@/lib/dashboard";
 
 export default async function Home() {
-  // Fetch dashboard data from API
-  const resDashboard = await fetch("http://localhost:3000/api/dashboard", {
-    cache: "no-store",
-  });
-
-  // Handle API errors
-  if (!resDashboard.ok) {
-    return <main>Failed to load dashboard.</main>
-  }
-
-  const dashboardData = await resDashboard.json();
+  const userId = await getCurrentUserId();
+  const dashboardData = await getDashboardData(userId);
 
   const dashboard = {
     balance: dashboardData.totalBalance,
     monthlySpending: dashboardData.monthlySpending,
     upcomingBills: dashboardData.upcomingBills?.length ?? 0,
   };
+  const recentTransactions = dashboardData.recentTransactions.map((transaction) => ({
+    ...transaction,
+    amount: String(transaction.amount),
+    date: transaction.date.toISOString(),
+  }));
 
   return (
     <main>
@@ -39,7 +37,7 @@ export default async function Home() {
       </p>
       <AccountForm />
       <BillList bills={dashboardData.upcomingBills} />
-      <TransactionList transactions={dashboardData.recentTransactions} />
+      <TransactionList transactions={recentTransactions} />
       <TransactionForm accounts={dashboardData.accounts} />
     </main>
   );

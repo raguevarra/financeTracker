@@ -11,7 +11,7 @@ model Household {
   name      String
 
   createdAt DateTime @default(now())
-  updatedAt Datetime @updatedAt
+  updatedAt DateTime @updatedAt
 
   members  HouseholdMember[]
   accounts Account[]
@@ -29,10 +29,15 @@ model HouseholdMember {
   householdId String
   role        HouseholdRole @default(ADULT)
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
 
   @@unique([userId, householdId])
+  @@index([userId])
+  @@index([householdId])
 }
 
 model Bill {
@@ -62,7 +67,7 @@ model User {
   accounts  Account[]
 
   createdAt DateTime  @default(now())
-  updatedAt Datetime @updatedAt
+  updatedAt DateTime @updatedAt
 
   householdMemberships HouseholdMember[]
 }
@@ -86,7 +91,7 @@ model Account {
   id      String  @id @default(cuid())
   name    String
   type    AccountType
-  balance Decimal
+  balance Decimal @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -95,15 +100,17 @@ model Account {
   isArchived Boolean @default(false)
 
   ownerId     String? // optional: personal owner
-  householdId String // optional: shared household
+  householdId String // account belongs to this household
 
-  owner     User?      @relation(fields: [ownerId], references: [id])
+  owner     User?      @relation(fields: [ownerId], references: [id], onDelete: SetNull)
   household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
 
   transactions Transaction[]
   bills        Bill[]
 
   @@index([householdId])
+  @@index([ownerId])
+  @@index([visibility])
 }
 
 enum TransactionType {

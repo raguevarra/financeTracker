@@ -11,13 +11,33 @@ type DashboardSummaryProps = {
 };
 
 export function DashboardSummary({ dashboard }: DashboardSummaryProps) {
-  return (
-    <section>
-      <h1>Dashboard</h1>
+  const summaryCards = [
+    {
+      label: "Total Balance",
+      value: formatCurrency(dashboard.balance, { showSign: true }),
+      helperText: "Across all active accounts"
+    },
+    {
+      label: "Monthly Spending",
+      value: formatCurrency(dashboard.monthlySpending),
+      helperText: "Spent so far this month",
+    },
+    {
+      label: "Upcoming Bills",
+      value: dashboard.upcomingBills.toString(),
+      helperText: "Due in the next few days",
+    },
+  ];
 
-      <p>Balance: {formatCurrency(dashboard.balance, { showSign: true })}</p>
-      <p>Monthly Spending: {formatCurrency(dashboard.monthlySpending)}</p>
-      <p>Upcoming Bills: {dashboard.upcomingBills}</p>
+  return (
+    <section className="summary-grid" aria-label="Dashboard summary">
+      {summaryCards.map((card) => (
+        <article key={card.label} className="summary-card">
+          <p className="summary-card-label">{card.label}</p>
+          <p className="summary-card-value">{card.value}</p>
+          <p className="summary-card-helper">{card.helperText}</p>
+        </article>
+      ))}
     </section>
   );
 }

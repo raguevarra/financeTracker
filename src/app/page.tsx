@@ -1,33 +1,22 @@
 import {
-  AccountList,
   DashboardSummary,
   TransactionList,
-  TransactionForm,
-  BillList,
-  AccountForm
 } from "@/components";
 
 import {
-  serializeAccount,
-  serializeBill,
   serializeTransaction,
-} from "@/lib/serializers"
+} from "@/lib/serializers";
 
-import Link from "next/link";
 import { getCurrentUserId } from "@/lib/currentUser";
 import { getDashboardData } from "@/lib/dashboard";
 
 export default async function Home() {
   const userId = await getCurrentUserId();
   const dashboardData = await getDashboardData(userId);
-  const accounts = dashboardData.accounts.map(serializeAccount);
-  const upcomingBills = dashboardData.upcomingBills.map(serializeBill);
-  const recentTransactions = dashboardData.recentTransactions.map(serializeTransaction);
 
-  const accountOptions = accounts.map((account) => ({
-    id: account.id,
-    name: account.name,
-  }));
+  const recentTransactions = dashboardData.recentTransactions.map(
+    serializeTransaction
+  );
 
   const dashboard = {
     balance: dashboardData.totalBalance,
@@ -36,20 +25,36 @@ export default async function Home() {
   };
 
   return (
-    <main>
-      <AccountList accounts={accounts} />
+    <main className="dashboard-page">
+      <section className="dashboard-header">
+        <p className="dashboard-eyebrow">Household Dashboard</p>
 
-      <p>
-        <Link href="/accounts/archived">
-          View archived accounts
-        </Link>
-      </p>
+        <h1 className="dashboard-title">
+          Welcome back
+        </h1>
 
-      <AccountForm />
+        <p className="dashboard-subtitle">
+          Here&apos;s a quick look at your household finances.
+        </p>
+      </section>
 
-      <BillList bills={upcomingBills} />
-      <TransactionList transactions={recentTransactions} />
-      <TransactionForm accounts={accountOptions} />
+      <DashboardSummary dashboard={dashboard} />
+
+      <section className="dashboard-grid">
+        <section className="dashboard-card">
+          <TransactionList transactions={recentTransactions} />
+        </section>
+
+        <section className="dashboard-card">
+          <h2 className="dashboard-card-title">
+            Spending by Member
+          </h2>
+
+          <p className="dashboard-placeholder-text">
+            Member spending will go here once transactions are connected to users.
+          </p>
+        </section>
+      </section>
     </main>
   );
 }

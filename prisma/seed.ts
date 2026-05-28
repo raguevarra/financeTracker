@@ -10,6 +10,8 @@ const prisma = new PrismaClient({
   adapter,
 });
 
+const seedParentEmail = process.env.SEED_PARENT_EMAIL ?? "roman@example.com";
+
 async function main() {
   // clear existing data in dependency order
   await prisma.transaction.deleteMany();
@@ -24,7 +26,7 @@ async function main() {
     data: {
       clerkId: "user_seed_parent",
       name: "Roman",
-      email: "roman@example.com",
+      email: seedParentEmail,
     },
   });
 

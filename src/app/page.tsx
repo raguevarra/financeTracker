@@ -1,6 +1,6 @@
 import {
   DashboardSummary,
-  TransactionList,
+  DashboardTransactionsCard
 } from "@/components";
 
 import {
@@ -41,9 +41,7 @@ export default async function Home() {
       <DashboardSummary dashboard={dashboard} />
 
       <section className="dashboard-grid">
-        <section className="dashboard-card">
-          <TransactionList transactions={recentTransactions} />
-        </section>
+        <DashboardTransactionsCard transactions={recentTransactions} />
 
         <section className="dashboard-card">
           <h2 className="dashboard-card-title">

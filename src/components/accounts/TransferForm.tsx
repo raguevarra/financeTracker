@@ -14,6 +14,7 @@ type TransferFormProps = {
     currentAccountId: string;
 };
 
+// Moves money between two accounts and prevents same-account transfers.
 export function TransferForm({ accounts, currentAccountId }: TransferFormProps) {
     const router = useRouter();
 

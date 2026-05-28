@@ -1,3 +1,4 @@
+// Displays the main dashboard intro copy.
 export function DashboardHeader() {
     return (
         <section className="dashboard-header">

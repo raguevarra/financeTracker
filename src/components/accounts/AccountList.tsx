@@ -14,6 +14,7 @@ type AccountListProps = {
     title?: string;
 };
 
+// Renders account rows with navigation, balances, and archive/restore actions.
 export function AccountList({ accounts, title = "Accounts" }: AccountListProps) {
     if (accounts.length === 0) {
         return <p>No accounts found.</p>;

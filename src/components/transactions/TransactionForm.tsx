@@ -13,6 +13,7 @@ type TransactionFormProps = {
     accounts: AccountOption[];
 };
 
+// Creates a transaction from a general account picker.
 export function TransactionForm({ accounts }: TransactionFormProps) {
     const router = useRouter();
 
@@ -27,7 +28,7 @@ export function TransactionForm({ accounts }: TransactionFormProps) {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState("");
 
-    // Handle input changes and update the form state
+    // Keeps the form object in sync with each named input.
     function handleChange(
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) {
@@ -37,7 +38,7 @@ export function TransactionForm({ accounts }: TransactionFormProps) {
         });
     }
 
-    // Handle form submission to create a new transaction
+    // Sends the transaction to the API and resets the form after a save.
     async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
         e.preventDefault();
 
@@ -76,7 +77,6 @@ export function TransactionForm({ accounts }: TransactionFormProps) {
         router.refresh();
     }
 
-    // Render the transaction form with input fields and a submit button
     return (
         <form onSubmit={handleSubmit}>
             <h2>Add Transaction</h2>

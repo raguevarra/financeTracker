@@ -9,6 +9,7 @@ type PayBillButtonProps = {
     isPaid: boolean;
 }
 
+// Marks an unpaid bill as paid and hides itself once the bill is already paid.
 export function PayBillButton({ billId, isPaid }: PayBillButtonProps) {
     const router = useRouter();
     const [isPaying, setIsPaying] = useState(false);

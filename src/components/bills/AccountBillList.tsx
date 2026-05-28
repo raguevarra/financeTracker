@@ -9,6 +9,7 @@ type AccountBillListProps = {
     accountName: string;
 };
 
+// Displays the bills attached to a single account.
 export function AccountBillList({ bills, accountName }: AccountBillListProps) {
     return (
         <section>

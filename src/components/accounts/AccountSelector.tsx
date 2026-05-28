@@ -7,6 +7,7 @@ type AccountSelectorProps = {
     accounts: Account[];
 }
 
+// Lets users choose which accounts should be included in a filtered account list.
 export function AccountSelector({ accounts }: AccountSelectorProps) {
     const firstAccountId = accounts[0]?.id;
 

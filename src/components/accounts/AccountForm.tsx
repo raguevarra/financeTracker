@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FormError } from "../shared/FormError";
 
+// Creates a new account and refreshes the dashboard once it saves.
 export function AccountForm() {
     const router = useRouter();
 

@@ -11,6 +11,7 @@ type TransactionListProps = {
   transactions: Transaction[];
 };
 
+// Formats transaction amounts consistently for the list view.
 function formatCurrency(value: number | string) {
   const amount = Number(value);
 
@@ -20,6 +21,7 @@ function formatCurrency(value: number | string) {
   }).format(amount);
 }
 
+// Renders transactions newest-first with optional account context.
 export function TransactionList({ transactions }: TransactionListProps) {
   const sortedTransactions = [...transactions].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()

@@ -1,5 +1,3 @@
-// src/components/EditTransactionButton.tsx
-
 "use client";
 
 import { useState } from "react";
@@ -14,6 +12,7 @@ type EditTransactionButtonProps = {
   transaction: TransactionCardData;
 };
 
+// Opens a modal for editing transaction details.
 export function EditTransactionButton({
   transaction,
 }: EditTransactionButtonProps) {

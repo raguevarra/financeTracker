@@ -5,6 +5,7 @@ type ModalActionProps = {
     savingLabel?: string;
 };
 
+// Standard cancel/save button row for modal forms.
 export function ModalActions({
     onCancel,
     isSaving,

@@ -8,6 +8,7 @@ type AccountArchiveButtonProps = {
     isArchived: boolean;
 };
 
+// Toggles an account between active and archived, then refreshes server data.
 export function AccountArchiveButton({
     accountId,
     isArchived,

@@ -11,6 +11,7 @@ type EditBillButtonProps = {
   bill: BillCardData;
 };
 
+// Normalizes dates into the yyyy-mm-dd value expected by date inputs.
 function toDateInputValue(date: Date | string) {
     if (typeof date === "string" && date.includes("T")) {
         return date.split("T")[0];
@@ -23,6 +24,7 @@ function toDateInputValue(date: Date | string) {
     return date.toISOString().split("T")[0];
 }
 
+// Opens a modal for editing bill details.
 export function EditBillButton({ bill }: EditBillButtonProps) {
   const router = useRouter();
 

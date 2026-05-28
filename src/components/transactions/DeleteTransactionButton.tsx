@@ -10,6 +10,7 @@ type DeleteTransactionButtonProps = {
   transactionName: string;
 };
 
+// Confirms and deletes a transaction, then refreshes the current route.
 export function DeleteTransactionButton({
   transactionId,
   transactionName,

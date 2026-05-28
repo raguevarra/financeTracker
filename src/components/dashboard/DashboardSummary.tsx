@@ -10,6 +10,7 @@ type DashboardSummaryProps = {
   dashboard: DashboardSummaryData;
 };
 
+// Summarizes the core dashboard totals in three compact cards.
 export function DashboardSummary({ dashboard }: DashboardSummaryProps) {
   const summaryCards = [
     {

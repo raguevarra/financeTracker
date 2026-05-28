@@ -5,6 +5,7 @@ type DashboardTransactionsProps = {
   transactions: Transaction[];
 };
 
+// Shows the newest transactions on the dashboard.
 export function DashboardTransactionsCard({
   transactions,
 }: DashboardTransactionsProps) {

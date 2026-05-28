@@ -19,6 +19,7 @@ type BillCardProps = {
     bill: BillCardData;
 };
 
+// Shows bill details alongside edit, delete, and mark-as-paid actions.
 export function BillCard({ bill }: BillCardProps) {
     return (
         <article className="bill-card">

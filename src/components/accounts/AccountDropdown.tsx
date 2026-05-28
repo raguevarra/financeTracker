@@ -12,6 +12,7 @@ type AccountDropdownProps = {
     selectedAccountId: string;
 };
 
+// Switches the account detail page when a different account is selected.
 export function AccountDropdown({
     accounts,
     selectedAccountId,

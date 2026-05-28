@@ -12,6 +12,7 @@ type ConfirmActionModalProps = {
     confirmClassName?: string;
 };
 
+// Wraps the shared modal with cancel/confirm actions for destructive flows.
 export function ConfirmActionModal({
     isOpen,
     title,

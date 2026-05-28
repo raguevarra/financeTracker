@@ -17,6 +17,7 @@ type ModalProps = {
     onClose: () => void;
 };
 
+// Provides the shared modal shell used by forms and confirmation dialogs.
 export function Modal({ isOpen, title, children, onClose }: ModalProps) {
     if (!isOpen) {
         return null;

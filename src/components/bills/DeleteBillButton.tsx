@@ -10,6 +10,7 @@ type DeleteBillButtonProps = {
     billName?: string;
 };
 
+// Confirms and deletes a bill, then refreshes the current route.
 export function DeleteBillButton({ billId, billName }: DeleteBillButtonProps) {
     const router = useRouter();
 

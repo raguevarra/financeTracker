@@ -1,5 +1,3 @@
-// Modal for adding bills in the account view
-
 "use client";
 
 import { useState } from "react";
@@ -8,10 +6,13 @@ import { Modal } from "../shared/Modal";
 import { FormError } from "../shared/FormError";
 import { ModalActions } from "../shared/ModalActions";
 
+// Modal for adding bills in the account view.
+
 type AddBillModalProps = {
     accountId: string;
 };
 
+// Opens a modal form for adding a new bill to the selected account.
 export function AddBillModal({ accountId }: AddBillModalProps) {
     const router = useRouter();
 

@@ -8,6 +8,7 @@ type AccountTransactionFormProps = {
     accountId: string;
 };
 
+// Adds a transaction directly to the current account detail page.
 export function AccountTransactionForm({ accountId }: AccountTransactionFormProps) {
     const router = useRouter();
 

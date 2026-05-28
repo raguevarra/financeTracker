@@ -6,6 +6,7 @@ type BillListProps = {
   bills: BillCardData[];
 };
 
+// Renders the upcoming-bills section for the dashboard.
 export default function BillList({ bills }: BillListProps) {
   return (
     <section>

@@ -37,7 +37,6 @@ export function AccountArchiveButton({
             return;
         }
 
-        //test
         router.refresh();
     }
 

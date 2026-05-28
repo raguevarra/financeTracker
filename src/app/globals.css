@@ -404,3 +404,81 @@ textarea {
 }
 /* #endregion */
 
+/* #region Dashboard Transaction Cards*/
+.dashboard-card-subtitle {
+  margin: 0.25rem 0 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.recent-transactions-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.recent-transactions-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.recent-transaction-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.recent-transaction-item:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.recent-transaction-item:last-child {
+  padding-bottom: 0;
+}
+
+.recent-transaction-main {
+  min-width: 0;
+}
+
+.recent-transaction-name {
+  margin: 0;
+  font-weight: 600;
+  color: #111827;
+}
+
+.recent-transaction-meta {
+  margin: 0.25rem 0 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.recent-transaction-side {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.recent-transaction-amount {
+  margin: 0;
+  font-weight: 700;
+}
+
+.recent-transaction-amount.expense {
+  color: #b91c1c;
+}
+
+.recent-transaction-amount.income {
+  color: #047857;
+}
+
+.recent-transaction-date {
+  margin: 0.25rem 0 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+/* #endregion */
+

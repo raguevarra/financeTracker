@@ -1,11 +1,14 @@
 import { getCurrentUserId } from "@/lib/currentUser";
 import { getAccountById, getAccountsForUser } from "@/lib/accounts";
-import { TransactionCard } from "@/components/TransactionCard";
-import { AccountTransactionForm } from "@/components/AccountTransactionForm";
-import { AccountDropdown } from "@/components/AccountDropdown";
 import { formatCurrency } from "@/lib/formatters";
-import { AccountBillList, TransferForm } from "@/components";
-import { AddBillModal } from "@/components/AddBillModal";
+import {
+  AccountBillList,
+  AccountDropdown,
+  AccountTransactionForm,
+  AddBillModal,
+  TransactionCard,
+  TransferForm,
+} from "@/components";
 import Link from "next/link";
 
 type AccountPageProps = {

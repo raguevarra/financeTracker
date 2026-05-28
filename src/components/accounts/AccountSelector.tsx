@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AccountList, type Account } from "@/components/AccountList";
+import { AccountList, type Account } from "./AccountList";
 
 type AccountSelectorProps = {
     accounts: Account[];

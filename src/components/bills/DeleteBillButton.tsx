@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ConfirmActionModal } from "./ConfirmActionModal";
-import { FormError } from "./FormError";
+import { ConfirmActionModal } from "../shared/ConfirmActionModal";
+import { FormError } from "../shared/FormError";
 
 type DeleteBillButtonProps = {
     billId: string;

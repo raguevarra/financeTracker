@@ -1,27 +1,34 @@
 // accounts
-export { AccountDropdown } from "./AccountDropdown";
-export { AccountForm } from "./AccountForm";
-export { AccountList, type Account } from "./AccountList";
-export { AccountSelector } from "./AccountSelector";
-export { TransferForm } from "./TransferForm";
+export { AccountDropdown } from "./accounts/AccountDropdown";
+export { AccountForm } from "./accounts/AccountForm";
+export { AccountList, type Account } from "./accounts/AccountList";
+export { AccountSelector } from "./accounts/AccountSelector";
+export { AccountTransactionForm } from "./accounts/AccountTransactionForm";
+export { TransferForm } from "./accounts/TransferForm";
 
 // bills
-export { AccountBillList } from "./AccountBillList";
-export { AddBillModal } from "./AddBillModal";
-export { BillCard, type BillCardData } from "./BillCard";
-export { default as BillList } from "./BillList";
-export { DeleteBillButton } from "./DeleteBillButton";
-export { EditBillButton } from "./EditBillButton";
+export { AccountBillList } from "./bills/AccountBillList";
+export { AddBillModal } from "./bills/AddBillModal";
+export { BillCard, type BillCardData } from "./bills/BillCard";
+export { default as BillList } from "./bills/BillList";
+export { DeleteBillButton } from "./bills/DeleteBillButton";
+export { EditBillButton } from "./bills/EditBillButton";
+export { PayBillButton } from "./bills/PayBillButton";
 
 // dashboard
-export { DashboardHeader } from "./DashboardHeader";
-export { DashboardSummary, type DashboardSummaryData } from "./DashboardSummary";
-export { DashboardTransactionsCard } from "./DashboardTransactionsCard";
+export { DashboardHeader } from "./dashboard/DashboardHeader";
+export { DashboardSummary, type DashboardSummaryData } from "./dashboard/DashboardSummary";
+export { DashboardTransactionsCard } from "./dashboard/DashboardTransactionsCard";
 
 // transactions
-export { TransactionCard, type TransactionCardData } from "./TransactionCard";
-export { TransactionForm } from "./TransactionForm";
-export { TransactionList, type Transaction } from "./TransactionList";
+export { DeleteTransactionButton } from "./transactions/DeleteTransactionButton";
+export { EditTransactionButton } from "./transactions/EditTransactionButton";
+export { TransactionCard, type TransactionCardData } from "./transactions/TransactionCard";
+export { TransactionForm } from "./transactions/TransactionForm";
+export { TransactionList, type Transaction } from "./transactions/TransactionList";
 
 // shared
-export { Modal } from "./Modal";
+export { ConfirmActionModal } from "./shared/ConfirmActionModal";
+export { FormError } from "./shared/FormError";
+export { Modal } from "./shared/Modal";
+export { ModalActions } from "./shared/ModalActions";

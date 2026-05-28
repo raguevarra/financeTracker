@@ -4,11 +4,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Modal } from "./Modal";
+import { Modal } from "../shared/Modal";
 import type { TransactionCardData } from "./TransactionCard";
 import { toDateInputValue } from "@/lib/formatters";
-import { FormError } from "./FormError";
-import { ModalActions } from "./ModalActions";
+import { FormError } from "../shared/FormError";
+import { ModalActions } from "../shared/ModalActions";
 
 type EditTransactionButtonProps = {
   transaction: TransactionCardData;

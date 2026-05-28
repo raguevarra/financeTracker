@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getCurrentUserId } from "@/lib/currentUser";
 import { getAccountsForUser } from "@/lib/accounts";
-import { AccountList } from "@/components/AccountList";
+import { AccountList } from "@/components";
 import { serializeAccount } from "@/lib/serializers";
 
 export default async function ArchivedAccountsPage() {

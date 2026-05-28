@@ -1,5 +1,5 @@
 import { formatCurrency } from "@/lib/formatters";
-import type { Transaction } from "@/components/TransactionList";
+import type { Transaction } from "../transactions/TransactionList";
 
 type DashboardTransactionsProps = {
   transactions: Transaction[];

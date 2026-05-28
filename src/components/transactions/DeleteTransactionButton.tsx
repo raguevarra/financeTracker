@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ConfirmActionModal } from "./ConfirmActionModal";
-import { FormError } from "./FormError";
+import { ConfirmActionModal } from "../shared/ConfirmActionModal";
+import { FormError } from "../shared/FormError";
 
 type DeleteTransactionButtonProps = {
   transactionId: string;

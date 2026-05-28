@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Modal } from "./Modal";
+import { Modal } from "../shared/Modal";
 import type { BillCardData } from "./BillCard";
-import { FormError } from "./FormError";
-import { ModalActions } from "./ModalActions";
+import { FormError } from "../shared/FormError";
+import { ModalActions } from "../shared/ModalActions";
 
 type EditBillButtonProps = {
   bill: BillCardData;

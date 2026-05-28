@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { FormError } from "./FormError";
+import { FormError } from "../shared/FormError";
 
 type PayBillButtonProps = {
     billId: string;

@@ -2,7 +2,6 @@
 Bill card component for reuse across 'BillList.tsx' and 'AccountBillList.tsx'
 */
 
-import { Prisma } from "@prisma/client";
 import { formatCurrency, formatDate } from "@/lib/formatters";
 import { DeleteBillButton } from "./DeleteBillButton";
 import { EditBillButton } from "./EditBillButton";
@@ -11,7 +10,7 @@ import { PayBillButton } from "./PayBillButton";
 export type BillCardData = {
     id: string;
     name: string;
-    amount: Prisma.Decimal | number | string;
+    amount: string;
     dueDate: Date | string;
     isPaid: boolean;
 };

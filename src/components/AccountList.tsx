@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import Link from "next/link";
 import { AccountArchiveButton } from "./AccountArchiveButton";
 
@@ -6,7 +5,7 @@ export type Account = {
     id: string;
     name: string;
     type: string;
-    balance: Prisma.Decimal | number | string;
+    balance: string;
     isArchived: boolean;
 };
 

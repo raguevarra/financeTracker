@@ -7,6 +7,12 @@ import {
   AccountForm
 } from "@/components";
 
+import {
+  serializeAccount,
+  serializeBill,
+  serializeTransaction,
+} from "@/lib/serializers"
+
 import Link from "next/link";
 import { getCurrentUserId } from "@/lib/currentUser";
 import { getDashboardData } from "@/lib/dashboard";
@@ -14,31 +20,36 @@ import { getDashboardData } from "@/lib/dashboard";
 export default async function Home() {
   const userId = await getCurrentUserId();
   const dashboardData = await getDashboardData(userId);
+  const accounts = dashboardData.accounts.map(serializeAccount);
+  const upcomingBills = dashboardData.upcomingBills.map(serializeBill);
+  const recentTransactions = dashboardData.recentTransactions.map(serializeTransaction);
+
+  const accountOptions = accounts.map((account) => ({
+    id: account.id,
+    name: account.name,
+  }));
 
   const dashboard = {
     balance: dashboardData.totalBalance,
     monthlySpending: dashboardData.monthlySpending,
     upcomingBills: dashboardData.upcomingBills?.length ?? 0,
   };
-  const recentTransactions = dashboardData.recentTransactions.map((transaction) => ({
-    ...transaction,
-    amount: String(transaction.amount),
-    date: transaction.date.toISOString(),
-  }));
 
   return (
     <main>
-      <DashboardSummary dashboard={dashboard} />
-      <AccountList accounts={dashboardData.accounts} />
+      <AccountList accounts={accounts} />
+
       <p>
         <Link href="/accounts/archived">
           View archived accounts
         </Link>
       </p>
+
       <AccountForm />
-      <BillList bills={dashboardData.upcomingBills} />
+
+      <BillList bills={upcomingBills} />
       <TransactionList transactions={recentTransactions} />
-      <TransactionForm accounts={dashboardData.accounts} />
+      <TransactionForm accounts={accountOptions} />
     </main>
   );
 }

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getCurrentUserId } from "@/lib/currentUser";
 import { getAccountsForUser } from "@/lib/accounts";
 import { AccountList } from "@/components/AccountList";
+import { serializeAccount } from "@/lib/serializers";
 
 export default async function ArchivedAccountsPage() {
     const userId = await getCurrentUserId();
@@ -10,10 +11,7 @@ export default async function ArchivedAccountsPage() {
         archived: true,
     });
 
-    const plainArchivedAccounts = archivedAccounts.map((account) => ({
-        ...account,
-        balance: account.balance.toString(),
-    }));
+    const plainArchivedAccounts = archivedAccounts.map(serializeAccount);
 
     return (
         <main>

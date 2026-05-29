@@ -16,7 +16,7 @@ type TransactionCardProps = {
   transaction: TransactionCardData;
 };
 
-// Displays one transaction with formatted amount, date, edit, and delete actions.
+// Displays one transaction with formatted amount and date, and edit and delete actions.
 export function TransactionCard({ transaction }: TransactionCardProps) {
   const amount = Number(transaction.amount);
   const isExpense = amount < 0;

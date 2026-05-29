@@ -26,7 +26,7 @@ export default async function Home() {
   };
 
   return (
-    <main className="dashboard-page">
+    <div className="dashboard-page">
       <DashboardHeader />
 
       <DashboardSummary dashboard={dashboard} />
@@ -44,6 +44,6 @@ export default async function Home() {
           </p>
         </section>
       </section>
-    </main>
+    </div>
   );
 }

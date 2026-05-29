@@ -1,4 +1,31 @@
 /* #region Default*/
+
+@media (max-width: 768px) {
+  .app-layout {
+    position: relative;
+  }
+
+  .app-sidebar {
+    bottom: 0;
+    box-shadow: 20px 0 40px rgba(15, 23, 42, 0.16);
+    left: 0;
+    position: fixed;
+    top: 73px;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+    width: 260px;
+    z-index: 30;
+  }
+
+  .app-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .app-main {
+    padding: 20px;
+  }
+}
+
 :root {
   color-scheme: light;
   --background: #f6f7f9;
@@ -37,22 +64,91 @@ textarea {
 }
 
 .app-shell {
-  margin: 0 auto;
-  max-width: 1120px;
-  padding: 32px 20px;
+  min-height: 100vh;
 }
 
 .app-header {
   align-items: center;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
   display: flex;
   gap: 16px;
   justify-content: space-between;
-  margin-bottom: 24px;
+  padding: 16px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.app-header-left {
+  align-items: center;
+  display: flex;
+  gap: 12px;
 }
 
 .app-header h1 {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   margin: 0;
+}
+
+.menu-button {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--foreground);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1.25rem;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.menu-button:hover {
+  background: var(--background);
+}
+
+.app-layout {
+  display: flex;
+  min-height: calc(100vh - 73px);
+}
+
+.app-sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  flex: 0 0 240px;
+  padding: 20px;
+}
+
+.app-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.app-nav-link {
+  border-radius: 10px;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 10px 12px;
+  text-decoration: none;
+}
+
+.app-nav-link:hover {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.app-nav-link.active {
+  background: #e8f0ff;
+  color: var(--accent);
+}
+
+.app-main {
+  flex: 1;
+  min-width: 0;
+  padding: 32px 20px;
 }
 
 .auth-page {

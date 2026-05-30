@@ -25,16 +25,20 @@ async function main() {
   const parent = await prisma.user.create({
     data: {
       clerkId: "user_seed_parent",
-      name: "Roman",
+      firstName: "Roman",
+      lastName: "Guevarra",
       email: seedParentEmail,
+      imageUrl: null,
     },
   });
 
   const child = await prisma.user.create({
     data: {
       clerkId: "user_seed_child",
-      name: "Child",
+      firstName: "Demo",
+      lastName: "Child",
       email: "child@example.com",
+      imageUrl: null,
     },
   });
 

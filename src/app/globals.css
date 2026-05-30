@@ -1,25 +1,28 @@
 /* #region Default*/
 
 @media (max-width: 768px) {
+  .app-layout {
+    position: relative;
+  }
+
   .app-sidebar {
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    flex: 0 0 0;
-    overflow: hidden;
-    padding: 20px 0;
-    transition: flex-basis 0.2s ease, padding 0.2s ease;
+    bottom: 0;
+    box-shadow: 20px 0 40px rgba(15, 23, 42, 0.16);
+    left: 0;
+    position: fixed;
+    top: 73px;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+    width: 260px;
+    z-index: 30;
   }
 
   .app-sidebar.open {
-    flex-basis: 240px;
-    padding: 20px;
+    transform: translateX(0);
   }
 
-  .app-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-width: 200px;
+  .app-main {
+    padding: 20px;
   }
 }
 
@@ -114,14 +117,23 @@ textarea {
 .app-sidebar {
   background: var(--surface);
   border-right: 1px solid var(--border);
-  flex: 0 0 240px;
+  flex-shrink: 0;
+  overflow: hidden;
+  padding: 0;
+  transition: width 0.2s ease, padding 0.2s ease;
+  width: 0;
+}
+
+.app-sidebar.open {
   padding: 20px;
+  width: 240px;
 }
 
 .app-nav {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: 200px;
 }
 
 .app-nav-link {

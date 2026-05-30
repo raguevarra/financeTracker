@@ -1,75 +1,46 @@
-import { currentUser as getClerkUser } from "@clerk/nextjs/server";
+// src/lib/currentUser.ts
+
+import { auth, currentUser as clerkCurrentUser } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 
-export async function getCurrentUserId() {
-    const clerkUser = await getClerkUser();
+export async function getCurrentUser() {
+  const { userId } = await auth();
 
-    if (!clerkUser) {
-        throw new Error("No authenticated Clerk user found.");
-    }
+  if (!userId) {
+    redirect("/sign-in");
+  }
 
-    const email =
-        clerkUser.primaryEmailAddress?.emailAddress ??
-        clerkUser.emailAddresses[0]?.emailAddress;
+  const clerkUser = await clerkCurrentUser();
 
-    if (!email) {
-        throw new Error("Authenticated Clerk user does not have an email address.");
-    }
+  if (!clerkUser) {
+    redirect("/sign-in");
+  }
 
-    const name =
-        clerkUser.fullName ??
-        clerkUser.username ??
-        email.split("@")[0];
+  const email = clerkUser.emailAddresses[0]?.emailAddress;
 
-    const existingUser = await prisma.user.findUnique({
-        where: {
-            clerkId: clerkUser.id,
-        },
-        select: {
-            id: true,
-        },
-    });
+  if (!email) {
+    throw new Error("No email found for current Clerk user.");
+  }
 
-    if (existingUser) {
-        return existingUser.id;
-    }
+  const dbUser = await prisma.user.upsert({
+    where: {
+      clerkId: userId,
+    },
+    update: {
+      email,
+      firstName: clerkUser.firstName,
+      lastName: clerkUser.lastName,
+      imageUrl: clerkUser.imageUrl,
+    },
+    create: {
+      clerkId: userId,
+      email,
+      firstName: clerkUser.firstName,
+      lastName: clerkUser.lastName,
+      imageUrl: clerkUser.imageUrl,
+    },
+  });
 
-    const userWithEmail = await prisma.user.findUnique({
-        where: {
-            email,
-        },
-        select: {
-            id: true,
-        },
-    });
-
-    if (userWithEmail) {
-        const user = await prisma.user.update({
-            where: {
-                id: userWithEmail.id,
-            },
-            data: {
-                clerkId: clerkUser.id,
-                name,
-            },
-            select: {
-                id: true,
-            },
-        });
-
-        return user.id;
-    }
-
-    const user = await prisma.user.create({
-        data: {
-            clerkId: clerkUser.id,
-            name,
-            email,
-        },
-        select: {
-            id: true,
-        },
-    });
-
-    return user.id;
+  return dbUser;
 }

@@ -2,15 +2,13 @@ import { getCurrentUserId } from "@/lib/getCurrentUser";
 import { getAccountById, getAccountsForUser } from "@/lib/accounts";
 import { formatCurrency } from "@/lib/formatters";
 import {
-  AccountBillList,
   AccountDropdown,
   AccountTransactionForm,
-  AddBillModal,
   TransactionCard,
   TransferForm,
 } from "@/components";
 import Link from "next/link";
-import { serializeBill, serializeTransaction } from "@/lib/serializers";
+import { serializeTransaction } from "@/lib/serializers";
 
 type AccountPageProps = {
   params: Promise<{
@@ -38,13 +36,11 @@ export default async function AccountPage({ params }: AccountPageProps) {
   }
 
   const transactions = account.transactions.map(serializeTransaction);
-  const bills = account.bills.map(serializeBill);
 
   const accountOptions = accounts.map((account) => ({
     id: account.id,
     name: account.name,
   }));
-
 
   return (
     <main>
@@ -74,25 +70,16 @@ export default async function AccountPage({ params }: AccountPageProps) {
         currentAccountId={account.id}
       />
 
-      <section>
-        <AddBillModal accountId={account.id} />
-        
-        <AccountBillList
-          bills={bills}
-          accountName={account.name}
-        />
-      </section>
-
       <AccountTransactionForm accountId={account.id} />
 
       <section>
         <h2>Transactions</h2>
 
-        {transactions?.length === 0 ? (
+        {transactions.length === 0 ? (
           <p>No transactions found for this account.</p>
         ) : (
           <div>
-            {transactions?.map((transaction) => (
+            {transactions.map((transaction) => (
               <TransactionCard
                 key={transaction.id}
                 transaction={transaction}

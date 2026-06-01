@@ -11,7 +11,6 @@ export type ValidCreateBillInput = {
   name: string;
   amount: string;
   dueDate: string;
-  accountId: string;
 };
 
 export type ValidUpdateBillInput = {
@@ -27,7 +26,7 @@ export function validateCreateBillInput(
     return { ok: false, error: "Invalid request body." };
   }
 
-  const { name, amount, dueDate, accountId } = body;
+  const { name, amount, dueDate } = body;
 
   if (!isNonEmptyString(name)) {
     return { ok: false, error: "Bill name is required." };
@@ -41,17 +40,12 @@ export function validateCreateBillInput(
     return { ok: false, error: "Bill due date is required." };
   }
 
-  if (!isNonEmptyString(accountId)) {
-    return { ok: false, error: "Account is required." };
-  }
-
   return {
     ok: true,
     data: {
       name: name.trim(),
       amount: toStringAmount(amount),
       dueDate,
-      accountId,
     },
   };
 }

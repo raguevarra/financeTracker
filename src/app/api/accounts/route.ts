@@ -3,7 +3,7 @@ GET route to fetch accounts for the current user
 POST route to add a new account
 */
 import { NextResponse } from "next/server";
-import { getCurrentUserId } from "@/lib/currentUser";
+import { getCurrentUserId } from "@/lib/getCurrentUser";
 import { createAccountForUser, getAccountsForUser } from "@/lib/accounts";
 import { badRequest, serverError } from "@/lib/responses";
 import { validateCreateAccountInput } from "@/lib/validation/accounts";

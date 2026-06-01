@@ -4,7 +4,7 @@ GET route to fetch dashboard information for the current user
 import { NextResponse } from "next/server";
 import { getDashboardData } from "@/lib/dashboard";
 import { serverError } from "@/lib/responses";
-import { getCurrentUserId } from "@/lib/currentUser";
+import { getCurrentUserId } from "@/lib/getCurrentUser";
 
 export async function GET() {
     // Try-catch block to handle potential errors during dashboard fetching

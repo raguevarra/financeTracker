@@ -2,7 +2,7 @@
 POST route to add a new bill
 */
 import { NextResponse } from "next/server";
-import { getCurrentUserId } from "@/lib/currentUser";
+import { getCurrentUserId } from "@/lib/getCurrentUser";
 import { getAccountById } from "@/lib/accounts";
 import { createBillForAccount } from "@/lib/bills";
 import { badRequest, notFound, serverError } from "@/lib/responses";

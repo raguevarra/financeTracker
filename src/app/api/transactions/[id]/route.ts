@@ -4,7 +4,7 @@ DELETE route to delete an existing transaction
 */
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import { getCurrentUserId } from "@/lib/currentUser";
+import { getCurrentUserId } from "@/lib/getCurrentUser";
 import { getAccountById } from "@/lib/accounts";
 import {
   getTransactionByIdForUser,

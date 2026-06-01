@@ -4,7 +4,7 @@ PATCH route to update an existing bill
 */
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import { getCurrentUserId } from "@/lib/currentUser"
+import { getCurrentUserId } from "@/lib/getCurrentUser"
 import { deleteBillById, getBillByIdForUser, updateBillById } from "@/lib/bills";
 import { notFound, serverError, badRequest } from "@/lib/responses";
 import { validateUpdateBillInput } from "@/lib/validation/bills";

@@ -2,7 +2,7 @@
 POST route to add a new transaction
 */
 import { NextResponse } from "next/server";
-import { getCurrentUserId } from "@/lib/currentUser";
+import { getCurrentUserId } from "@/lib/getCurrentUser";
 import { getAccountById } from "@/lib/accounts";
 import { createTransactionForAccount } from "@/lib/transactions";
 import { badRequest, notFound, serverError } from "@/lib/responses";

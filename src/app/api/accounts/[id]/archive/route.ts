@@ -2,7 +2,7 @@
 PATCH route to update an account's archived status
 */
 import { NextResponse } from "next/server";
-import { getCurrentUserId } from "@/lib/currentUser";
+import { getCurrentUserId } from "@/lib/getCurrentUser";
 import { archiveAccountForUser } from "@/lib/accounts"
 import { badRequest, notFound, serverError } from "@/lib/responses";
 

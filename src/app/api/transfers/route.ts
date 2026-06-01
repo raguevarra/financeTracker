@@ -3,7 +3,7 @@ POST route to create a transfer between two accounts
 */
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
-import { getCurrentUserId } from "@/lib/currentUser";
+import { getCurrentUserId } from "@/lib/getCurrentUser";
 import { getAccountById } from "@/lib/accounts";
 import { createTransferBetweenAccounts } from "@/lib/transfers";
 import { badRequest, notFound, serverError } from "@/lib/responses";

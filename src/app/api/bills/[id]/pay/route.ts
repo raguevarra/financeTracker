@@ -3,7 +3,7 @@ POST route to mark an existing bill as paid
 */
 import { NextResponse } from "next/server";
 import { getBillByIdForUser, payBillById } from "@/lib/bills";
-import { getCurrentUserId } from "@/lib/currentUser";
+import { getCurrentUserId } from "@/lib/getCurrentUser";
 import { revalidatePath } from "next/cache";
 import { notFound, serverError, badRequest } from "@/lib/responses";
 

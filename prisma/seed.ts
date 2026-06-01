@@ -212,24 +212,24 @@ async function main() {
     ],
   });
 
-  // child bills
+  // child-owned bills
   const phoneBill = await prisma.bill.create({
     data: {
       name: "Phone Bill",
       amount: new Prisma.Decimal("45.00"),
       dueDate: new Date("2026-05-15"),
       isPaid: false,
-      accountId: childAccount.id,
+      userId: child.id,
     },
   });
 
-  const spotifyBill = await prisma.bill.create({
+  const gymBill = await prisma.bill.create({
     data: {
-      name: "Spotify",
-      amount: new Prisma.Decimal("18.99"),
+      name: "Gym Membership",
+      amount: new Prisma.Decimal("32.99"),
       dueDate: new Date("2026-05-20"),
       isPaid: false,
-      accountId: childAccount.id,
+      userId: child.id,
     },
   });
 
@@ -239,18 +239,18 @@ async function main() {
       amount: new Prisma.Decimal("30.00"),
       dueDate: new Date("2026-05-01"),
       isPaid: true,
-      accountId: childAccount.id,
+      userId: child.id,
     },
   });
 
-  // household bills
+  // parent-owned / family-managed bills
   const mortgageBill = await prisma.bill.create({
     data: {
       name: "Mortgage",
       amount: new Prisma.Decimal("1200.00"),
       dueDate: new Date("2026-05-28"),
       isPaid: false,
-      accountId: jointAccount.id,
+      userId: parent.id,
     },
   });
 
@@ -260,17 +260,17 @@ async function main() {
       amount: new Prisma.Decimal("95.75"),
       dueDate: new Date("2026-05-18"),
       isPaid: false,
-      accountId: jointAccount.id,
+      userId: parent.id,
     },
   });
 
-  const paidHydroBill = await prisma.bill.create({
+  const paidInternetBill = await prisma.bill.create({
     data: {
       name: "Paid Internet",
       amount: new Prisma.Decimal("80.00"),
       dueDate: new Date("2026-05-05"),
       isPaid: true,
-      accountId: jointAccount.id,
+      userId: parent.id,
     },
   });
 
@@ -286,12 +286,12 @@ async function main() {
         billId: paidChildBill.id,
       },
       {
-        name: `Paid: ${paidHydroBill.name}`,
+        name: `Paid: ${paidInternetBill.name}`,
         amount: new Prisma.Decimal("-80.00"),
         type: "DEBIT",
         date: new Date("2026-05-05"),
         accountId: jointAccount.id,
-        billId: paidHydroBill.id,
+        billId: paidInternetBill.id,
       },
     ],
   });
@@ -311,8 +311,8 @@ async function main() {
       sharedSavings: sharedSavings.id,
       parentVisibleAccount: parentVisibleAccount.id,
     },
-    unpaidBills: [phoneBill.id, spotifyBill.id, mortgageBill.id, hydroBill.id],
-    paidBills: [paidChildBill.id, paidHydroBill.id],
+    unpaidBills: [phoneBill.id, gymBill.id, mortgageBill.id, hydroBill.id],
+    paidBills: [paidChildBill.id, paidInternetBill.id],
   });
 }
 

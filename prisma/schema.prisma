@@ -40,6 +40,11 @@ model HouseholdMember {
   @@index([householdId])
 }
 
+enum BillVisibility {
+  PERSONAL
+  HOUSEHOLD
+}
+
 model Bill {
   id      String   @id @default(cuid())
   name    String
@@ -50,13 +55,16 @@ model Bill {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  accountId    String
-  account      Account       @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   transactions Transaction[]
 
-  @@index([accountId])
+  @@index([userId])
   @@index([dueDate])
   @@index([isPaid])
+  @@index([userId, dueDate])
+  @@index([userId, isPaid])
 }
 
 model User {
@@ -64,6 +72,7 @@ model User {
   clerkId  String    @unique
   email    String?   @unique
   accounts Account[]
+  bills    Bill[]
 
   firstName String?
   lastName  String?
@@ -109,7 +118,6 @@ model Account {
   household Household @relation(fields: [householdId], references: [id], onDelete: Cascade)
 
   transactions Transaction[]
-  bills        Bill[]
 
   @@index([householdId])
   @@index([ownerId])

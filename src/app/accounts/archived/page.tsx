@@ -15,7 +15,7 @@ export default async function ArchivedAccountsPage() {
 
     return (
         <main>
-            <Link href="/">Back to dashboard.</Link>
+            <Link href="/accounts">Back to accounts.</Link>
 
             <section>
                 <h1>Archived Accounts</h1>

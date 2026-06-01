@@ -8,7 +8,7 @@ import {
   serializeTransaction,
 } from "@/lib/serializers";
 
-import { getCurrentUserId } from "@/lib/currentUser";
+import { getCurrentUserId } from "@/lib/getCurrentUser";
 import { getDashboardData } from "@/lib/dashboard";
 
 export default async function Home() {

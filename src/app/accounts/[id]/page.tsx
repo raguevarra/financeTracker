@@ -1,4 +1,4 @@
-import { getCurrentUserId } from "@/lib/currentUser";
+import { getCurrentUserId } from "@/lib/getCurrentUser";
 import { getAccountById, getAccountsForUser } from "@/lib/accounts";
 import { formatCurrency } from "@/lib/formatters";
 import {
@@ -10,6 +10,7 @@ import {
   TransferForm,
 } from "@/components";
 import Link from "next/link";
+import { serializeBill, serializeTransaction } from "@/lib/serializers";
 
 type AccountPageProps = {
   params: Promise<{
@@ -36,10 +37,8 @@ export default async function AccountPage({ params }: AccountPageProps) {
     );
   }
 
-  const transactions = account?.transactions.map((transaction) => ({
-    ...transaction,
-    amount: transaction.amount.toString(),
-  }));
+  const transactions = account.transactions.map(serializeTransaction);
+  const bills = account.bills.map(serializeBill);
 
   const accountOptions = accounts.map((account) => ({
     id: account.id,
@@ -79,7 +78,7 @@ export default async function AccountPage({ params }: AccountPageProps) {
         <AddBillModal accountId={account.id} />
         
         <AccountBillList
-          bills={account.bills}
+          bills={bills}
           accountName={account.name}
         />
       </section>

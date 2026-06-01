@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getCurrentUserId } from "@/lib/currentUser";
+import { getCurrentUserId } from "@/lib/getCurrentUser";
 import { getAccountsForUser } from "@/lib/accounts";
 import { AccountList } from "@/components";
 import { serializeAccount } from "@/lib/serializers";

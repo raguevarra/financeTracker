@@ -80,21 +80,25 @@ export function AddTransactionModal({ accounts }: AddTransactionModalProps) {
     <>
       <button
         type="button"
+        className="primary-button"
         onClick={() => setIsOpen(true)}
         disabled={accounts.length === 0}
       >
         Add Transaction
       </button>
 
-      <Modal
-        isOpen={isOpen}
-        title="Add Transaction"
-        onClose={closeModal}
-      >
-        <form onSubmit={handleSubmit}>
+      <Modal isOpen={isOpen} title="Add Transaction" onClose={closeModal}>
+        <form onSubmit={handleSubmit} className="transaction-form">
+          <div className="transaction-form-header">
+            <p className="transaction-form-eyebrow">New transaction</p>
+            <p className="transaction-form-description">
+              Add a transaction and assign it to one of your active accounts.
+            </p>
+          </div>
+
           <FormError message={error} />
 
-          <div>
+          <div className="form-field">
             <label htmlFor="transaction-account">Account</label>
             <select
               id="transaction-account"
@@ -110,43 +114,48 @@ export function AddTransactionModal({ accounts }: AddTransactionModalProps) {
             </select>
           </div>
 
-          <div>
+          <div className="form-field">
             <label htmlFor="transaction-name">Name</label>
             <input
               id="transaction-name"
               type="text"
+              placeholder="Groceries, paycheque, rent..."
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
             />
           </div>
 
-          <div>
-            <label htmlFor="transaction-amount">Amount</label>
-            <input
-              id="transaction-amount"
-              type="number"
-              step="0.01"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              required
-            />
+          <div className="form-row">
+            <div className="form-field">
+              <label htmlFor="transaction-amount">Amount</label>
+              <input
+                id="transaction-amount"
+                type="number"
+                step="0.01"
+                placeholder="0.00"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                className="no-spinner"
+                required
+              />
+            </div>
+
+            <div className="form-field">
+              <label htmlFor="transaction-type">Type</label>
+              <select
+                id="transaction-type"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                required
+              >
+                <option value="DEBIT">Debit</option>
+                <option value="CREDIT">Credit</option>
+              </select>
+            </div>
           </div>
 
-          <div>
-            <label htmlFor="transaction-type">Type</label>
-            <select
-              id="transaction-type"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              required
-            >
-              <option value="DEBIT">Debit</option>
-              <option value="CREDIT">Credit</option>
-            </select>
-          </div>
-
-          <div>
+          <div className="form-field">
             <label htmlFor="transaction-date">Date</label>
             <input
               id="transaction-date"

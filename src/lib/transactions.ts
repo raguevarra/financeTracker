@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, TransactionType } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { nestedAccountAccessWhere } from "./access";
 import { adjustAccountBalance } from "./accountBalances";
@@ -6,7 +6,7 @@ import { adjustAccountBalance } from "./accountBalances";
 type CreateTransactionInput = {
     name: string;
     amount: string;
-    type: string;
+    type: TransactionType;
     date: string;
     accountId: string;
 }
@@ -14,7 +14,7 @@ type CreateTransactionInput = {
 type UpdateTransactionInput = {
     name: string;
     amount: string;
-    type: string;
+    type: TransactionType;
     date: string;
     accountId: string;
 }

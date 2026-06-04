@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TransactionCard, TransactionForm } from "@/components";
+import { TransactionCard, AddTransactionModal } from "@/components";
 import { accountAccessWhere } from "@/lib/access";
 import { formatCurrency } from "@/lib/formatters";
 import { getCurrentUserId } from "@/lib/getCurrentUser";
@@ -81,7 +81,16 @@ export default async function TransactionsPage() {
           </section>
 
           <section className="dashboard-card">
-            <TransactionForm accounts={accountOptions} />
+            <div className="dashboard-section-header">
+              <div>
+                <p className="dashboard-card-label">Quick Add</p>
+                <p className="dashboard-subtitle">
+                  Add a transaction to any active account.
+                </p>
+              </div>
+
+              <AddTransactionModal accounts={accountOptions} />
+            </div>
           </section>
 
           <section>

@@ -759,5 +759,40 @@ textarea {
   color: #6b7280;
   font-size: 0.875rem;
 }
+
+.quick-add-card {
+  padding: 1.5rem;
+}
+
+.quick-add-header {
+  align-items: center;
+}
+
+.quick-add-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.quick-add-title {
+  color: var(--foreground);
+  font-size: 1.35rem;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.quick-add-subtitle {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0 0 0.35rem;
+}
+
+@media (max-width: 640px) {
+  .quick-add-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
 /* #endregion */
 

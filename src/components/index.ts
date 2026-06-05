@@ -27,6 +27,7 @@ export { TransactionCard, type TransactionCardData } from "./transactions/Transa
 export { TransactionForm } from "./transactions/TransactionForm";
 export { TransactionList, type Transaction } from "./transactions/TransactionList";
 export { AddTransactionModal } from "./transactions/AddTransactionModal";
+export { TransactionFilterList } from "./transactions/TransactionFilterList";
 
 // shared
 export { ConfirmActionModal } from "./shared/ConfirmActionModal";

@@ -794,5 +794,27 @@ textarea {
     gap: 1rem;
   }
 }
+
+.transaction-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 180px;
+}
+
+.transaction-filter-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted-text);
+}
+
+.transaction-filter-select {
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--card-background);
+  color: var(--foreground);
+  padding: 0.6rem 0.8rem;
+  font: inherit;
+}
 /* #endregion */
 

@@ -10,6 +10,7 @@ export type TransactionCardData = {
   type: string;
   date: Date | string;
   accountId: string;
+  accountName?: string;
 };
 
 type TransactionCardProps = {
@@ -19,13 +20,15 @@ type TransactionCardProps = {
 // Displays one transaction with formatted amount and date, and edit and delete actions.
 export function TransactionCard({ transaction }: TransactionCardProps) {
   const amount = Number(transaction.amount);
-  const isExpense = amount < 0;
 
   return (
     <div className="transaction-card">
       <div className="transaction-card-info">
         <p className="transaction-card-name">{transaction.name}</p>
-        <p className="transaction-card-date">{formatDate(transaction.date)}</p>
+        <p className="transaction-card-date">
+          {formatDate(transaction.date)}
+          {transaction.accountName ? ` · ${transaction.accountName}` : ""}
+        </p>
       </div>
 
       <div className="transaction-card-actions">

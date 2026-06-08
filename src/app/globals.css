@@ -816,5 +816,12 @@ textarea {
   padding: 0.6rem 0.8rem;
   font: inherit;
 }
+
+.transaction-filters {
+  display: flex;
+  align-items: end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
 /* #endregion */
 

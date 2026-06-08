@@ -41,6 +41,8 @@ export function TransactionFilterList({
 
   const [sortOption, setSortOption] = useState<SortOption>("dateDesc");
 
+  const [searchQuery, setSearchQuery] = useState("");
+
   const filteredTransactions = useMemo(() => {
     const amountNumber = Number(amountValue);
     const hasValidAmountFilter =
@@ -93,7 +95,19 @@ export function TransactionFilterList({
         }
       }
 
-      return matchesAccount && matchesType && matchesDate && matchesAmount;
+      const normalizedSearchQuery = searchQuery.trim().toLowerCase();
+
+      const matchesSearch = 
+        normalizedSearchQuery === "" ||
+        transaction.name.toLowerCase().includes(normalizedSearchQuery);
+
+      return(
+        matchesAccount &&
+        matchesType &&
+        matchesDate &&
+        matchesAmount &&
+        matchesSearch
+      );
     })
     .sort((a, b) => {
       if (sortOption === "dateDesc") {
@@ -126,6 +140,7 @@ export function TransactionFilterList({
     amountOperator,
     amountValue,
     sortOption,
+    searchQuery
   ]);
 
   return (
@@ -138,6 +153,19 @@ export function TransactionFilterList({
       </div>
 
       <div className="transaction-filters">
+
+        <label className="transaction-filter transaction-search-filter">
+          <span className="transaction-filter-label">Search</span>
+
+          <input
+            className="transaction-filter-input"
+            type="search"
+            placeholder="Search transaction names"
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+          />
+        </label>
+        
         <label className="transaction-filter">
           <span className="transaction-filter-label">Account</span>
 

@@ -820,6 +820,10 @@ textarea {
   color: var(--muted-text);
 }
 
+.transaction-search-filter {
+  min-width: 260px;
+}
+
 .transaction-filter-select,
 .transaction-filter-input {
   border: 1px solid var(--border);

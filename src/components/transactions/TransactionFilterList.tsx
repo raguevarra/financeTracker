@@ -17,6 +17,12 @@ type TransactionFilterListProps = {
   accounts: AccountOption[];
 };
 
+type SortOption =
+  | "dateDesc"
+  | "dateAsc"
+  | "amountDesc"
+  | "amountAsc";
+
 export function TransactionFilterList({
   transactions,
   accounts,
@@ -32,6 +38,8 @@ export function TransactionFilterList({
   const [amountOperator, setAmountOperator] =
     useState<AmountOperator>("none");
   const [amountValue, setAmountValue] = useState("");
+
+  const [sortOption, setSortOption] = useState<SortOption>("dateDesc");
 
   const filteredTransactions = useMemo(() => {
     const amountNumber = Number(amountValue);
@@ -52,7 +60,8 @@ export function TransactionFilterList({
       ? new Date(Date.now() - days * 24 * 60 * 60 * 1000)
       : null;
 
-    return transactions.filter((transaction) => {
+    return transactions
+    .filter((transaction) => {
       const matchesAccount =
         selectedAccountId === "all" ||
         transaction.accountId === selectedAccountId;
@@ -64,8 +73,7 @@ export function TransactionFilterList({
 
       const transactionDate = new Date(transaction.date);
 
-      const matchesDate =
-        !dateCutoff || transactionDate >= dateCutoff;
+      const matchesDate = !dateCutoff || transactionDate >= dateCutoff;
 
       const transactionAmount = Math.abs(Number(transaction.amount));
 
@@ -86,6 +94,28 @@ export function TransactionFilterList({
       }
 
       return matchesAccount && matchesType && matchesDate && matchesAmount;
+    })
+    .sort((a, b) => {
+      if (sortOption === "dateDesc") {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      }
+
+      if (sortOption === "dateAsc") {
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      }
+
+      const amountA = Math.abs(Number(a.amount));
+      const amountB = Math.abs(Number(b.amount));
+
+      if (sortOption === "amountDesc") {
+        return amountB - amountA;
+      }
+
+      if (sortOption === "amountAsc") {
+        return amountA - amountB;
+      }
+
+      return 0;
     });
   }, [
     transactions,
@@ -95,6 +125,7 @@ export function TransactionFilterList({
     customDays,
     amountOperator,
     amountValue,
+    sortOption,
   ]);
 
   return (
@@ -209,6 +240,23 @@ export function TransactionFilterList({
             />
           </label>
         )}
+
+        <label className="transaction-filter">
+          <span className="transaction-filter-label">Sort by</span>
+
+          <select
+            className="transaction-filter-select"
+            value={sortOption}
+            onChange={(event) =>
+              setSortOption(event.target.value as SortOption)
+            }
+          >
+            <option value="dateDesc">Newest first</option>
+            <option value="dateAsc">Oldest first</option>
+            <option value="amountDesc">Amount high to low</option>
+            <option value="amountAsc">Amount low to high</option>
+          </select>
+        </label>
       </div>
 
       {filteredTransactions.length === 0 ? (

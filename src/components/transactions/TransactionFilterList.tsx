@@ -9,6 +9,8 @@ type AccountOption = {
 };
 
 type TransactionTypeFilter = "all" | "credit" | "debit" | "transfer";
+type DateRangeFilter = "all" | "1" | "3" | "7" | "14" | "30" | "custom";
+type AmountOperator = "none" | "greaterThan" | "lessThan" | "equalTo";
 
 type TransactionFilterListProps = {
   transactions: TransactionCardData[];
@@ -23,7 +25,33 @@ export function TransactionFilterList({
   const [selectedType, setSelectedType] =
     useState<TransactionTypeFilter>("all");
 
+  const [selectedDateRange, setSelectedDateRange] =
+    useState<DateRangeFilter>("all");
+  const [customDays, setCustomDays] = useState("");
+
+  const [amountOperator, setAmountOperator] =
+    useState<AmountOperator>("none");
+  const [amountValue, setAmountValue] = useState("");
+
   const filteredTransactions = useMemo(() => {
+    const amountNumber = Number(amountValue);
+    const hasValidAmountFilter =
+      amountOperator !== "none" &&
+      amountValue.trim() !== "" &&
+      !Number.isNaN(amountNumber);
+
+    const days =
+      selectedDateRange === "custom"
+        ? Number(customDays)
+        : Number(selectedDateRange);
+
+    const hasValidDateFilter =
+      selectedDateRange !== "all" && !Number.isNaN(days) && days > 0;
+
+    const dateCutoff = hasValidDateFilter
+      ? new Date(Date.now() - days * 24 * 60 * 60 * 1000)
+      : null;
+
     return transactions.filter((transaction) => {
       const matchesAccount =
         selectedAccountId === "all" ||
@@ -34,9 +62,40 @@ export function TransactionFilterList({
       const matchesType =
         selectedType === "all" || transactionType === selectedType;
 
-      return matchesAccount && matchesType;
+      const transactionDate = new Date(transaction.date);
+
+      const matchesDate =
+        !dateCutoff || transactionDate >= dateCutoff;
+
+      const transactionAmount = Math.abs(Number(transaction.amount));
+
+      let matchesAmount = true;
+
+      if (hasValidAmountFilter) {
+        if (amountOperator === "greaterThan") {
+          matchesAmount = transactionAmount > amountNumber;
+        }
+
+        if (amountOperator === "lessThan") {
+          matchesAmount = transactionAmount < amountNumber;
+        }
+
+        if (amountOperator === "equalTo") {
+          matchesAmount = transactionAmount === amountNumber;
+        }
+      }
+
+      return matchesAccount && matchesType && matchesDate && matchesAmount;
     });
-  }, [transactions, selectedAccountId, selectedType]);
+  }, [
+    transactions,
+    selectedAccountId,
+    selectedType,
+    selectedDateRange,
+    customDays,
+    amountOperator,
+    amountValue,
+  ]);
 
   return (
     <section>
@@ -45,43 +104,111 @@ export function TransactionFilterList({
           <p className="dashboard-eyebrow">Activity</p>
           <h2>All Transactions</h2>
         </div>
+      </div>
 
-        <div className="transaction-filters">
-          <label className="transaction-filter">
-            <span className="transaction-filter-label">Account</span>
+      <div className="transaction-filters">
+        <label className="transaction-filter">
+          <span className="transaction-filter-label">Account</span>
 
-            <select
-              className="transaction-filter-select"
-              value={selectedAccountId}
-              onChange={(event) => setSelectedAccountId(event.target.value)}
-            >
-              <option value="all">All accounts</option>
+          <select
+            className="transaction-filter-select"
+            value={selectedAccountId}
+            onChange={(event) => setSelectedAccountId(event.target.value)}
+          >
+            <option value="all">All accounts</option>
 
-              {accounts.map((account) => (
-                <option key={account.id} value={account.id}>
-                  {account.name}
-                </option>
-              ))}
-            </select>
+            {accounts.map((account) => (
+              <option key={account.id} value={account.id}>
+                {account.name}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="transaction-filter">
+          <span className="transaction-filter-label">Type</span>
+
+          <select
+            className="transaction-filter-select"
+            value={selectedType}
+            onChange={(event) =>
+              setSelectedType(event.target.value as TransactionTypeFilter)
+            }
+          >
+            <option value="all">All types</option>
+            <option value="credit">Credits</option>
+            <option value="debit">Debits</option>
+            <option value="transfer">Transfers</option>
+          </select>
+        </label>
+
+        <label className="transaction-filter">
+          <span className="transaction-filter-label">Date range</span>
+
+          <select
+            className="transaction-filter-select"
+            value={selectedDateRange}
+            onChange={(event) =>
+              setSelectedDateRange(event.target.value as DateRangeFilter)
+            }
+          >
+            <option value="all">All time</option>
+            <option value="1">Past 1 day</option>
+            <option value="3">Past 3 days</option>
+            <option value="7">Past 7 days</option>
+            <option value="14">Past 14 days</option>
+            <option value="30">Past 1 month</option>
+            <option value="custom">Custom days</option>
+          </select>
+        </label>
+
+        {selectedDateRange === "custom" && (
+          <label className="transaction-filter transaction-filter-small">
+            <span className="transaction-filter-label">Days</span>
+
+            <input
+              className="transaction-filter-input"
+              type="number"
+              min="1"
+              placeholder="Ex. 10"
+              value={customDays}
+              onChange={(event) => setCustomDays(event.target.value)}
+            />
           </label>
+        )}
 
-          <label className="transaction-filter">
-            <span className="transaction-filter-label">Type</span>
+        <label className="transaction-filter">
+          <span className="transaction-filter-label">Amount</span>
 
-            <select
-              className="transaction-filter-select"
-              value={selectedType}
-              onChange={(event) =>
-                setSelectedType(event.target.value as TransactionTypeFilter)
-              }
-            >
-              <option value="all">All types</option>
-              <option value="credit">Credits</option>
-              <option value="debit">Debits</option>
-              <option value="transfer">Transfers</option>
-            </select>
+          <select
+            className="transaction-filter-select"
+            value={amountOperator}
+            onChange={(event) =>
+              setAmountOperator(event.target.value as AmountOperator)
+            }
+          >
+            <option value="none">Any amount</option>
+            <option value="greaterThan">Greater than</option>
+            <option value="lessThan">Less than</option>
+            <option value="equalTo">Equal to</option>
+          </select>
+        </label>
+
+        {amountOperator !== "none" && (
+          <label className="transaction-filter transaction-filter-small">
+            <span className="transaction-filter-label">Amount value</span>
+
+            <input
+              className="transaction-filter-input"
+              type="number"
+              min="0"
+              step="0.01"
+              placeholder="Ex. 50"
+              value={amountValue}
+              onChange={(event) => setAmountValue(event.target.value)}
+            />
           </label>
-        </div>
+        )}
       </div>
 
       {filteredTransactions.length === 0 ? (

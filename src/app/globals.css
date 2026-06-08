@@ -795,11 +795,23 @@ textarea {
   }
 }
 
+.transaction-filters {
+  display: flex;
+  align-items: end;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
 .transaction-filter {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
   min-width: 180px;
+}
+
+.transaction-filter-small {
+  min-width: 120px;
 }
 
 .transaction-filter-label {
@@ -808,20 +820,14 @@ textarea {
   color: var(--muted-text);
 }
 
-.transaction-filter-select {
+.transaction-filter-select,
+.transaction-filter-input {
   border: 1px solid var(--border);
   border-radius: 0.75rem;
   background: var(--card-background);
   color: var(--foreground);
   padding: 0.6rem 0.8rem;
   font: inherit;
-}
-
-.transaction-filters {
-  display: flex;
-  align-items: end;
-  gap: 1rem;
-  flex-wrap: wrap;
 }
 /* #endregion */
 

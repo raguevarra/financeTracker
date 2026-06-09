@@ -48,6 +48,7 @@ export function DeleteTransactionButton({
 
       <button
         type="button"
+        className="transaction-card-button transaction-card-button-delete"
         onClick={() => setIsModalOpen(true)}
         disabled={isDeleting}
       >

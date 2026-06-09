@@ -23,7 +23,11 @@ export function ModalActions({
                 Cancel
             </button>
 
-            <button type="submit" disabled={isSaving}>
+            <button 
+                type="submit" 
+                className="primary-button"
+                disabled={isSaving}
+            >
                 {isSaving ? savingLabel : submitLabel}
             </button>
         </div>

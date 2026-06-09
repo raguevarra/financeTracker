@@ -324,10 +324,15 @@ export function TransactionFilterList({
         </div>
       </div>
 
+      <p className="transaction-results-count">
+        Showing {filteredTransactions.length} of {transactions.length} transactions
+      </p>
+
       {filteredTransactions.length === 0 ? (
-        <section className="dashboard-card">
-          <p className="dashboard-subtitle">
-            No transactions found for these filters.
+        <section className="transaction-empty-state">
+          <p className="transaction-empty-title">No transactions found</p>
+          <p className="transaction-empty-copy">
+            Try adjusting your filters or clearing them to see more results.
           </p>
         </section>
       ) : (

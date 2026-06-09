@@ -186,12 +186,6 @@ textarea {
   color: var(--foreground);
 }
 
-.app-grid {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-}
-
 .panel {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -330,7 +324,7 @@ textarea {
     cursor: not-allowed;
     opacity: 0.65;
 }
-/* #endregion Bills*/
+/* #endregion Bills */
 
 /* #region Modal */
 .modal-overlay {
@@ -467,12 +461,6 @@ textarea {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
-.transaction-form-actions {
-  display: flex;
-  justify-content: flex-end;
-  padding-top: 0.25rem;
-}
-
 .primary-button {
   align-items: center;
   background: #111827;
@@ -529,10 +517,6 @@ textarea {
 
   .form-row {
     grid-template-columns: 1fr;
-  }
-
-  .transaction-form-actions {
-    justify-content: stretch;
   }
 
   .primary-button {
@@ -606,7 +590,7 @@ textarea {
     width: 100%;
   }
 }
-/* #endregion */
+/* #endregion Transaction Card */
 
 /* #region Dashboard */
 .dashboard-page {
@@ -711,9 +695,9 @@ textarea {
     grid-template-columns: repeat(3, 1fr);
   }
 }
-/* #endregion */
+/* #endregion Dashboard */
 
-/* #region Dashboard Transaction Cards*/
+/* #region Dashboard Recent Transactions */
 .dashboard-card-subtitle {
   margin: 0.25rem 0 0;
   color: #6b7280;
@@ -789,7 +773,9 @@ textarea {
   color: #6b7280;
   font-size: 0.875rem;
 }
+/* #endregion Dashboard Recent Transactions */
 
+/* #region Dashboard Quick Add */
 .quick-add-card {
   padding: 1.5rem;
 }
@@ -824,7 +810,9 @@ textarea {
     gap: 1rem;
   }
 }
+/* #endregion Dashboard Quick Add */
 
+/* #region Transaction Filters */
 .transaction-filters {
   display: grid;
   grid-template-columns: minmax(240px, 1.4fr) repeat(5, minmax(160px, 1fr)) auto;
@@ -1058,5 +1046,4 @@ textarea {
   font-weight: 600;
   color: #64748b;
 }
-/* #endregion */
-
+/* #endregion Transaction Filters */

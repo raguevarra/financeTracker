@@ -102,69 +102,70 @@ export function EditTransactionButton({
         title="Edit Transaction"
         onClose={closeModal}
       >
-        <form onSubmit={handleSubmit}>
-          <FormError message={error}/>
+        <form className="transaction-form" onSubmit={handleSubmit}>
+          <FormError message={error} />
 
-          <div>
-            <label htmlFor={`edit-transaction-name-${transaction.id}`}>
-              Name
-            </label>
-            <input
-              id={`edit-transaction-name-${transaction.id}`}
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+          <div className="form-row">
+            <div className="form-field">
+              <label htmlFor={`edit-transaction-name-${transaction.id}`}>
+                Name
+              </label>
+              <input
+                id={`edit-transaction-name-${transaction.id}`}
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="form-field">
+              <label htmlFor={`edit-transaction-amount-${transaction.id}`}>
+                Amount
+              </label>
+              <input
+                id={`edit-transaction-amount-${transaction.id}`}
+                type="number"
+                step="0.01"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                required
+              />
+            </div>
           </div>
 
-          <div>
-            <label htmlFor={`edit-transaction-amount-${transaction.id}`}>
-              Amount
-            </label>
-            <input
-              id={`edit-transaction-amount-${transaction.id}`}
-              type="number"
-              step="0.01"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              required
-            />
+          <div className="form-row">
+            <div className="form-field">
+              <label htmlFor={`edit-transaction-type-${transaction.id}`}>
+                Type
+              </label>
+              <select
+                id={`edit-transaction-type-${transaction.id}`}
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                required
+              >
+                <option value="DEBIT">Debit</option>
+                <option value="CREDIT">Credit</option>
+                <option value="TRANSFER">Transfer</option>
+              </select>
+            </div>
+
+            <div className="form-field">
+              <label htmlFor={`edit-transaction-date-${transaction.id}`}>
+                Date
+              </label>
+              <input
+                id={`edit-transaction-date-${transaction.id}`}
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
+            </div>
           </div>
 
-          <div>
-            <label htmlFor={`edit-transaction-type-${transaction.id}`}>
-              Type
-            </label>
-            <select
-              id={`edit-transaction-type-${transaction.id}`}
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              required
-            >
-              <option value="DEBIT">Debit</option>
-              <option value="CREDIT">Credit</option>
-              <option value="TRANSFER">Transfer</option>
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor={`edit-transaction-date-${transaction.id}`}>
-              Date
-            </label>
-            <input
-              id={`edit-transaction-date-${transaction.id}`}
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              required
-            />
-          </div>
-
-          <ModalActions
-            onCancel={closeModal}
-            isSaving={isSaving}
-          />
+          <ModalActions onCancel={closeModal} isSaving={isSaving} />
         </form>
       </Modal>
     </>

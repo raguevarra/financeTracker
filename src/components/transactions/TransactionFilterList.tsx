@@ -174,6 +174,21 @@ export function TransactionFilterList({
       </div>
 
       <div className="transaction-filter-panel">
+        <div className="transaction-filter-panel-header">
+          <p className="transaction-filter-panel-title">Filters</p>
+          <p className="transaction-filter-panel-subtitle">
+            Narrow transactions by account, type, date, amount, or name.
+          </p>
+
+          <button
+            className="transaction-clear-button"
+            type="button"
+            onClick={clearFilters}
+            disabled={!hasActiveFilters}
+          >
+            Clear filters
+          </button>
+        </div>
         <div className="transaction-filters">
           <label className="transaction-filter transaction-search-filter">
             <span className="transaction-filter-label">Search</span>
@@ -306,19 +321,6 @@ export function TransactionFilterList({
               <option value="amountAsc">Amount low to high</option>
             </select>
           </label>
-
-          <div className="transaction-filter transaction-clear-filter">
-            <span className="transaction-filter-label">&nbsp;</span>
-
-            <button
-              className="transaction-clear-button"
-              type="button"
-              onClick={clearFilters}
-              disabled={!hasActiveFilters}
-            >
-              Clear filters
-            </button>
-          </div>
         </div>
       </div>
 

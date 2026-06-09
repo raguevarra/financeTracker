@@ -302,15 +302,36 @@ textarea {
 .secondary-button,
 .danger-button {
     border: none;
-    border-radius: 0.75rem;
+    border-radius: 999px;
     padding: 0.65rem 1rem;
     font-weight: 600;
     cursor: pointer;
 }
 
 .secondary-button {
-    background: #f3f4f6;
-    color: #374151;
+  background: #eef2f7;
+  border: 1px solid #d8e0ea;
+  color: #334155;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.05);
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.secondary-button:hover {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+  color: #0f172a;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.1);
+  transform: translateY(-1px);
+}
+
+.secondary-button:active {
+  transform: translateY(0);
 }
 
 .danger-button {

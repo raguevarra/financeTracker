@@ -89,7 +89,11 @@ export function EditTransactionButton({
 
   return (
     <>
-      <button type="button" onClick={() => setIsModalOpen(true)}>
+      <button 
+      type="button" 
+      className="transaction-card-button transaction-card-button-edit"
+      onClick={() => setIsModalOpen(true)}
+      >
         Edit
       </button>
 

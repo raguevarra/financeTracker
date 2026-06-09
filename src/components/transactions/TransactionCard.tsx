@@ -21,6 +21,13 @@ type TransactionCardProps = {
 export function TransactionCard({ transaction }: TransactionCardProps) {
   const amount = Number(transaction.amount);
 
+  const amountClassName = 
+    transaction.type === "TRANSFER"
+      ? "transaction-card-amount-transfer"
+      : amount > 0
+        ? "transaction-card-amount-credit"
+        : "transaction-card-amount-debit";
+
   return (
     <div className="transaction-card">
       <div className="transaction-card-info">
@@ -32,7 +39,7 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
       </div>
 
       <div className="transaction-card-actions">
-        <p className="transaction-card-amount">
+        <p className={`transaction-card-amount ${amountClassName}`}>
           {formatCurrency(transaction.amount, { showSign: true })}
         </p>
 

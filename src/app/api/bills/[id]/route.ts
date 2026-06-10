@@ -86,7 +86,8 @@ export async function PATCH(
     });
 
     // Revalidate the account page so cached totals and bills stay current
-    revalidatePath(`/accounts/${updatedBill.accountId}`);
+    revalidatePath("/bills");
+    revalidatePath("/");
 
     // Return the updated bill as a JSON response
     return NextResponse.json(updatedBill);

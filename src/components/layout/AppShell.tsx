@@ -16,7 +16,9 @@ export function AppShell({ children }: AppShellProps) {
     }
 
     function closeSidebar() {
-        setSidebarOpen(false);
+        if (window.innerWidth <= 768) {
+            setSidebarOpen(false);
+        }
     }
 
     return (

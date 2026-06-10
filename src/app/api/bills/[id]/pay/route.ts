@@ -52,6 +52,7 @@ export async function POST(
 
     // Revalidate the account page and dashboard so balances/transactions stay current
     revalidatePath(`/accounts/${accountId}`);
+    revalidatePath("/bills");
     revalidatePath("/");
 
     return NextResponse.json(result);

@@ -34,6 +34,10 @@ export async function DELETE(_request: Request, { params }: RouteParams) {
         // Delete the bill from the database using Prisma
         await deleteBillById(id);
 
+        // Revalidate paths
+        revalidatePath("/bills");
+        revalidatePath("/");
+
         // Return a success message as a JSON response
         return NextResponse.json(
             { message: "Bill deleted successfully." },

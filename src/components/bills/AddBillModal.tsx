@@ -6,14 +6,8 @@ import { Modal } from "../shared/Modal";
 import { FormError } from "../shared/FormError";
 import { ModalActions } from "../shared/ModalActions";
 
-// Modal for adding bills in the account view.
-
-type AddBillModalProps = {
-    accountId: string;
-};
-
 // Opens a modal form for adding a new bill to the selected account.
-export function AddBillModal({ accountId }: AddBillModalProps) {
+export function AddBillModal() {
     const router = useRouter();
 
     const [isOpen, setIsOpen] = useState(false);
@@ -52,7 +46,6 @@ export function AddBillModal({ accountId }: AddBillModalProps) {
                 name,
                 amount,
                 dueDate,
-                accountId,
             }),
         });
 

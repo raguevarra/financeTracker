@@ -14,6 +14,7 @@ export { default as BillList } from "./bills/BillList";
 export { DeleteBillButton } from "./bills/DeleteBillButton";
 export { EditBillButton } from "./bills/EditBillButton";
 export { PayBillButton } from "./bills/PayBillButton";
+export { BillFilterList } from "./bills/BillFilterList"
 
 // dashboard
 export { DashboardHeader } from "./dashboard/DashboardHeader";

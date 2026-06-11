@@ -45,7 +45,7 @@ export function AccountArchiveButton({
             type="button"
             onClick={handleArchiveUpdate}
             disabled={isUpdating}
-            className={isArchived ? "secondary-button" : "danger-button"}
+            className={isArchived ? "account-restore button" : "account-archive-button"}
         >
             {isUpdating
                 ? "Updating..."

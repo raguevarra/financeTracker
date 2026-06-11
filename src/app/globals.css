@@ -1285,9 +1285,8 @@ textarea {
 
 .accounts-summary-card {
   display: grid;
-  grid-template-columns: 1.4fr repeat(4, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1rem;
-  align-items: center;
   padding: 1rem;
   border: 1px solid #d1d5db;
   border-radius: 0.75rem;
@@ -1296,6 +1295,9 @@ textarea {
 
 .accounts-summary-item {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .accounts-summary-primary {
@@ -1303,10 +1305,16 @@ textarea {
   padding-right: 1rem;
 }
 
-.accounts-summary-value {
-  margin: 0.35rem 0 0;
+.accounts-summary-item .dashboard-card-label {
+  margin: 0;
+}
+
+.accounts-summary-value,
+.accounts-summary-card .dashboard-balance {
+  margin: 0.75rem 0 0;
   font-size: 1rem;
   font-weight: 700;
+  line-height: 1.2;
 }
 
 @media (max-width: 1000px) {
@@ -1324,6 +1332,49 @@ textarea {
   .accounts-summary-card {
     grid-template-columns: 1fr;
   }
+}
+
+.account-archive-button,
+.account-restore-button {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0.45rem 0.85rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.account-archive-button {
+  border-color: #fecaca;
+  background: #fff;
+  color: #dc2626;
+}
+
+.account-archive-button:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+.account-restore-button {
+  border-color: #bfdbfe;
+  background: #fff;
+  color: #2563eb;
+}
+
+.account-restore-button:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+}
+
+.account-archive-button:disabled,
+.account-restore-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 /* #endregion */
 

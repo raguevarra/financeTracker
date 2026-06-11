@@ -64,7 +64,11 @@ export function AddBillModal() {
 
     return (
         <>
-            <button type="button" onClick={() => setIsOpen(true)}>
+            <button 
+                type="button"
+                className="primary-button"
+                onClick={() => setIsOpen(true)}
+            >
                 Add Bill
             </button>
 
@@ -73,10 +77,10 @@ export function AddBillModal() {
                 title="Add Bill"
                 onClose={closeModal}
             >
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="transaction-form">
                     <FormError message={error}/>
 
-                    <div>
+                    <div className="form-field">
                         <label htmlFor="bill-name">Name</label>
                         <input
                             id="bill-name"
@@ -87,27 +91,31 @@ export function AddBillModal() {
                         />
                     </div>
 
-                    <div>
-                        <label htmlFor="bill-amount">Amount</label>
-                        <input
-                            id="bill-amount"
-                            type="number"
-                            step="0.01"
-                            value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
-                            required
-                        />
-                    </div>
+                    <div className="form-row">
+                        <div className="form-field">
+                            <label htmlFor="bill-amount">Amount</label>
+                            <input
+                                id="bill-amount"
+                                type="number"
+                                className="no-spinner"
+                                placeholder="0.00"
+                                step="0.01"
+                                value={amount}
+                                onChange={(e) => setAmount(e.target.value)}
+                                required
+                            />
+                        </div>
 
-                    <div>
-                        <label htmlFor="bill-due-date">Due Date</label>
-                        <input
-                            id="bill-due-date"
-                            type="date"
-                            value={dueDate}
-                            onChange={(e) => setDueDate(e.target.value)}
-                            required
-                        />
+                        <div className="form-field">
+                            <label htmlFor="bill-due-date">Due Date</label>
+                            <input
+                                id="bill-due-date"
+                                type="date"
+                                value={dueDate}
+                                onChange={(e) => setDueDate(e.target.value)}
+                                required
+                            />
+                        </div>
                     </div>
 
                     <div>

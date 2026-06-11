@@ -39,7 +39,12 @@ export function PayBillButton({ billId, isPaid }: PayBillButtonProps) {
 
     return (
         <div>
-            <button type="button" onClick={handlePayBill} disabled={isPaying}>
+            <button 
+                type="button"
+                className="bill-action-button bill-pay-button"
+                onClick={handlePayBill}
+                disabled={isPaying}
+            >
                 {isPaying ? "Paying..." : "Mark As Paid"}
             </button>
 

@@ -1,5 +1,5 @@
 /*
-Bill card component for reuse across 'BillList.tsx' and 'AccountBillList.tsx'
+Bill card component for reuse across BillList.tsx and AccountBillList.tsx
 */
 
 import { formatCurrency, formatDate } from "@/lib/formatters";
@@ -8,52 +8,55 @@ import { EditBillButton } from "./EditBillButton";
 import { PayBillButton } from "./PayBillButton";
 
 export type BillCardData = {
-    id: string;
-    name: string;
-    amount: string;
-    dueDate: Date | string;
-    isPaid: boolean;
+  id: string;
+  name: string;
+  amount: string;
+  dueDate: Date | string;
+  isPaid: boolean;
 };
 
 type BillCardProps = {
-    bill: BillCardData;
+  bill: BillCardData;
 };
 
-// Shows bill details alongside edit, delete, and mark-as-paid actions.
 export function BillCard({ bill }: BillCardProps) {
-    return (
-        <article className="bill-card">
-            <div className="bill-card-header">
-                <div>
-                    <h3>{bill.name}</h3>
-                    <p>Due {formatDate(bill.dueDate)}</p>
-                </div>
+  const serializedDueDate =
+    bill.dueDate instanceof Date ? bill.dueDate.toISOString() : bill.dueDate;
 
-                <span className="bill-status">
-                    {bill.isPaid ? "Paid" : "Unpaid"}
-                </span>
-            </div>
+  const editableBill = {
+    id: bill.id,
+    name: bill.name,
+    amount: String(bill.amount),
+    dueDate: serializedDueDate,
+    isPaid: bill.isPaid,
+  };
 
-            <div className="bill-card-footer">
-                <p className="bill-amount">
-                    {formatCurrency(bill.amount)}
-                </p>
+  return (
+    <article className="bill-card">
+      <div className="bill-card-header">
+        <div>
+          <h3>{bill.name}</h3>
+          <p>Due {formatDate(bill.dueDate)}</p>
+        </div>
 
-                <div>
-                    <EditBillButton bill={{
-                        id: bill.id,
-                        name: bill.name,
-                        amount: String(bill.amount),
-                        dueDate:
-                            bill.dueDate instanceof Date
-                            ? bill.dueDate.toISOString()
-                            : bill.dueDate,
-                        isPaid: bill.isPaid
-                    }} />
-                    <DeleteBillButton billId={bill.id} billName={bill.name} />
-                    <PayBillButton billId={bill.id} isPaid={bill.isPaid} />
-                </div>
-            </div>
-        </article>
-    )
+        <span className="bill-status">
+          {bill.isPaid ? "Paid" : "Unpaid"}
+        </span>
+      </div>
+
+      <div className="bill-card-footer">
+        <p className="bill-amount">{formatCurrency(bill.amount)}</p>
+
+        <div className="bill-card-actions">
+          <div className="bill-card-actions-top">
+            <EditBillButton bill={editableBill} />
+
+            <DeleteBillButton billId={bill.id} billName={bill.name} />
+          </div>
+
+          <PayBillButton billId={bill.id} isPaid={bill.isPaid} />
+        </div>
+      </div>
+    </article>
+  );
 }

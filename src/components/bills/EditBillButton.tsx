@@ -89,6 +89,7 @@ export function EditBillButton({ bill }: EditBillButtonProps) {
     <>
       <button
         type="button"
+        className="bill-action-button bill-edit-button"
         onClick={() => setIsModalOpen(true)}
       >
         Edit
@@ -99,10 +100,10 @@ export function EditBillButton({ bill }: EditBillButtonProps) {
         title="Edit Bill"
         onClose={closeModal}
       >
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="transaction-form">
           <FormError message={error}/>
 
-          <div>
+          <div className="form-field">
             <label htmlFor={`edit-bill-name-${bill.id}`}>Name</label>
             <input
               id={`edit-bill-name-${bill.id}`}
@@ -113,7 +114,7 @@ export function EditBillButton({ bill }: EditBillButtonProps) {
             />
           </div>
 
-          <div>
+          <div className="form-field">
             <label htmlFor={`edit-bill-amount-${bill.id}`}>Amount</label>
             <input
               id={`edit-bill-amount-${bill.id}`}
@@ -125,7 +126,7 @@ export function EditBillButton({ bill }: EditBillButtonProps) {
             />
           </div>
 
-          <div>
+          <div className="form-field">
             <label htmlFor={`edit-bill-due-date-${bill.id}`}>Due Date</label>
             <input
               id={`edit-bill-due-date-${bill.id}`}

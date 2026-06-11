@@ -23,11 +23,6 @@ export function AccountFilterList({ accounts }: AccountFilterListProps) {
     return Array.from(new Set(accounts.map((account) => account.type)));
   }, [accounts]);
 
-  const hasActiveFilters =
-    searchQuery.trim() !== "" ||
-    typeFilter !== "all" ||
-    sortOption !== "nameAsc";
-
   function clearFilters() {
     setSearchQuery("");
     setTypeFilter("all");
@@ -93,7 +88,6 @@ export function AccountFilterList({ accounts }: AccountFilterListProps) {
             className="transaction-clear-button"
             type="button"
             onClick={clearFilters}
-            disabled={!hasActiveFilters}
           >
             Clear filters
           </button>

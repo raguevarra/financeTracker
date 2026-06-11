@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AccountList } from "@/components";
+import { AccountFilterList } from "@/components";
 import { getAccountsForUser } from "@/lib/accounts";
 import { getCurrentUserId } from "@/lib/getCurrentUser";
 import { serializeAccount } from "@/lib/serializers";
@@ -45,7 +45,7 @@ export default async function AccountsPage() {
         </p>
       </section>
 
-      <AccountList accounts={plainAccounts} title="Active Accounts" />
+      <AccountFilterList accounts={plainAccounts} />
     </div>
   );
 }

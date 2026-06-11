@@ -3,6 +3,7 @@ import { AccountFilterList } from "@/components";
 import { getAccountsForUser } from "@/lib/accounts";
 import { getCurrentUserId } from "@/lib/getCurrentUser";
 import { serializeAccount } from "@/lib/serializers";
+import { formatCurrency } from "@/lib/formatters";
 
 export default async function AccountsPage() {
   const userId = await getCurrentUserId();
@@ -16,6 +17,29 @@ export default async function AccountsPage() {
   const totalBalance = plainAccounts.reduce((total, account) => {
     return total + Number(account.balance);
   }, 0);
+
+  const cashAndChequingBalance = plainAccounts
+    .filter((account) => account.type === "CASH" || account.type === "CHEQUING")
+    .reduce((total, account) => {
+      return total + Number(account.balance);
+    }, 0);
+
+  const savingsAndInvestmentsBalance = plainAccounts
+    .filter(
+      (account) =>
+        account.type === "SAVINGS" || account.type === "INVESTMENT"
+    )
+    .reduce((total, account) => {
+      return total + Number(account.balance);
+    }, 0);
+
+  const creditCardBalance = plainAccounts
+    .filter((account) => account.type === "CREDIT_CARD")
+    .reduce((total, account) => {
+      return total + Number(account.balance);
+    }, 0);
+
+  const activeAccountCount = plainAccounts.length;
 
   return (
     <div className="dashboard-page">
@@ -35,14 +59,37 @@ export default async function AccountsPage() {
         </div>
       </section>
 
-      <section className="dashboard-card">
-        <p className="dashboard-card-label">Total Balance</p>
-        <p className="dashboard-balance">
-          {new Intl.NumberFormat("en-CA", {
-            style: "currency",
-            currency: "CAD",
-          }).format(totalBalance)}
-        </p>
+      <section className="accounts-summary-card">
+        <div className="accounts-summary-item accounts-summary-primary">
+          <p className="dashboard-card-label">Total Balance</p>
+          <p className="dashboard-balance">{formatCurrency(totalBalance)}</p>
+        </div>
+
+        <div className="accounts-summary-item">
+          <p className="dashboard-card-label">Cash & Chequing</p>
+          <p className="accounts-summary-value">
+            {formatCurrency(cashAndChequingBalance)}
+          </p>
+        </div>
+
+        <div className="accounts-summary-item">
+          <p className="dashboard-card-label">Savings & Investments</p>
+          <p className="accounts-summary-value">
+            {formatCurrency(savingsAndInvestmentsBalance)}
+          </p>
+        </div>
+
+        <div className="accounts-summary-item">
+          <p className="dashboard-card-label">Credit Cards</p>
+          <p className="accounts-summary-value">
+            {formatCurrency(creditCardBalance)}
+          </p>
+        </div>
+
+        <div className="accounts-summary-item">
+          <p className="dashboard-card-label">Active Accounts</p>
+          <p className="accounts-summary-value">{activeAccountCount}</p>
+        </div>
       </section>
 
       <AccountFilterList accounts={plainAccounts} />

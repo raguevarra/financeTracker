@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { AccountCard, type AccountCardData } from "@/components";
 
 type AccountFilterListProps = {
@@ -18,6 +18,16 @@ export function AccountFilterList({ accounts }: AccountFilterListProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [typeFilter, setTypeFilter] = useState("all");
   const [sortOption, setSortOption] = useState<SortOption>("nameAsc");
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  const hasActiveFilters =
+    searchQuery.trim() !== "" ||
+    typeFilter !== "all" ||
+    sortOption !== "nameAsc";
 
   const accountTypes = useMemo(() => {
     return Array.from(new Set(accounts.map((account) => account.type)));
@@ -88,6 +98,7 @@ export function AccountFilterList({ accounts }: AccountFilterListProps) {
             className="transaction-clear-button"
             type="button"
             onClick={clearFilters}
+            disabled={hasMounted ? !hasActiveFilters : false}
           >
             Clear filters
           </button>

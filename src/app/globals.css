@@ -792,6 +792,13 @@ textarea {
   gap: 0.5rem;
 }
 
+.dashboard-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
 .dashboard-eyebrow {
   margin: 0;
   font-size: 0.875rem;
@@ -831,6 +838,35 @@ textarea {
   margin: 0;
   color: #6b7280;
   font-size: 0.875rem;
+}
+
+.dashboard-secondary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.7rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+
+  background: #ffffff;
+  color: #111827;
+
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: none;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.dashboard-secondary-link:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+  transform: translateY(-1px);
 }
 
 @media (min-width: 900px) {

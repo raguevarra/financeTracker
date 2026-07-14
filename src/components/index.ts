@@ -4,6 +4,7 @@ export { AccountForm } from "./accounts/AccountForm";
 export { AccountList, type Account } from "./accounts/AccountList";
 export { AccountSelector } from "./accounts/AccountSelector";
 export { AccountTransactionForm } from "./accounts/AccountTransactionForm";
+export { AddAccountModal } from "./accounts/AddAccountModal";
 export { TransferForm } from "./accounts/TransferForm";
 export { AccountCard, type AccountCardData } from "./accounts/AccountCard"
 export { AccountFilterList } from "./accounts/AccountFilterList"

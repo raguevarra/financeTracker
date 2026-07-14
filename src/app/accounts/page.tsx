@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AccountFilterList } from "@/components";
+import { AccountFilterList, AddAccountModal } from "@/components";
 import { getAccountsForUser } from "@/lib/accounts";
 import { getCurrentUserId } from "@/lib/getCurrentUser";
 import { serializeAccount } from "@/lib/serializers";
@@ -56,6 +56,7 @@ export default async function AccountsPage() {
           <Link href="/accounts/archived" className="dashboard-secondary-link">
             Archived Accounts
           </Link>
+          <AddAccountModal />
         </div>
       </section>
 
